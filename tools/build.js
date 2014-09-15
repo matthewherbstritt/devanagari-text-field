@@ -1,11 +1,11 @@
 {
     "baseUrl": "../lib",
     "paths": {
-        "principium": "../principium"
+        "src": "../src"
     },
-    "include": ["../tools/almond", "principium"],
-    "exclude": ["jquery", "underscore"],
-    "out": "../dist/principium.js",
+    "include": ["../tools/almond", "src"],
+
+    "out": "../dist/devanagariTextField.js",
     "wrap": {
         "startFile": "wrap.start",
         "endFile": "wrap.end"
