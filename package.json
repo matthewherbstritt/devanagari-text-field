@@ -1,0 +1,18 @@
+{
+  "name": "devanagari-text-field",
+  "version": "0.0.1",
+  "description": "Type Devanagari characters into text inputs and textareas.",
+  "author": "Matt Herbstritt",
+  "keywords": [
+    "devanagari",
+    "hindi",
+    "napali"
+  ],
+  "devDependencies": {
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-express": "^1.4.1",
+    "intern": "^2.1.0"
+  },
+  "license": "MIT"
+}
