@@ -1,9 +1,7 @@
 {
     "baseUrl": "../src",
-    "paths": {
-        "src": "../src/main"
-    },
-    "include": ["../tools/almond", "src"],
+    "name": "../tools/almond",
+    "include": ["main"],
 
     "out": "../dist/devanagariTextField.js",
     "wrap": {
