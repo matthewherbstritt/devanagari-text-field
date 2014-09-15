@@ -1,7 +1,7 @@
 {
-    "baseUrl": "../lib",
+    "baseUrl": "../src",
     "paths": {
-        "src": "../src"
+        "src": "../src/main"
     },
     "include": ["../tools/almond", "src"],
 
@@ -9,5 +9,6 @@
     "wrap": {
         "startFile": "wrap.start",
         "endFile": "wrap.end"
-    }
+    },
+    "optimize": "none"
 }
