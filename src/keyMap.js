@@ -1,4 +1,4 @@
-var keyMap = (function(){
+define([], function(){
 
   var map = {
 
@@ -967,4 +967,4 @@ var keyMap = (function(){
 
   };
 
-}());
+});

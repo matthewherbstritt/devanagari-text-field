@@ -1,4 +1,4 @@
-var util = (function(){
+define([], function(){
 
   return {
 
@@ -584,4 +584,4 @@ var util = (function(){
 
   };
 
-}());
+});

@@ -1,4 +1,4 @@
-var devanagariTextField = (function(){
+define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
   var canIgnoreKeyCode  = function(keyCode){
      return([
@@ -551,4 +551,4 @@ var devanagariTextField = (function(){
 
     return init;
 
-}());
+});
