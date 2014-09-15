@@ -1,10 +1,13 @@
 (function ( root, factory ) {
 
     if (typeof define === 'function' && define.amd) {
+    
+        // AMD
         define([], factory);
     } else {
+
+        // Browser globals
         root.devanagariTextField = factory();
     }
 
 }( this, function () {
-    //almond, and your modules will be inlined here
