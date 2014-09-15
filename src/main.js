@@ -6,9 +6,6 @@ define(function (require) {
     var devanagariTextField = require('textField');
 
     //Return the module value.
-    return {
-        version: '0.0.1',
-        devanagariTextField: devanagariTextField
-    };
-    
+    return devanagariTextField;
+
 });
