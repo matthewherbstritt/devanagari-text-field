@@ -96,10 +96,6 @@
 
     function appendDevanagariChar(inputString, charObj, settings) {
 
-        console.log('------------appendDevanagariChar(inputString, charObj, settings)----------');
-        console.log('inputString: ' + inputString);
-        console.log('charObj: ' + charObj);
-
         var lastChar = getLastChar(inputString),
             char = (charObj) ? getChar(inputString, charObj, settings) : false;
 
@@ -143,8 +139,7 @@
 
     return {
       appendChar: appendDevanagariChar,
-      removeVirama: removeVirama,
-      test: 1
+      removeVirama: removeVirama
     };
 
 }());
