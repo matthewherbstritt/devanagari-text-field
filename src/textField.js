@@ -70,6 +70,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
   var isValidCtrlCombo = function(ctrlKey, keyCode){
     return (
+      //(typeof ctrlKey !== undefined && typeof keyCode !== undefined) ||
       (ctrlKey && keyCode === 17) || // control keydown
       (ctrlKey && keyCode === 65) || // control + a = select all
       (ctrlKey && keyCode === 67) || // control + c = copy
@@ -122,10 +123,8 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
         (tf.cachedKeyCode === 90 && tf.keyCode === 17) || // z keyup then control keyup
         (tf.cachedKeyCode === 17 && tf.keyCode === 90)  // control keyup then z keyup
 
-      ){
-        return;
-      }
-    }
+      ){ return; }
+    };
 
 
 
@@ -152,10 +151,10 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
     tf.element.value  = tf.inputString;
     tf.keydownCount   = 0;
     tf.keyupCount     = 0;
-    console.log('undoKeyHeldDown')
+
     setCaretIndex(tf, newCaretIndex);
 
-  }
+  };
 
   var handleClick = function(tf){
     tf.key = null;
@@ -167,7 +166,6 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
   var handleBlur = function(tf){
 
-    console.log('--------blur--------');
     tf.key = null;
     tf.cachedKey = null;
     tf.cachedInputString = null;
@@ -175,22 +173,13 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
   };
 
-
   var handleFocus = function(tf){
-
-    console.log('--------focus--------');
-
     tf.inputString = tf.element.value;
   };
 
   var handleChange = function(tf){
-
-    console.log('--------focus--------');
-
     tf.inputString = tf.element.value;
   };
-
-
 
   var handleKeydown = function(tf, event){
 
@@ -340,7 +329,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
       this.cachedKeyCode = this.keyCode;
       this.keyCode = keyCode;
 
-      if(ctrlKey && keyCode === 90){console.log( 'ctrl + z'); return;}
+      //if(ctrlKey && keyCode === 90){
 
       if(shiftKey && ctrlKey && keyCode === 54){
         toggleScript(this);
@@ -361,23 +350,10 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
       this.keydownCount = 0;
       this.keyupCount = 0;
 
-      console.log('this.inputString: ' + this.inputString);
-      console.log('this.cachedInputString: ' + this.cachedInputString);
-      //console.log('this.inputString.length: ' + this.inputString.length);
-      //console.log('this.cachedInputString.length: ' + this.cachedInputString.length);
-      console.log('-------------------------------------------------------------------')
-
       this.cachedInputString = (this.inputString != null) ? this.inputString : '';
       this.inputString = this.element.value;
 
-      console.log('this.inputString: ' + this.inputString);
-      console.log('this.cachedInputString: ' + this.cachedInputString);
-      console.log('this.inputString.length: ' + this.inputString.length);
-      console.log('this.cachedInputString.length: ' + this.cachedInputString.length);
-
       if(this.inputString.length > this.cachedInputString.length){
-
-
 
         this.cachedCaretIndex = this.caretIndex;
         this.caretIndex = util.getCaretIndex(this.element);
@@ -542,7 +518,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
         this.devanagariCharObj = null;
       }
 
-    }
+    };
 
     var init = function(elementId, options){
       var te = document.getElementById(elementId);
