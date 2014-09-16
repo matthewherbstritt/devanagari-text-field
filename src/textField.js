@@ -85,7 +85,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
     tf.element.value = string;
   };
 
-  var incrementKeyEventCount = function(tf, event){
+  var incrementKeyEventCount = function(tf, eventType, keyCode, ctrlKey, shiftKey){
 
     var eventType = event.type,
         keyCode   = event.which || event.keyCode;
@@ -184,6 +184,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
   var handleKeydown = function(tf, event){
 
     var keyCode     = event.keyCode ? event.keyCode : event.which,
+        eventType   = event.type,
         shiftKey    = event.shiftKey,
         ctrlKey     = event.ctrlKey,
         settings    = tf.settings;
@@ -197,11 +198,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
     tf.cachedKeyCode = tf.keyCode;
     tf.keyCode = keyCode;
 
-    var shiftKey =  event.shiftKey,
-        ctrlKey  = event.ctrlKey,
-        keyCode  = event.keyChar || event.which;
-
-    incrementKeyEventCount(tf, event);
+    incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey);
 
   };
 
@@ -316,6 +313,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
   DevanagariTextField.prototype.onKeyup = function(event){
 
       var keyCode     = event.keyCode ? event.keyCode : event.which,
+          eventType   = event.type,
           shiftKey    = event.shiftKey,
           ctrlKey     = event.ctrlKey,
           settings    = this.settings;
@@ -338,8 +336,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
       if( settings.scriptMode === 'Roman' ){ return; };
 
-
-      incrementKeyEventCount(this, event);
+      incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey);
 
       if(keyHeldDown(this)){
 
