@@ -2,6 +2,36 @@ define([], function(){
 
   return {
 
+    setCaretIndex: function(tf, caretIndex){
+
+      var range;
+
+      if(tf.element != null){
+
+          if(tf.element.createTextRange){ // for < IE 9
+
+              range = tf.element.createTextRange();
+
+              range.move('character', caretIndex);
+              range.select();
+
+          } else {
+
+              if(tf.element.selectionStart){
+
+                  tf.element.focus();
+                  tf.element.setSelectionRange(caretIndex, caretIndex);
+
+              } else {
+                  tf.element.focus();
+              }
+
+          }
+
+      }
+
+    }
+
     isDependentSign: function ( char ) {
 
       return ( [
