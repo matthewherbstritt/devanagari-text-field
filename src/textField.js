@@ -1,15 +1,11 @@
 define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
-
-
-
-
   var outputString = function(tf, string){
     tf.element.value = string;
   };
 
-
   var handleClick = function(tf){
+
     tf.key = null;
     tf.cachedKey = null;
     tf.cachedInputString = null;
@@ -33,10 +29,6 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
   var handleChange = function(tf){
     tf.inputString = tf.element.value;
   };
-
-
-
-
 
   function DevanagariTextField(element, options){
 
@@ -85,12 +77,12 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
           self.onKeyup(event || window.event);
         });
 
-        util.addEvent(this.element, 'click', function(){
-          handleClick(self);
-        });
-
         util.addEvent(this.element, 'keydown', function(event){
           self.onKeydown(event || winow.event);
+        });
+
+        util.addEvent(this.element, 'click', function(){
+          handleClick(self);
         });
 
         util.addEvent(this.element, 'blur', function(event){
@@ -110,8 +102,6 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
       }
 
     }
-
-
 
     DevanagariTextField.prototype.autoRemoveVirama = function(){
 
@@ -225,20 +215,13 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     };
 
     DevanagariTextField.prototype.onKeydown = events.onKeydown;
+
     DevanagariTextField.prototype.onKeyup   = events.onKeyup;
-
-
-
-
-
-
 
     var init = function(elementId, options){
       var te = document.getElementById(elementId);
       return new DevanagariTextField(te, options);
     };
-
-
 
     return init;
 
