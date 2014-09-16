@@ -2,7 +2,6 @@ define(['util'], function(util){
 
   var events = {};
 
-
   function keyHeldDown(tf){
     return(tf.keyupCount !== tf.keydownCount)
   }
@@ -16,7 +15,7 @@ define(['util'], function(util){
     tf.keydownCount   = 0;
     tf.keyupCount     = 0;
 
-    setCaretIndex(tf, newCaretIndex);
+    util.setCaretIndex(tf, newCaretIndex);
 
   }
 
