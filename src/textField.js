@@ -1,4 +1,4 @@
-define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
+define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
   var canIgnoreKeyCode  = function(keyCode){
      return([
@@ -336,7 +336,7 @@ define(['util', 'keyMap', 'devanagari'], function(util, keyMap, devanagari){
 
       if( settings.scriptMode === 'Roman' ){ return; };
 
-      incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey);
+      incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
 
       if(keyHeldDown(this)){
 
