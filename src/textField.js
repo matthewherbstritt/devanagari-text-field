@@ -1,47 +1,12 @@
 define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
 
-  var setCaretIndex = function(tf, caretIndex){
-
-    var range;
-
-    if(tf.element != null){
-
-        if(tf.element.createTextRange){ // for < IE 9
-
-            range = tf.element.createTextRange();
-
-            range.move('character', caretIndex);
-            range.select();
-
-        } else {
-
-            if(tf.element.selectionStart){
-
-                tf.element.focus();
-                tf.element.setSelectionRange(caretIndex, caretIndex);
-
-            } else {
-                tf.element.focus();
-            }
-
-        }
-
-    }
-
-  };
 
 
 
   var outputString = function(tf, string){
     tf.element.value = string;
   };
-
-
-
-
-
-
 
 
   var handleClick = function(tf){
@@ -170,7 +135,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         output                           = outputStartSub + spaceChar + inputStrEndSub;
 
         outputString(this, output);
-        setCaretIndex(this, outputStartSub.length + 1);
+        util.setCaretIndex(this, outputStartSub.length + 1);
 
       }
 
@@ -222,7 +187,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
           }
 
           outputString(this, output);
-          setCaretIndex(this, outputSubstr1.length);
+          util.setCaretIndex(this, outputSubstr1.length);
           return;
 
         }
@@ -233,7 +198,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         outputString(this, output);
 
         // -1 to account for the removed key
-        setCaretIndex(this, caretIndex -1);
+        util.setCaretIndex(this, caretIndex -1);
 
       }
 
