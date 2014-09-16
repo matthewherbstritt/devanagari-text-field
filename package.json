@@ -6,13 +6,27 @@
   "keywords": [
     "devanagari",
     "hindi",
-    "napali"
+    "napali",
+    "textarea",
+    "textbox",
+    "HTML text input"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matt-herbstritt/devanagari-text-field.git"
+  },
   "devDependencies": {
+
+    "requirejs": "~2.1.4",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.7",
+    "grunt-mocha": "~0.3.1",
+    "grunt-express": "^1.4.1",
+    "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-sass": "^0.8.1",
-    "grunt-express": "^1.4.1",
-    "intern": "^2.1.0"
+    "grunt-lib-phantomjs": "~0.3"
+
   },
   "license": "MIT"
 }

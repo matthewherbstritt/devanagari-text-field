@@ -1,15 +1,18 @@
 (function ( root, factory ) {
 
     if (typeof define === 'function' && define.amd) {
+
+        // AMD
         define([], factory);
     } else {
+
+        // Browser globals
         root.devanagariTextField = factory();
     }
 
 }( this, function () {
-    //almond, and your modules will be inlined here
 /**
- * @license almond 0.3.0 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
+ * almond 0.1.2 Copyright (c) 2011, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/almond for details
  */
@@ -20,18 +23,12 @@
 
 var requirejs, require, define;
 (function (undef) {
-    var main, req, makeMap, handlers,
-        defined = {},
+    var defined = {},
         waiting = {},
         config = {},
         defining = {},
-        hasOwn = Object.prototype.hasOwnProperty,
         aps = [].slice,
-        jsSuffixRegExp = /\.js$/;
-
-    function hasProp(obj, prop) {
-        return hasOwn.call(obj, prop);
-    }
+        main, req;
 
     /**
      * Given a relative module name, like ./something, normalize it to
@@ -42,11 +39,11 @@ var requirejs, require, define;
      * @returns {String} normalized name
      */
     function normalize(name, baseName) {
-        var nameParts, nameSegment, mapValue, foundMap, lastIndex,
-            foundI, foundStarMap, starI, i, j, part,
-            baseParts = baseName && baseName.split("/"),
+        var baseParts = baseName && baseName.split("/"),
             map = config.map,
-            starMap = (map && map['*']) || {};
+            starMap = (map && map['*']) || {},
+            nameParts, nameSegment, mapValue, foundMap,
+            foundI, foundStarMap, starI, i, j, part;
 
         //Adjust any relative paths.
         if (name && name.charAt(0) === ".") {
@@ -60,19 +57,11 @@ var requirejs, require, define;
                 //"one/two/three.js", but we want the directory, "one/two" for
                 //this normalization.
                 baseParts = baseParts.slice(0, baseParts.length - 1);
-                name = name.split('/');
-                lastIndex = name.length - 1;
 
-                // Node .js allowance:
-                if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
-                    name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
-                }
-
-                name = baseParts.concat(name);
+                name = baseParts.concat(name.split("/"));
 
                 //start trimDots
-                for (i = 0; i < name.length; i += 1) {
-                    part = name[i];
+                for (i = 0; (part = name[i]); i++) {
                     if (part === ".") {
                         name.splice(i, 1);
                         i -= 1;
@@ -84,7 +73,7 @@ var requirejs, require, define;
                             //no path mapping for a path starting with '..'.
                             //This can still fail, but catches the most reasonable
                             //uses of ..
-                            break;
+                            return true;
                         } else if (i > 0) {
                             name.splice(i - 1, 2);
                             i -= 2;
@@ -94,10 +83,6 @@ var requirejs, require, define;
                 //end trimDots
 
                 name = name.join("/");
-            } else if (name.indexOf('./') === 0) {
-                // No baseName, so this is ID is resolved relative
-                // to baseUrl, pull off the leading dot.
-                name = name.substring(2);
             }
         }
 
@@ -160,15 +145,7 @@ var requirejs, require, define;
             //A version of a require function that passes a moduleName
             //value for items that may need to
             //look up paths relative to the moduleName
-            var args = aps.call(arguments, 0);
-
-            //If first arg is not require('string'), and there is only
-            //one arg, it is the array form without a callback. Insert
-            //a null so that the following concat is correct.
-            if (typeof args[0] !== 'string' && args.length === 1) {
-                args.push(null);
-            }
-            return req.apply(undef, args.concat([relName, forceSync]));
+            return req.apply(undef, aps.call(arguments, 0).concat([relName, forceSync]));
         };
     }
 
@@ -185,30 +162,17 @@ var requirejs, require, define;
     }
 
     function callDep(name) {
-        if (hasProp(waiting, name)) {
+        if (waiting.hasOwnProperty(name)) {
             var args = waiting[name];
             delete waiting[name];
             defining[name] = true;
             main.apply(undef, args);
         }
 
-        if (!hasProp(defined, name) && !hasProp(defining, name)) {
+        if (!defined.hasOwnProperty(name)) {
             throw new Error('No ' + name);
         }
         return defined[name];
-    }
-
-    //Turns a plugin!resource to [plugin, resource]
-    //with the plugin being undefined if the name
-    //did not have a plugin prefix.
-    function splitPrefix(name) {
-        var prefix,
-            index = name ? name.indexOf('!') : -1;
-        if (index > -1) {
-            prefix = name.substring(0, index);
-            name = name.substring(index + 1, name.length);
-        }
-        return [prefix, name];
     }
 
     /**
@@ -216,20 +180,16 @@ var requirejs, require, define;
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    makeMap = function (name, relName) {
-        var plugin,
-            parts = splitPrefix(name),
-            prefix = parts[0];
+    function makeMap(name, relName) {
+        var prefix, plugin,
+            index = name.indexOf('!');
 
-        name = parts[1];
-
-        if (prefix) {
-            prefix = normalize(prefix, relName);
+        if (index !== -1) {
+            prefix = normalize(name.slice(0, index), relName);
+            name = name.slice(index + 1);
             plugin = callDep(prefix);
-        }
 
-        //Normalize according
-        if (prefix) {
+            //Normalize according
             if (plugin && plugin.normalize) {
                 name = plugin.normalize(name, makeNormalize(relName));
             } else {
@@ -237,22 +197,15 @@ var requirejs, require, define;
             }
         } else {
             name = normalize(name, relName);
-            parts = splitPrefix(name);
-            prefix = parts[0];
-            name = parts[1];
-            if (prefix) {
-                plugin = callDep(prefix);
-            }
         }
 
         //Using ridiculous property names for space reasons
         return {
             f: prefix ? prefix + '!' + name : name, //fullName
             n: name,
-            pr: prefix,
             p: plugin
         };
-    };
+    }
 
     function makeConfig(name) {
         return function () {
@@ -260,77 +213,58 @@ var requirejs, require, define;
         };
     }
 
-    handlers = {
-        require: function (name) {
-            return makeRequire(name);
-        },
-        exports: function (name) {
-            var e = defined[name];
-            if (typeof e !== 'undefined') {
-                return e;
-            } else {
-                return (defined[name] = {});
-            }
-        },
-        module: function (name) {
-            return {
-                id: name,
-                uri: '',
-                exports: defined[name],
-                config: makeConfig(name)
-            };
-        }
-    };
-
     main = function (name, deps, callback, relName) {
-        var cjsModule, depName, ret, map, i,
-            args = [],
-            callbackType = typeof callback,
-            usingExports;
+        var args = [],
+            usingExports,
+            cjsModule, depName, ret, map, i;
 
         //Use name if no relName
         relName = relName || name;
 
         //Call the callback to define the module, if necessary.
-        if (callbackType === 'undefined' || callbackType === 'function') {
+        if (typeof callback === 'function') {
+
             //Pull out the defined dependencies and pass the ordered
             //values to the callback.
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
-            for (i = 0; i < deps.length; i += 1) {
+            for (i = 0; i < deps.length; i++) {
                 map = makeMap(deps[i], relName);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
                 if (depName === "require") {
-                    args[i] = handlers.require(name);
+                    args[i] = makeRequire(name);
                 } else if (depName === "exports") {
                     //CommonJS module spec 1.1
-                    args[i] = handlers.exports(name);
+                    args[i] = defined[name] = {};
                     usingExports = true;
                 } else if (depName === "module") {
                     //CommonJS module spec 1.1
-                    cjsModule = args[i] = handlers.module(name);
-                } else if (hasProp(defined, depName) ||
-                           hasProp(waiting, depName) ||
-                           hasProp(defining, depName)) {
+                    cjsModule = args[i] = {
+                        id: name,
+                        uri: '',
+                        exports: defined[name],
+                        config: makeConfig(name)
+                    };
+                } else if (defined.hasOwnProperty(depName) || waiting.hasOwnProperty(depName)) {
                     args[i] = callDep(depName);
                 } else if (map.p) {
                     map.p.load(map.n, makeRequire(relName, true), makeLoad(depName), {});
                     args[i] = defined[depName];
-                } else {
+                } else if (!defining[depName]) {
                     throw new Error(name + ' missing ' + depName);
                 }
             }
 
-            ret = callback ? callback.apply(defined[name], args) : undefined;
+            ret = callback.apply(defined[name], args);
 
             if (name) {
                 //If setting exports via "module" is in play,
                 //favor that over return value and exports. After that,
                 //favor a non-undefined return value over exports use.
                 if (cjsModule && cjsModule.exports !== undef &&
-                        cjsModule.exports !== defined[name]) {
+                    cjsModule.exports !== defined[name]) {
                     defined[name] = cjsModule.exports;
                 } else if (ret !== undef || !usingExports) {
                     //Use the return value from the function.
@@ -344,12 +278,8 @@ var requirejs, require, define;
         }
     };
 
-    requirejs = require = req = function (deps, callback, relName, forceSync, alt) {
+    requirejs = require = req = function (deps, callback, relName, forceSync) {
         if (typeof deps === "string") {
-            if (handlers[deps]) {
-                //callback in this case is really relName
-                return handlers[deps](callback);
-            }
             //Just return the module wanted. In this scenario, the
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
@@ -358,13 +288,6 @@ var requirejs, require, define;
         } else if (!deps.splice) {
             //deps is a config object, not an array.
             config = deps;
-            if (config.deps) {
-                req(config.deps, config.callback);
-            }
-            if (!callback) {
-                return;
-            }
-
             if (callback.splice) {
                 //callback is an array, which means it is a dependency list.
                 //Adjust args if there are dependencies
@@ -379,26 +302,13 @@ var requirejs, require, define;
         //Support require(['a'])
         callback = callback || function () {};
 
-        //If relName is a function, it is an errback handler,
-        //so remove it.
-        if (typeof relName === 'function') {
-            relName = forceSync;
-            forceSync = alt;
-        }
-
         //Simulate async callback;
         if (forceSync) {
             main(undef, deps, callback, relName);
         } else {
-            //Using a non-zero value because of concern for what old browsers
-            //do, and latest browsers "upgrade" to 4 if lower value is used:
-            //http://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#dom-windowtimers-settimeout:
-            //If want a value immediately, use require('id') instead -- something
-            //that works in almond on the global level, but not guaranteed and
-            //unlikely to work in other AMD implementations.
             setTimeout(function () {
                 main(undef, deps, callback, relName);
-            }, 4);
+            }, 15);
         }
 
         return req;
@@ -409,13 +319,9 @@ var requirejs, require, define;
      * the config return value is used.
      */
     req.config = function (cfg) {
-        return req(cfg);
+        config = cfg;
+        return req;
     };
-
-    /**
-     * Expose module registry for debugging and tooling
-     */
-    requirejs._defined = defined;
 
     define = function (name, deps, callback) {
 
@@ -428,9 +334,7 @@ var requirejs, require, define;
             deps = [];
         }
 
-        if (!hasProp(defined, name) && !hasProp(waiting, name)) {
-            waiting[name] = [name, deps, callback];
-        }
+        waiting[name] = [name, deps, callback];
     };
 
     define.amd = {
@@ -440,9 +344,39 @@ var requirejs, require, define;
 
 define("../tools/almond", function(){});
 
-define( 'util',[], function(){
+define('util',[], function(){
 
   return {
+
+    setCaretIndex: function(tf, caretIndex){
+
+      var range;
+
+      if(tf.element != null){
+
+          if(tf.element.createTextRange){ // for < IE 9
+
+              range = tf.element.createTextRange();
+
+              range.move('character', caretIndex);
+              range.select();
+
+          } else {
+
+              if(tf.element.selectionStart){
+
+                  tf.element.focus();
+                  tf.element.setSelectionRange(caretIndex, caretIndex);
+
+              } else {
+                  tf.element.focus();
+              }
+
+          }
+
+      }
+
+    },
 
     isDependentSign: function ( char ) {
 
@@ -1022,1134 +956,1151 @@ define( 'util',[], function(){
 
     isWhiteSpaceChar: function ( char ) {
         return ( [ ' ', '\n', '\r', '\t' ].indexOf( char ) > -1 );
-    },
-
-    removeKey: function( str, key ){
-      var keyIndex = str.indexOf( key );
-      return ( keyIndex > -1 ) ? str.slice( 0, keyIndex ) + str.slice( keyIndex + 1 ) : str;
     }
 
   };
 
 });
 
-define( 'keyMap',[], function(){
+define('keyMap',[], function(){
 
-  var validFirstInputChars  = [],
-      validKeyChars         = [],
-      twoCharKeys           = [],
-      oneCharKeys           = [];
+  var map = {
 
-      var map = {
+      ///////////////////////// VOWELS /////////////////////////
 
-          ///////////////////////// VOWELS /////////////////////////
-
-          'a': {
-              code: '\u0905',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'A',
-              char: 'अ'
-          },
-          '^a': {
-              code: '\u0972',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'CANDRA A',
-              char: 'ॲ',
-              matra: 'ॅ',
-              matraCode: '\u0945'
-          },
+      'a': {
+          code: '\u0905',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'A',
+          char: 'अ'
+      },
+      '^a': {
+          code: '\u0972',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'CANDRA A',
+          char: 'ॲ',
+          matra: 'ॅ',
+          matraCode: '\u0945'
+      },
 
 
-          'aa': {
-              code: '\u0906',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'AA',
-              char: 'आ',
-              matra: 'ा',
-              matraCode: '\u093E'
-          },
-          'i': {
-              code: '\u0907',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'I',
-              char: 'इ',
-              matra: 'ि',
-              matraCode: '\u093F'
-          },
-          'ii': {
-              code: '\u0908',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'II',
-              char: 'ई',
-              matra: 'ी',
-              matraCode: '\u0940'
-          },
-          'e': {
-              code: '\u090F',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'E',
-              char: 'ए',
-              matra: 'े',
-              matraCode: '\u0947'
-          },
-          'ai': {
-              code: '\u0910',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'AI',
-              char: 'ऐ',
-              matra: 'ै',
-              matraCode: '\u0948'
-          },
+      'aa': {
+          code: '\u0906',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'AA',
+          char: 'आ',
+          matra: 'ा',
+          matraCode: '\u093E'
+      },
+      'i': {
+          code: '\u0907',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'I',
+          char: 'इ',
+          matra: 'ि',
+          matraCode: '\u093F'
+      },
+      'ii': {
+          code: '\u0908',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'II',
+          char: 'ई',
+          matra: 'ी',
+          matraCode: '\u0940'
+      },
+      'e': {
+          code: '\u090F',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'E',
+          char: 'ए',
+          matra: 'े',
+          matraCode: '\u0947'
+      },
+      'ai': {
+          code: '\u0910',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'AI',
+          char: 'ऐ',
+          matra: 'ै',
+          matraCode: '\u0948'
+      },
 
-          'o': {
-              code: '\u0913',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'O',
-              char: 'ओ',
-              matra: 'ो',
-              matraCode: '\u094B'
-          },
-          'au': {
-              code: '\u0914',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'AU',
-              char: 'औ',
-              matra: 'ौ',
-              matraCode: '\u094C'
-          },
+      'o': {
+          code: '\u0913',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'O',
+          char: 'ओ',
+          matra: 'ो',
+          matraCode: '\u094B'
+      },
+      'au': {
+          code: '\u0914',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'AU',
+          char: 'औ',
+          matra: 'ौ',
+          matraCode: '\u094C'
+      },
 
-          'u': {
-              code: '\u0909',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'U',
-              char: 'उ',
-              matra: 'ु',
-              matraCode: '\u0941'
-          },
-          'uu': {
-              code: '\u090A',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'UU',
-              char: 'ऊ',
-              matra: 'ू',
-              matraCode: '\u0942'
-          },
+      'u': {
+          code: '\u0909',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'U',
+          char: 'उ',
+          matra: 'ु',
+          matraCode: '\u0941'
+      },
+      'uu': {
+          code: '\u090A',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'UU',
+          char: 'ऊ',
+          matra: 'ू',
+          matraCode: '\u0942'
+      },
 
-          '-r': {
-              code: '\u090B',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'VOCALIC R',
-              char: 'ऋ',
-              matra: 'ृ',
-              matraCode: '\u0943'
-          },
-          '-R': {
-              code: '\u0960',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'VOCALIC RR',
-              char: 'ॠ',
-              matra: 'ॄ',
-              matraCode: '\u0944'
-          },
-          '-l': {
-              code: '\u090C',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'VOCALIC L',
-              char: 'ऌ',
-              matra: 'ॢ',
-              matraCode: '\u0962'
-          },
-          '-L': {
-              code: '\u0961',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'VOCALIC LL',
-              char: 'ॡ',
-              matra: 'ॣ',
-              matraCode: '\u0963'
-          },
+      '-r': {
+          code: '\u090B',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'VOCALIC R',
+          char: 'ऋ',
+          matra: 'ृ',
+          matraCode: '\u0943'
+      },
+      '-R': {
+          code: '\u0960',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'VOCALIC RR',
+          char: 'ॠ',
+          matra: 'ॄ',
+          matraCode: '\u0944'
+      },
+      '-l': {
+          code: '\u090C',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'VOCALIC L',
+          char: 'ऌ',
+          matra: 'ॢ',
+          matraCode: '\u0962'
+      },
+      '-L': {
+          code: '\u0961',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'VOCALIC LL',
+          char: 'ॡ',
+          matra: 'ॣ',
+          matraCode: '\u0963'
+      },
 
-          '^e': {
-              code: '\u090D',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'CANDRA E',
-              char: 'ऍ',
-              matra: 'ॅ',
-              matraCode: '\u0945'
-          },
-          '^o': {
-              code: '\u0911',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'CANDRA O',
-              char: 'ऑ',
-              matra: 'ॉ',
-              matraCode: '\u0949'
-          },
+      '^e': {
+          code: '\u090D',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'CANDRA E',
+          char: 'ऍ',
+          matra: 'ॅ',
+          matraCode: '\u0945'
+      },
+      '^o': {
+          code: '\u0911',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'CANDRA O',
+          char: 'ऑ',
+          matra: 'ॉ',
+          matraCode: '\u0949'
+      },
 
-          '-e': {
-              code: '\u090E',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'SHORT E',
-              char: 'ऎ',
-              matra: 'ॆ',
-              matraCode: '\u0946'
-          },
-          '-o': {
-              code: '\u0912',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'SHORT O',
-              char: 'ऒ',
-              matra: 'ॊ',
-              matraCode: '\u094A'
-          },
+      '-e': {
+          code: '\u090E',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'SHORT E',
+          char: 'ऎ',
+          matra: 'ॆ',
+          matraCode: '\u0946'
+      },
+      '-o': {
+          code: '\u0912',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'SHORT O',
+          char: 'ऒ',
+          matra: 'ॊ',
+          matraCode: '\u094A'
+      },
 
-          'oE': {
-              code: '\u0973',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'OE',
-              char: 'ॳ',
-              matra: 'ऺ',
-              matraCode: '\u093A'
-          },
-          'OE': {
-              code: '\u0974',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'OOE',
-              char: 'ॴ',
-              matra: 'ऻ',
-              matraCode: '\u093B'
-          },
-          'aW': {
-              code: '\u0975',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'AW',
-              char: 'ॵ',
-              matra: 'ॏ',
-              matraCode: '\u094F'
-          },
-          '_u': {
-              code: '\u0976',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'UE',
-              char: 'ॶ',
-              matra: 'ॖ',
-              matraCode: '\u0956'
-          },
-          '_U': {
-              code: '\u0977',
-              category: 'VOWEL',
-              type: 'LETTER',
-              name: 'UUE',
-              char: 'ॷ',
-              matra: 'ॗ',
-              matraCode: '\u0957'
-          },
+      'oE': {
+          code: '\u0973',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'OE',
+          char: 'ॳ',
+          matra: 'ऺ',
+          matraCode: '\u093A'
+      },
+      'OE': {
+          code: '\u0974',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'OOE',
+          char: 'ॴ',
+          matra: 'ऻ',
+          matraCode: '\u093B'
+      },
+      'aW': {
+          code: '\u0975',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'AW',
+          char: 'ॵ',
+          matra: 'ॏ',
+          matraCode: '\u094F'
+      },
+      '_u': {
+          code: '\u0976',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'UE',
+          char: 'ॶ',
+          matra: 'ॖ',
+          matraCode: '\u0956'
+      },
+      '_U': {
+          code: '\u0977',
+          category: 'VOWEL',
+          type: 'LETTER',
+          name: 'UUE',
+          char: 'ॷ',
+          matra: 'ॗ',
+          matraCode: '\u0957'
+      },
 
-          ///////////////////////// END VOWELS /////////////////////////
+      ///////////////////////// END VOWELS /////////////////////////
 
-          ///////////////////////// CONSONANTS /////////////////////////
+      ///////////////////////// CONSONANTS /////////////////////////
 
-          'k': {
-              code: '\u0915',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'KA',
-              char: 'क'
-          },
-          'kh': {
-              code: '\u0916',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'KHA',
-              char: 'ख'
-          },
-          'g': {
-              code: '\u0917',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'GA',
-              char: 'ग'
-          },
-          'gh': {
-              code: '\u0918',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'GHA',
-              char: 'घ'
-          },
-          'Ng': {
-              code: '\u0919',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'NGA',
-              char: 'ङ'
-          },
-          'c': {
-              code: '\u091A',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'C',
-              char: 'च'
-          },
-          'ch': {
-              code: '\u091B',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'CHA',
-              char: 'छ'
-          },
-          'j': {
-              code: '\u091C',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'JA',
-              char: 'ज'
-          },
-          'jh': {
-              code: '\u091D',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'JHA',
-              char: 'झ'
-          },
-          'Nj': {
-              code: '\u091E',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'NYA',
-              char: 'ञ'
-          },
-          'T': {
-              code: '\u091F',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'TTA',
-              char: 'ट'
-          },
-          'Th': {
-              code: '\u0920',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'TTHA',
-              char: 'ठ'
-          },
-          'D': {
-              code: '\u0921',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DDA',
-              char: 'ड'
-          },
-          'Dh': {
-              code: '\u0922',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DDHA',
-              char: 'ढ'
-          },
-          'Nd': {
-              code: '\u0923',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'NNA',
-              char: 'ण'
-          },
-          't': {
-              code: '\u0924',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'TA',
-              char: 'त'
-          },
-          'th': {
-              code: '\u0925',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'THA',
-              char: 'थ'
-          },
-          'd': {
-              code: '\u0926',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DA',
-              char: 'द'
-          },
-          'dh': {
-              code: '\u0927',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DHA',
-              char: 'ध'
-          },
-          'n': {
-              code: '\u0928',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'NA',
-              char: 'न'
-          },
+      'k': {
+          code: '\u0915',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'KA',
+          char: 'क'
+      },
+      'kh': {
+          code: '\u0916',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'KHA',
+          char: 'ख'
+      },
+      'g': {
+          code: '\u0917',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'GA',
+          char: 'ग'
+      },
+      'gh': {
+          code: '\u0918',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'GHA',
+          char: 'घ'
+      },
+      'Ng': {
+          code: '\u0919',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'NGA',
+          char: 'ङ'
+      },
+      'c': {
+          code: '\u091A',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'C',
+          char: 'च'
+      },
+      'ch': {
+          code: '\u091B',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'CHA',
+          char: 'छ'
+      },
+      'j': {
+          code: '\u091C',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'JA',
+          char: 'ज'
+      },
+      'jh': {
+          code: '\u091D',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'JHA',
+          char: 'झ'
+      },
+      'Nj': {
+          code: '\u091E',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'NYA',
+          char: 'ञ'
+      },
+      'T': {
+          code: '\u091F',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'TTA',
+          char: 'ट'
+      },
+      'Th': {
+          code: '\u0920',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'TTHA',
+          char: 'ठ'
+      },
+      'D': {
+          code: '\u0921',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DDA',
+          char: 'ड'
+      },
+      'Dh': {
+          code: '\u0922',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DDHA',
+          char: 'ढ'
+      },
+      'Nd': {
+          code: '\u0923',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'NNA',
+          char: 'ण'
+      },
+      't': {
+          code: '\u0924',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'TA',
+          char: 'त'
+      },
+      'th': {
+          code: '\u0925',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'THA',
+          char: 'थ'
+      },
+      'd': {
+          code: '\u0926',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DA',
+          char: 'द'
+      },
+      'dh': {
+          code: '\u0927',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DHA',
+          char: 'ध'
+      },
+      'n': {
+          code: '\u0928',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'NA',
+          char: 'न'
+      },
 
-          'p': {
-              code: '\u092A',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'PA',
-              char: 'प'
-          },
-          'ph': {
-              code: '\u092B',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'PHA',
-              char: 'फ'
-          },
-          'b': {
-              code: '\u092C',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'BA',
-              char: 'ब'
-          },
-          'bh': {
-              code: '\u092D',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'BHA',
-              char: 'भ'
-          },
-          'm': {
-              code: '\u092E',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'MA',
-              char: 'म'
-          },
-          'y': {
-              code: '\u092F',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'YA',
-              char: 'य'
-          },
-          'r': {
-              code: '\u0930',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'RA',
-              char: 'र'
-          },
-          'l': {
-              code: '\u0932',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'LA',
-              char: 'ल'
-          },
-          'L': {
-              code: '\u0933',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'LLA',
-              char: 'ळ'
-          },
-          'v': {
-              code: '\u0935',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'VA',
-              char: 'व'
-          },
-          'sh': {
-              code: '\u0936',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'SHA',
-              char: 'श'
-          },
-          'S': {
-              code: '\u0937',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'SSA',
-              char: 'ष'
-          },
-          's': {
-              code: '\u0938',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'SA',
-              char: 'स'
-          },
-          'h': {
-              code: '\u0939',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'HA',
-              char: 'ह'
-          },
+      'p': {
+          code: '\u092A',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'PA',
+          char: 'प'
+      },
+      'ph': {
+          code: '\u092B',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'PHA',
+          char: 'फ'
+      },
+      'b': {
+          code: '\u092C',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'BA',
+          char: 'ब'
+      },
+      'bh': {
+          code: '\u092D',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'BHA',
+          char: 'भ'
+      },
+      'm': {
+          code: '\u092E',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'MA',
+          char: 'म'
+      },
+      'y': {
+          code: '\u092F',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'YA',
+          char: 'य'
+      },
+      'r': {
+          code: '\u0930',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'RA',
+          char: 'र'
+      },
+      'l': {
+          code: '\u0932',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'LA',
+          char: 'ल'
+      },
+      'L': {
+          code: '\u0933',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'LLA',
+          char: 'ळ'
+      },
+      'v': {
+          code: '\u0935',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'VA',
+          char: 'व'
+      },
+      'sh': {
+          code: '\u0936',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'SHA',
+          char: 'श'
+      },
+      'S': {
+          code: '\u0937',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'SSA',
+          char: 'ष'
+      },
+      's': {
+          code: '\u0938',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'SA',
+          char: 'स'
+      },
+      'h': {
+          code: '\u0939',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'HA',
+          char: 'ह'
+      },
 
-          ////////// RARE CONSONANTS //////////
-          //{ code: '\u0978', keys: [ 'N/A' ],     category: 'CONSONANT', type: 'LETTER', name: 'MARWARI DDA',    char: 'ॸ'  },
+      ////////// RARE CONSONANTS //////////
+      //{ code: '\u0978', keys: [ 'N/A' ],     category: 'CONSONANT', type: 'LETTER', name: 'MARWARI DDA',    char: 'ॸ'  },
 
-          'zh': {
-              code: '\u0979',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'ZHA',
-              char: 'ॹ'
-          },
-          'YY': {
-              code: '\u097A',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'HEAVY YA',
-              char: 'ॺ'
-          },
+      'zh': {
+          code: '\u0979',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'ZHA',
+          char: 'ॹ'
+      },
+      'YY': {
+          code: '\u097A',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'HEAVY YA',
+          char: 'ॺ'
+      },
 
-          '-G': {
-              code: '\u097B',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'GGA',
-              char: 'ॻ'
-          },
-          '-J': {
-              code: '\u097C',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'JJA',
-              char: 'ॼ'
-          },
-          '-D': {
-              code: '\u097E',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DDDA',
-              char: 'ॾ'
-          },
-          '-B': {
-              code: '\u097F',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'BBA',
-              char: 'ॿ'
-          },
-          ////////// END RARE CONSONANTS //////////
+      '-G': {
+          code: '\u097B',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'GGA',
+          char: 'ॻ'
+      },
+      '-J': {
+          code: '\u097C',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'JJA',
+          char: 'ॼ'
+      },
+      '-D': {
+          code: '\u097E',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DDDA',
+          char: 'ॾ'
+      },
+      '-B': {
+          code: '\u097F',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'BBA',
+          char: 'ॿ'
+      },
+      ////////// END RARE CONSONANTS //////////
 
-          ////////// NUKTA CONSONANTS //////////
-          'Q': {
-              code: '\u0958',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'QA',
-              char: 'क़'
-          },
-          'X': {
-              code: '\u0959',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'KHHA',
-              char: 'ख़'
-          },
-          'G': {
-              code: '\u095A',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'GHHA',
-              char: 'ग़'
-          },
-          'Z': {
-              code: '\u095B',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'ZA',
-              char: 'ज़'
-          },
-          'R': {
-              code: '\u095C',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'DDDHA',
-              char: 'ड़'
-          },
-          'Rh': {
-              code: '\u095D',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'RHA',
-              char: 'ढ़'
-          },
-          'F': {
-              code: '\u095E',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'FA',
-              char: 'फ़'
-          },
-          'Y': {
-              code: '\u095F',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'YYA',
-              char: 'य़'
-          },
+      ////////// NUKTA CONSONANTS //////////
+      'Q': {
+          code: '\u0958',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'QA',
+          char: 'क़'
+      },
+      'X': {
+          code: '\u0959',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'KHHA',
+          char: 'ख़'
+      },
+      'G': {
+          code: '\u095A',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'GHHA',
+          char: 'ग़'
+      },
+      'Z': {
+          code: '\u095B',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'ZA',
+          char: 'ज़'
+      },
+      'R': {
+          code: '\u095C',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'DDDHA',
+          char: 'ड़'
+      },
+      'Rh': {
+          code: '\u095D',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'RHA',
+          char: 'ढ़'
+      },
+      'F': {
+          code: '\u095E',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'FA',
+          char: 'फ़'
+      },
+      'Y': {
+          code: '\u095F',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'YYA',
+          char: 'य़'
+      },
 
-          '.R': {
-              code: '\u0931',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'RRA',
-              char: 'ऱ'
-          },
-          '.L': {
-              code: '\u0934',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'LLLA',
-              char: 'ऴ'
-          },
-          '.N': {
-              code: '\u0929',
-              category: 'CONSONANT',
-              type: 'LETTER',
-              name: 'NNNA',
-              char: 'ऩ'
-          },
-          ////////// END NUKTA CONSONANTS //////////
+      '.R': {
+          code: '\u0931',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'RRA',
+          char: 'ऱ'
+      },
+      '.L': {
+          code: '\u0934',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'LLLA',
+          char: 'ऴ'
+      },
+      '.N': {
+          code: '\u0929',
+          category: 'CONSONANT',
+          type: 'LETTER',
+          name: 'NNNA',
+          char: 'ऩ'
+      },
+      ////////// END NUKTA CONSONANTS //////////
 
-          ///////////////////////// END CONSONANTS /////////////////////////
+      ///////////////////////// END CONSONANTS /////////////////////////
 
-          /////////////////////////END LETTERS/////////////////////////
+      /////////////////////////END LETTERS/////////////////////////
 
-          /////////////////////////DIGITS/////////////////////////
-          '0': {
-              code: '\u0966',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'ZERO',
-              char: '०'
-          },
-          '1': {
-              code: '\u0967',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'ONE',
-              char: '१'
-          },
-          '2': {
-              code: '\u0968',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'TWO',
-              char: '२'
-          },
-          '3': {
-              code: '\u0969',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'THREE',
-              char: '३'
-          },
-          '4': {
-              code: '\u096A',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'FOUR',
-              char: '४'
-          },
-          '5': {
-              code: '\u096B',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'FIVE',
-              char: '५'
-          },
-          '6': {
-              code: '\u096C',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'SIX',
-              char: '६'
-          },
-          '7': {
-              code: '\u096D',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'SEVEN',
-              char: '७'
-          },
-          '8': {
-              code: '\u096E',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'EIGHT',
-              char: '८'
-          },
-          '9': {
-              code: '\u096F',
-              category: 'NUMBER',
-              type: 'DIGIT',
-              name: 'NINE',
-              char: '९'
-          },
-          /////////////////////////END DIGITS/////////////////////////
+      /////////////////////////DIGITS/////////////////////////
+      '0': {
+          code: '\u0966',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'ZERO',
+          char: '०'
+      },
+      '1': {
+          code: '\u0967',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'ONE',
+          char: '१'
+      },
+      '2': {
+          code: '\u0968',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'TWO',
+          char: '२'
+      },
+      '3': {
+          code: '\u0969',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'THREE',
+          char: '३'
+      },
+      '4': {
+          code: '\u096A',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'FOUR',
+          char: '४'
+      },
+      '5': {
+          code: '\u096B',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'FIVE',
+          char: '५'
+      },
+      '6': {
+          code: '\u096C',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'SIX',
+          char: '६'
+      },
+      '7': {
+          code: '\u096D',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'SEVEN',
+          char: '७'
+      },
+      '8': {
+          code: '\u096E',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'EIGHT',
+          char: '८'
+      },
+      '9': {
+          code: '\u096F',
+          category: 'NUMBER',
+          type: 'DIGIT',
+          name: 'NINE',
+          char: '९'
+      },
+      /////////////////////////END DIGITS/////////////////////////
 
-          /////////////////////////DEPENDENT SIGNS/////////////////////////
-          ///// SPECIAL SIGNS /////
-          '#': {
-              code: '\u094D',
-              category: 'SIGN: DEP',
-              type: 'VOWEL SIGN',
-              name: 'VIRAMA',
-              char: '्'
-          },
-          '##': {
-              code: '\u093C',
-              category: 'SIGN: DEP',
-              type: 'SIGN',
-              name: 'NUKTA',
-              char: '़'
-          },
+      /////////////////////////DEPENDENT SIGNS/////////////////////////
+      ///// SPECIAL SIGNS /////
+      '#': {
+          code: '\u094D',
+          category: 'SIGN: DEP',
+          type: 'VOWEL SIGN',
+          name: 'VIRAMA',
+          char: '्'
+      },
+      '##': {
+          code: '\u093C',
+          category: 'SIGN: DEP',
+          type: 'SIGN',
+          name: 'NUKTA',
+          char: '़'
+      },
 
-          ///// REGULAR /////
+      ///// REGULAR /////
 
-          '^E': {
-              code: '\u094E',
-              category: 'VOWEL',
-              type: 'VOWEL SIGN',
-              name: 'PRISHTHAMATRA E',
-              char: 'ॎ'
-          },
-          '-^': {
-              code: '\u0955',
-              category: 'VOWEL',
-              type: 'VOWEL SIGN',
-              name: 'CANDRA LONG E',
-              char: 'ॕ'
-          },
-          '-M': {
-              code: '\u0900',
-              category: 'SIGN: DEP',
-              type: 'SIGN',
-              name: 'INVERTED CANDRABINDU',
-              char: 'ऀ'
-          },
-          'MM': {
-              code: '\u0901',
-              category: 'SIGN: DEP',
-              type: 'SIGN',
-              name: 'CANDRABINDU',
-              char: 'ँ'
-          },
-          'M': {
-              code: '\u0902',
-              category: 'SIGN: DEP',
-              type: 'SIGN',
-              name: 'ANUSVARA',
-              char: 'ं'
-          },
-          'H': {
-              code: '\u0903',
-              category: 'SIGN: DEP',
-              type: 'SIGN',
-              name: 'VISARGA',
-              char: 'ः'
-          },
+      '^E': {
+          code: '\u094E',
+          category: 'VOWEL',
+          type: 'VOWEL SIGN',
+          name: 'PRISHTHAMATRA E',
+          char: 'ॎ'
+      },
+      '-^': {
+          code: '\u0955',
+          category: 'VOWEL',
+          type: 'VOWEL SIGN',
+          name: 'CANDRA LONG E',
+          char: 'ॕ'
+      },
+      '-M': {
+          code: '\u0900',
+          category: 'SIGN: DEP',
+          type: 'SIGN',
+          name: 'INVERTED CANDRABINDU',
+          char: 'ऀ'
+      },
+      'MM': {
+          code: '\u0901',
+          category: 'SIGN: DEP',
+          type: 'SIGN',
+          name: 'CANDRABINDU',
+          char: 'ँ'
+      },
+      'M': {
+          code: '\u0902',
+          category: 'SIGN: DEP',
+          type: 'SIGN',
+          name: 'ANUSVARA',
+          char: 'ं'
+      },
+      'H': {
+          code: '\u0903',
+          category: 'SIGN: DEP',
+          type: 'SIGN',
+          name: 'VISARGA',
+          char: 'ः'
+      },
 
-          '-|': {
-              code: '\u0951',
-              category: 'SIGN: DEP',
-              type: 'STRESS SIGN',
-              name: 'UDATTA',
-              char: '॑'
-          },
-          '-_': {
-              code: '\u0952',
-              category: 'SIGN: DEP',
-              type: 'STRESS SIGN',
-              name: 'ANUDATTA',
-              char: '॒'
-          },
+      '-|': {
+          code: '\u0951',
+          category: 'SIGN: DEP',
+          type: 'STRESS SIGN',
+          name: 'UDATTA',
+          char: '॑'
+      },
+      '-_': {
+          code: '\u0952',
+          category: 'SIGN: DEP',
+          type: 'STRESS SIGN',
+          name: 'ANUDATTA',
+          char: '॒'
+      },
 
-          /////////////////////////END DEPENDENT SIGNS/////////////////////////
+      /////////////////////////END DEPENDENT SIGNS/////////////////////////
 
-          /////////////////////////INDEPENDENT SIGNS/////////////////////////
-          'O': {
-              code: '\u0950',
-              category: 'SIGN: IND',
-              type: 'UNCLASSIFIED',
-              name: 'OM',
-              char: 'ॐ'
-          },
-          '\\': {
-              code: '\u0964',
-              category: 'SIGN: IND',
-              type: 'PUNCTUATION',
-              name: 'DANDA',
-              char: '।'
-          },
-          '|': {
-              code: '\u0965',
-              category: 'SIGN: IND',
-              type: 'PUNCTUATION',
-              name: 'DOUBLE DANDA',
-              char: '॥'
-          },
-          '-0': {
-              code: '\u0970',
-              category: 'SIGN: IND',
-              type: 'ABBREVIATION SIGN',
-              name: 'ABBREVIATION SIGN',
-              char: '॰'
-          },
-          '^.': {
-              code: '\u0971',
-              category: 'SIGN: IND',
-              type: 'ABBREVIATION SIGN',
-              name: 'HIGH SPACING DOT',
-              char: 'ॱ'
-          },
-          '-:': {
-              code: '\u097D',
-              category: 'SIGN: IND',
-              type: 'LETTER',
-              name: 'GLOTTAL STOP',
-              char: 'ॽ'
-          },
-          '-s': {
-              code: '\u093D',
-              category: 'SIGN: IND',
-              type: 'SIGN',
-              name: 'AVAGRAHA',
-              char: 'ऽ'
-          },
-          /////////////////////////END INDEPENDENT SIGNS/////////////////////////
+      /////////////////////////INDEPENDENT SIGNS/////////////////////////
+      'O': {
+          code: '\u0950',
+          category: 'SIGN: IND',
+          type: 'UNCLASSIFIED',
+          name: 'OM',
+          char: 'ॐ'
+      },
+      '\\': {
+          code: '\u0964',
+          category: 'SIGN: IND',
+          type: 'PUNCTUATION',
+          name: 'DANDA',
+          char: '।'
+      },
+      '|': {
+          code: '\u0965',
+          category: 'SIGN: IND',
+          type: 'PUNCTUATION',
+          name: 'DOUBLE DANDA',
+          char: '॥'
+      },
+      '-0': {
+          code: '\u0970',
+          category: 'SIGN: IND',
+          type: 'ABBREVIATION SIGN',
+          name: 'ABBREVIATION SIGN',
+          char: '॰'
+      },
+      '^.': {
+          code: '\u0971',
+          category: 'SIGN: IND',
+          type: 'ABBREVIATION SIGN',
+          name: 'HIGH SPACING DOT',
+          char: 'ॱ'
+      },
+      '-:': {
+          code: '\u097D',
+          category: 'SIGN: IND',
+          type: 'LETTER',
+          name: 'GLOTTAL STOP',
+          char: 'ॽ'
+      },
+      '-s': {
+          code: '\u093D',
+          category: 'SIGN: IND',
+          type: 'SIGN',
+          name: 'AVAGRAHA',
+          char: 'ऽ'
+      },
+      /////////////////////////END INDEPENDENT SIGNS/////////////////////////
 
-          /*
-           *  DEPRICATED
-           *  '-a': { code: '\u0904', category: 'VOWEL', type: 'LETTER',      name: 'SHORT A',            char: 'ऄ'  },
-           *  '-;': { code: '\u0953', category: 'SIGN: DEP', type: '',               name: 'GRAVE ACCENT',           char: '॓' },      //   '॓'
-           *  '-'': { code: '\u0954', category: 'SIGN: DEP', type: '',               name: 'ACUTE ACCENT',           char: '\u0954' },   //'॔'
-           */
-      };
+      /*
+       *  DEPRICATED
+       *  '-a': { code: '\u0904', category: 'VOWEL', type: 'LETTER',      name: 'SHORT A',            char: 'ऄ'  },
+       *  '-;': { code: '\u0953', category: 'SIGN: DEP', type: '',               name: 'GRAVE ACCENT',           char: '॓' },      //   '॓'
+       *  '-'': { code: '\u0954', category: 'SIGN: DEP', type: '',               name: 'ACUTE ACCENT',           char: '\u0954' },   //'॔'
+       */
+  };
 
-      function validateKeys() {
+  function validateKeys() {
 
-          var reserved = [ 'do', 'if', 'in' ];
+      var reserved = [ 'do', 'if', 'in' ];
 
-          for ( var key in map ) {
-              if ( reserved.indexOf( key ) > -1 ) {
-                  throw new Error( 'Invalid key used. \'' + key + '\' is a reserved word.' );
-              }
+      for ( var key in map ) {
+          if ( reserved.indexOf( key ) > -1 ) {
+              throw new Error( 'Invalid key used. \'' + key + '\' is a reserved word.' );
           }
+      }
+
+  }
+
+  function addIsOverridableProperty(keyMap){
+
+    var key, key2, obj;
+
+    for(key in keyMap){
+
+      obj = keyMap[key];
+
+      if(key.length === 1){
+
+        for(key2 in keyMap){
+
+          if(key2.length === 2 && key2[0] === key){
+            keyMap[key].isOverridable = true;
+            break;
+          }
+
+        }
 
       }
 
-      function addIsOverridableProperty(keyMap){
+    }
 
-        var key, key2, obj;
+  }
 
-        for(key in keyMap){
+  function addRemoveLastProperty(keyMap){
 
-          obj = keyMap[key];
+    var key;
 
-          if(key.length === 1){
+    for(key in keyMap){
+        keyMap[key].removeLast = (key.length === 2 && keyMap.hasOwnProperty(key[0]));
+    }
 
-            for(key2 in keyMap){
+  }
 
-              if(key2.length === 2 && key2[0] === key){
-                keyMap[key].isOverridable = true;
-                break;
-              }
+  function getCharsToBeCustomized(customMap){
 
+    var charsToBeCustomized = {};
+
+    if(!customMap) {return false};
+
+    for( var cmKeys in customMap){
+
+      var cmChar = customMap[cmKeys];
+      var matched = false;
+
+      for(var dfKey in map){
+
+        var dfCharObj = map[dfKey];
+
+        if(dfCharObj.char === cmChar){
+          charsToBeCustomized[dfKey] = dfCharObj;
+          matched = true;
+          break;
+        }
+
+      }
+
+      if(!matched){
+        console.warn('Character: ' + cmChar + ' is not supported.')
+      }
+
+    }
+
+    return (charsToBeCustomized && Object.keys(charsToBeCustomized).length > 0) ? charsToBeCustomized : false;
+  }
+
+  function buildCustomMap(customMap){
+
+    var newMap      = buildDefaultMap(),
+        oldKeys = getCharsToBeCustomized(customMap);
+
+    if(oldKeys){
+
+      for(var oldKey in oldKeys){
+
+        var charObj = oldKeys[oldKey];
+        var targetChar = charObj.char;
+
+        delete newMap[oldKey];
+
+        for(var newKey in customMap){
+
+          if(customMap[newKey] === targetChar){
+
+            newMap[newKey] = {};
+            newMap[newKey].char  = charObj.char;
+
+            if(charObj.hasOwnProperty('matra')){
+              newMap[newKey].matra = charObj.matra;
             }
 
+            addIsOverridableProperty(newMap);
+            addRemoveLastProperty(newMap);
+
           }
 
         }
 
       }
 
-      function addRemoveLastProperty(keyMap){
+    }
 
-        var key;
+    return newMap;
 
-        for(key in keyMap){
-            keyMap[key].removeLast = (key.length === 2 && keyMap.hasOwnProperty(key[0]));
-        }
+  }
 
+  function buildDefaultMap(){
+
+    var key, obj,
+        keyMap = {};
+
+    for(key in map){
+
+      keyMap[key]       = {};
+      obj               = map[key];
+      keyMap[key].char  = obj.char;
+
+      if(obj.hasOwnProperty('matra')){
+        keyMap[key].matra = obj.matra;
       }
 
-      function getCharsToBeCustomized(customMap){
+    }
 
-        var charsToBeCustomized = {};
+    addIsOverridableProperty(keyMap);
+    addRemoveLastProperty(keyMap);
 
-        if(!customMap) {return false};
+    return keyMap;
 
-        for( var cmKeys in customMap){
+  }
 
-          var cmChar = customMap[cmKeys];
-          var matched = false;
+  return {
 
-          for(var dfKey in map){
-
-            var dfCharObj = map[dfKey];
-
-            if(dfCharObj.char === cmChar){
-              charsToBeCustomized[dfKey] = dfCharObj;
-              matched = true;
-              break;
-            }
-
-          }
-
-          if(!matched){console.warn('Character: ' + cmChar + ' is not supported.')}
-
-        }
-
-        return (charsToBeCustomized && Object.keys(charsToBeCustomized).length > 0) ? charsToBeCustomized : false;
+      build: function(settings){
+        return (settings.customKeyMap) ? buildCustomMap(settings.customKeyMap) : buildDefaultMap();
       }
 
-      function buildCustomMap(customMap){
-
-        var newMap      = buildDefaultMap(),
-            oldKeys = getCharsToBeCustomized(customMap);
-
-        console.log(oldKeys);
-
-        if(oldKeys){
-
-          for(var oldKey in oldKeys){
-
-            var charObj = oldKeys[oldKey];
-            var targetChar = charObj.char;
-
-            delete newMap[oldKey];
-
-            for(var newKey in customMap){
-
-              if(customMap[newKey] === targetChar){
-
-                newMap[newKey] = {};
-                newMap[newKey].char  = charObj.char;
-
-                if(charObj.hasOwnProperty('matra')){
-                  newMap[newKey].matra = charObj.matra;
-                }
-
-                addIsOverridableProperty(newMap);
-                addRemoveLastProperty(newMap);
-
-              }
-
-            }
-
-          }
-
-        }
-        console.log(newMap);
-        return newMap;
-
-      }
-
-      function buildDefaultMap(){
-
-        var key, obj,
-            keyMap = {};
-
-        for(key in map){
-
-          keyMap[key]       = {};
-          obj               = map[key];
-          keyMap[key].char  = obj.char;
-
-          if(obj.hasOwnProperty('matra')){
-            keyMap[key].matra = obj.matra;
-          }
-
-        }
-
-        addIsOverridableProperty(keyMap);
-        addRemoveLastProperty(keyMap);
-
-        return keyMap;
-
-      }
-
-      return {
-
-          build: function(settings){
-            return (settings.customKeyMap) ? buildCustomMap(settings.customKeyMap) : buildDefaultMap();
-          }
-
-      };
+  };
 
 });
 
-define( 'devanagari',[ 'util' ], function( util ){
+define('devanagari',['util'], function(util){
 
-    var VIRAMA  = '्',
-        NUKTA   = '़';
+  var VIRAMA  = '्',
+      NUKTA   = '़';
 
-    function getChar( inputString, charObj, settings ) {
+  function getLastChar(inputString){
+    return (inputString.length > 0) ? inputString.slice(-1) : '';
+  }
 
-        var matra         = ( charObj.hasOwnProperty( 'matra' ) ) ? charObj.matra : false,
-            defaultChar   = charObj.char,
-            lastChar      = inputString.slice( -1 ),
-            autoAddVirama = settings.autoAddVirama;
+  function getChar(inputString, charObj, settings) {
 
-        if ( util.isConsonant( defaultChar ) || util.isNuktaConsonant( defaultChar ) ) {
-            return ( autoAddVirama ) ? defaultChar + VIRAMA : defaultChar;
-        } else
-        if ( util.isIndependentVowel( defaultChar ) ) {
+      var matra         = (charObj.hasOwnProperty('matra')) ? charObj.matra : false,
+          defaultChar   = charObj.char,
+          lastChar      = getLastChar(inputString),
+          autoAddVirama = settings.autoAddVirama;
 
-            if ( util.isVirama( lastChar ) ) {
-                return ( matra !== false ) ? matra : defaultChar;
-            } else
-            if (
-                util.isConsonant( lastChar ) ||
-                util.isNukta( lastChar ) ||
-                util.isNuktaConsonant( lastChar )
-            ) {
-                return ( matra && util.vowelExtendsSchwa( defaultChar ) ) ? matra : defaultChar;
-            } else
-            if ( util.isDependentVowel( lastChar ) ) {
+      if (util.isConsonant(defaultChar) || util.isNuktaConsonant(defaultChar)) {
+          return (autoAddVirama) ? defaultChar + VIRAMA : defaultChar;
+      } else
+      if (util.isIndependentVowel(defaultChar)) {
 
-                return ( matra && util.vowelExtendsMatra( lastChar, matra ) ) ? matra : defaultChar;
-            }
+          if (util.isVirama(lastChar)) {
+              return (matra !== false) ? matra : defaultChar;
+          } else
+          if (
+              util.isConsonant(lastChar) ||
+              util.isNukta(lastChar) ||
+              util.isNuktaConsonant(lastChar)
+         ) {
+              return (matra && util.vowelExtendsSchwa(defaultChar)) ? matra : defaultChar;
+          } else
+          if (util.isDependentVowel(lastChar)) {
 
-        } else
-        if ( util.isDependentSign( defaultChar ) ) {
+              return (matra && util.vowelExtendsMatra(lastChar, matra)) ? matra : defaultChar;
+          }
 
-            return defaultChar;
-        }
+      } else
+      if (util.isDependentSign(defaultChar)) {
 
-        return defaultChar;
+          return defaultChar;
+      }
 
-    }
+      return defaultChar;
 
-    function appendToVowel( inputString, charObj, settings  ) {
+  }
 
-        var char = getChar( inputString, charObj, settings );
+  function appendToVowel(inputString, charObj, settings ) {
 
-        if ( util.isVirama( char ) || util.isNukta( char ) ) {
-            return inputString;
-        }
+      var char = getChar(inputString, charObj, settings);
 
-        return inputString + char;
-    }
-
-    function appendToVirama( inputString, charObj, settings ) {
-
-        var charBeforeVirama = inputString.slice( -2, -1 ),
-            char = getChar( inputString, charObj, settings );
-
-        if ( util.isDependentVowel( char ) ) {
-            return inputString.slice( 0, -1 ) + char;
-        } else
-        if ( util.isIndependentVowel( char ) ) {
-            return ( util.suppressesVirama( char ) ) ? inputString.slice( 0, -1 ) : inputString + char;
-        } else
-        if ( util.isConsonant( char ) || util.isViramaConsonant( char ) || util.isNuktaConsonant( char ) ) {
-            return inputString + char;
-        } else
-        if ( util.isNukta( char ) ) { // insert nukta inbetween cons and virama so dependent vowels can be added to cons
-            return ( util.isConsonant( charBeforeVirama ) ) ? inputString.slice( 0, -1 ) + NUKTA + VIRAMA : inputString;
-        } else
-        if ( util.isVirama( char ) ) {
-            return inputString;
-        } else
-        if ( util.isDependentSign( char ) ) { // remove virama
-            return ( util.isConsonant( charBeforeVirama ) || util.isNukta( charBeforeVirama ) ) ? inputString.slice( 0, -1 ) + char : inputString;
-        }
-
-        return inputString + char;
-
-    }
-
-    function appendToDependentSign( inputString, charObj, settings  ) {
-
-        var char = getChar( inputString, charObj, settings  );
-
-        /*
-         * blocks consecutive dependent signs
-         */
-        return ( util.isDependentSign( char ) ) ? inputString : inputString + char;
-
-    }
-
-    function appendDevanagariChar( inputString, charObj, settings ) {
-
-        var lastChar = ( inputString.length > 0 ) ? inputString.slice( -1 ) : '',
-            char = ( charObj ) ? getChar( inputString, charObj, settings ) : false;
-
-        if( !util.isDevanagari( lastChar ) && !util.isBlankOrEmptyString( lastChar ) ){
-          throw new Error( 'appendDevanagariChar() cannot append to ' + inputString );
-        }
-
-        if( !char ){
+      if (util.isVirama(char) || util.isNukta(char)) {
           return inputString;
-        }
+      }
 
-        if ( util.isIndependentVowel( lastChar ) || util.isDependentVowel( lastChar ) ) {
-            return appendToVowel( inputString, charObj, settings  );
-        } else
+      return inputString + char;
+  }
 
-        if ( util.isVirama( lastChar ) ) {
-            return appendToVirama( inputString, charObj, settings  );
-        } else
-        if ( util.isDependentSign( lastChar ) ) {
-            return appendToDependentSign( inputString, charObj, settings  );
-        } else
-        if (
-            util.isConsonant( lastChar ) ||
-            util.isNuktaConsonant( lastChar ) ||
-            util.isNukta( lastChar ) ||
-            util.isIndependentSign( lastChar ) ||
-            util.isBlankOrEmptyString( lastChar ) ||
-            util.isNumeral( lastChar )
-        ) {
-            return inputString + char;
-        }
+  function appendToVirama(inputString, charObj, settings) {
 
+      var charBeforeVirama = inputString.slice(-2, -1),
+          char = getChar(inputString, charObj, settings);
+
+      if (util.isDependentVowel(char)) {
+          return inputString.slice(0, -1) + char;
+      } else
+      if (util.isIndependentVowel(char)) {
+          return (util.suppressesVirama(char)) ? inputString.slice(0, -1) : inputString + char;
+      } else
+      if (util.isConsonant(char) || util.isViramaConsonant(char) || util.isNuktaConsonant(char)) {
+          return inputString + char;
+      } else
+      if (util.isNukta(char)) { // insert nukta inbetween cons and virama so dependent vowels can be added to cons
+          return (util.isConsonant(charBeforeVirama)) ? inputString.slice(0, -1) + NUKTA + VIRAMA : inputString;
+      } else
+      if (util.isVirama(char)) {
+          return inputString;
+      } else
+      if (util.isDependentSign(char)) { // remove virama
+          return (util.isConsonant(charBeforeVirama) || util.isNukta(charBeforeVirama)) ? inputString.slice(0, -1) + char : inputString;
+      }
+
+      return inputString + char;
+
+  }
+
+  function appendToDependentSign(inputString, charObj, settings ) {
+
+      var char = getChar(inputString, charObj, settings );
+
+      /*
+       * blocks consecutive dependent signs
+       */
+      return (util.isDependentSign(char)) ? inputString : inputString + char;
+
+  }
+
+  function appendDevanagariChar(inputString, charObj, settings) {
+
+      var lastChar = getLastChar(inputString),
+          char = (charObj) ? getChar(inputString, charObj, settings) : false;
+
+      if(!util.isDevanagari(lastChar) && !util.isBlankOrEmptyString(lastChar)){
+        return inputString + char;
+      }
+
+      if(!char){
         return inputString;
+      }
 
-    }
+      if (util.isIndependentVowel(lastChar) || util.isDependentVowel(lastChar)) {
+          return appendToVowel(inputString, charObj, settings );
+      } else
 
-    return {
-      appendChar: appendDevanagariChar
-    };
+      if (util.isVirama(lastChar)) {
+          return appendToVirama(inputString, charObj, settings );
+      } else
+      if (util.isDependentSign(lastChar)) {
+          return appendToDependentSign(inputString, charObj, settings );
+      } else
+      if (
+          util.isConsonant(lastChar) ||
+          util.isNuktaConsonant(lastChar) ||
+          util.isNukta(lastChar) ||
+          util.isIndependentSign(lastChar) ||
+          util.isBlankOrEmptyString(lastChar) ||
+          util.isNumeral(lastChar)
+     ) {
+          return inputString + char;
+      }
+
+      return inputString;
+
+  }
+
+  function removeVirama(inputString){
+    var lastChar = getLastChar(inputString);
+    return (lastChar === VIRAMA) ? inputString.slice(0, -1) : inputString;
+  }
+
+  return {
+    appendChar: appendDevanagariChar,
+    removeVirama: removeVirama
+  };
 
 });
 
-define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, devanagari){
+define('events',['util'], function(util){
 
+  var events = {};
 
+  function keyHeldDown(tf){
+    return(tf.keyupCount !== tf.keydownCount)
+  }
 
-  var canIgnoreKeyCode  = function(keyCode){
+  function undoKeyHeldDown(tf){
+
+    var caretIndex    = util.getCaretIndex(tf.element),
+        newCaretIndex = caretIndex - tf.keydownCount;
+
+    tf.element.value  = tf.inputString;
+    tf.keydownCount   = 0;
+    tf.keyupCount     = 0;
+
+    util.setCaretIndex(tf, newCaretIndex);
+
+  }
+
+  function canIgnoreKeyCode(keyCode){
      return([
          0, // Firefox arrow keys
          8, // Backspace
@@ -2185,67 +2136,229 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
          144, // Num Lock
          255
      ].indexOf(keyCode) > -1);
-  };
+  }
 
-  var setCaretIndex = function(tf, caretIndex){
+  function toggleScript(tf){
 
-    var range;
+    var caretIndex  = util.getCaretIndex(tf.element);
 
-    if(tf.element != null){
+    if(tf.settings.scriptMode === 'Devanagari'){
 
-        if(tf.element.createTextRange){ // for < IE 9
+      tf.settings.scriptMode = 'Roman';
+      tf.key = null;
+      tf.cachedKey = null;
+      tf.cachedInputString = null;
+      tf.cachedInputStringKeyRemoved = null;
+      tf.keydownCount   = 0;
+      tf.keyupCount     = 0;
 
-            range = tf.element.createTextRange();
+    } else {
 
-            range.move('character', caretIndex);
-            range.select();
+      tf.settings.scriptMode = 'Devanagari';
 
-        } else {
+      tf.keydownCount = 0;
+      tf.keyupCount = 0;
 
-            if(tf.element.selectionStart){
+      tf.devanagariCharObj = null;
 
-                tf.element.focus();
-                tf.element.setSelectionRange(caretIndex, caretIndex);
+      tf.key = null;
+      tf.cachedKey = null;
 
-            } else {
-                tf.element.focus();
-            }
+      tf.inputString = tf.element.value;
+      tf.cachedInputString = null;
 
-        }
+      tf.inputStringKeyRemoved = null;
+      tf.cachedInputStringKeyRemoved = null;
+    }
 
+  }
+
+  function isValidCtrlCombo(ctrlKey, keyCode){
+    return (
+      (ctrlKey && keyCode === 17) || // control keydown
+      (ctrlKey && keyCode === 65) || // control + a = select all
+      (ctrlKey && keyCode === 67) || // control + c = copy
+      (ctrlKey && keyCode === 86) || // control + v = paste
+      (ctrlKey && keyCode === 88) || // control + x = cut
+      (ctrlKey && keyCode === 89) || // control + y = back
+      (ctrlKey && keyCode === 90)    // control + z = back
+    );
+  }
+
+  function incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey){
+
+    if(eventType === 'keydown'){
+      if(isValidCtrlCombo(ctrlKey, keyCode)){
+        return;
+      }
+    } else
+    if(eventType === 'keyup'){
+      if(
+        (tf.cachedCtrlKey && tf.keyCode === 17) || // ctrl + ctrl
+        (tf.cachedCtrlKey && tf.keyCode === 65) || // ctrl + a
+        (tf.cachedCtrlKey && tf.keyCode === 67) || // ctrl + c
+        (tf.cachedCtrlKey && tf.keyCode === 86) || // ctrl + v
+        (tf.cachedCtrlKey && tf.keyCode === 88) || // ctrl + x
+        (tf.cachedCtrlKey && tf.keyCode === 89) || // ctrl + x
+        (tf.cachedCtrlKey && tf.keyCode === 90) || // ctrl + z
+
+        (tf.cachedKeyCode === 65 && tf.keyCode === 17) || // a keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 65) || // control keyup then a keyup
+
+        (tf.cachedKeyCode === 67 && tf.keyCode === 17) || // c keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 67) || // control keyup then c keyup
+
+        (tf.cachedKeyCode === 86 && tf.keyCode === 17) || // c keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 86) || // control keyup then c keyup
+
+        (tf.cachedKeyCode === 88 && tf.keyCode === 17) || // x keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 88) || // control keyup then x keyup
+
+        (tf.cachedKeyCode === 89 && tf.keyCode === 17) || // y keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 89) || // control keyup then y keyup
+
+        (tf.cachedKeyCode === 90 && tf.keyCode === 17) || // z keyup then control keyup
+        (tf.cachedKeyCode === 17 && tf.keyCode === 90)  // control keyup then z keyup
+
+      ){ return; }
+    }
+
+    if(!canIgnoreKeyCode(keyCode)){
+      if(eventType === 'keyup'){
+        tf.keyupCount = tf.keyupCount += 1;
+      } else
+      if(eventType === 'keydown'){
+        tf.keydownCount = tf.keydownCount += 1;
+      }
     }
 
   };
+
+  events.onKeydown = function(e){
+
+    var keyCode     = e.keyCode ? e.keyCode : e.which,
+        eventType   = e.type,
+        shiftKey    = e.shiftKey,
+        ctrlKey     = e.ctrlKey,
+        settings    = this.settings;
+
+    this.cachedCtrlKey = this.ctrlKey;
+    this.ctrlKey = ctrlKey;
+
+    this.cachedShiftKey = this.shiftKey;
+    this.shiftKey = shiftKey;
+
+    this.cachedKeyCode = this.keyCode;
+    this.keyCode = keyCode;
+
+    incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+  }
+
+  events.onKeyup = function(event){
+
+      var keyCode     = event.keyCode ? event.keyCode : event.which,
+          eventType   = event.type,
+          shiftKey    = event.shiftKey,
+          ctrlKey     = event.ctrlKey,
+          settings    = this.settings;
+
+      this.cachedCtrlKey = this.ctrlKey;
+      this.ctrlKey = ctrlKey;
+
+      this.cachedShiftKey = this.shiftKey;
+      this.shiftKey = shiftKey;
+
+      this.cachedKeyCode = this.keyCode;
+      this.keyCode = keyCode;
+
+      if(shiftKey && ctrlKey && keyCode === 54){
+        toggleScript(this);
+        return
+      }
+
+      if( settings.scriptMode === 'Roman' ){ return; };
+
+      incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+
+      if(keyHeldDown(this)){
+
+        undoKeyHeldDown(this);
+        return ;
+      }
+
+      this.keydownCount = 0;
+      this.keyupCount = 0;
+
+      this.cachedInputString = (this.inputString != null) ? this.inputString : '';
+      this.inputString = this.element.value;
+
+      if(this.inputString.length > this.cachedInputString.length){
+
+        this.cachedCaretIndex = this.caretIndex;
+        this.caretIndex = util.getCaretIndex(this.element);
+
+        this.cachedKey = this.key;
+        this.key = (this.caretIndex > 0) ? this.element.value[ this.caretIndex - 1 ] : '';
+
+        if(!util.isDevanagari(this.key)){
+
+          var elVal = this.element.value;
+
+          this.cachedInputStringKeyRemoved  = (this.inputStringKeyRemoved != null) ? this.inputStringKeyRemoved : '';
+          this.inputStringKeyRemoved = (this.caretIndex > 0) ? elVal.slice(0, this.caretIndex - 1 ) + elVal.slice(this.caretIndex): '';
+
+        } else {
+          return false;
+        }
+
+        if(!util.isWhiteSpaceChar(this.key)){
+
+          this.setDevObj();
+          this.appendDevanagariChar();
+
+          this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
+          this.inputString = this.element.value;
+
+        } else {
+
+          if(settings.autoRemoveVirama){
+            this.autoRemoveVirama();
+            this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
+            this.inputString = this.element.value;
+            return;
+          }
+
+          this.key = null;
+          this.cachedKey = null;
+          this.cachedInputString = null;
+          this.cachedInputStringKeyRemoved = null;
+        }
+
+      } else {
+
+        // don't clear cache on shift key keyup, otherwise keys accessed via shift key combos won't work
+        if(keyCode !== 16 && keyCode !== 17){
+          this.key = null;
+          this.cachedKey = null;
+          this.cachedInputString = null;
+          this.cachedInputStringKeyRemoved = null;
+        }
+
+      }
+
+    };
+
+  return events;
+});
+
+define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
   var outputString = function(tf, string){
     tf.element.value = string;
   };
 
-  var incrementKeyupCount = function(tf, event){
-    if( event && !canIgnoreKeyCode(event.which)){
-      tf.keyupCount = tf.keyupCount += 1;
-    }
-  }
-
-
-  var keyHeldDown = function(tf){
-    return(tf.keyupCount !== tf.keydownCount)
-  };
-
-  var undoKeyHeldDown = function(tf){
-
-    var caretIndex    = util.getCaretIndex(tf.element),
-        newCaretIndex = caretIndex - tf.keydownCount;
-
-    tf.element.value  = tf.inputString;
-    tf.keydownCount   = 0;
-    tf.keyupCount     = 0;
-
-    setCaretIndex(tf, newCaretIndex);
-
-  }
-
   var handleClick = function(tf){
+
     tf.key = null;
     tf.cachedKey = null;
     tf.cachedInputString = null;
@@ -2253,10 +2366,25 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
 
   };
 
-  var handleKeydown = function(tf, event){
-    if(event && !canIgnoreKeyCode(event.which)){
-      tf.keydownCount = tf.keydownCount += 1;
-    }
+  var handleBlur = function(tf){
+
+    tf.key = null;
+    tf.cachedKey = null;
+    tf.cachedInputString = null;
+    tf.cachedInputStringKeyRemoved = null;
+
+  };
+
+  /*
+  * Not sure if this is needed. Affects
+  * testing with Syn, so commented out for now.
+  */
+  var handleFocus = function(tf){
+    //tf.inputString = tf.element.value;
+  };
+
+  var handleChange = function(tf){
+    tf.inputString = tf.element.value;
   };
 
   function DevanagariTextField(element, options){
@@ -2269,8 +2397,9 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
             autoAddVirama:true,
             autoRemoveVirama:true,
             allowModeToggle:true,
-            modeToggleKeyCode:81,
-            typeDevanagari:true,
+            toggleScriptButton: false,
+            toggleScriptKey: 'Ctrl+Shift+T',
+            scriptMode: 'Devanagari',
             customKeyMap: false
 
           }, options);
@@ -2279,7 +2408,7 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
 
         startingCaretIndex = util.getCaretIndex(element);
 
-        this.keyMap = keyMap.build( settings );
+        this.keyMap = keyMap.build(settings);
 
         this.keydownCount = 0;
         this.keyupCount = 0;
@@ -2305,12 +2434,24 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
           self.onKeyup(event || window.event);
         });
 
+        util.addEvent(this.element, 'keydown', function(event){
+          self.onKeydown(event || winow.event);
+        });
+
         util.addEvent(this.element, 'click', function(){
           handleClick(self);
         });
 
-        util.addEvent(this.element, 'keydown', function(){
-          handleKeydown(self, event || window.event);
+        util.addEvent(this.element, 'blur', function(event){
+          handleBlur(self, event || window.event);
+        });
+
+        util.addEvent(this.element, 'focus', function(event){
+          handleFocus(self, event || window.event);
+        });
+
+        util.addEvent(this.element, 'change', function(event){
+          handleChange(self, event || window.event);
         });
 
       } else {
@@ -2319,63 +2460,29 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
 
     }
 
-    DevanagariTextField.prototype.onKeyup = function(event){
+    DevanagariTextField.prototype.autoRemoveVirama = function(){
 
-      incrementKeyupCount(this, event);
+      var output, spaceChar, inputStrSpaceCharRemoved, inputStrStartSubSpaceCharRemoved,
+          caretIsAtEnd = caretIsAtEnd      = (this.caretIndex === this.element.value.length);
 
-      if(keyHeldDown(this)){
+      if(caretIsAtEnd){
 
-        undoKeyHeldDown(this);
-        return ;
-      }
+        spaceChar                = this.inputString.slice(-1);
+        inputStrSpaceCharRemoved = this.inputString.slice(0, -1);
+        output                   = devanagari.removeVirama(inputStrSpaceCharRemoved) + spaceChar;
 
-      this.keydownCount = 0;
-      this.keyupCount = 0;
-
-      this.cachedCaretIndex = this.caretIndex;
-      this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-
-      this.caretIndex = util.getCaretIndex(this.element);
-      this.inputString = this.element.value;
-
-      if(this.inputString.length > this.cachedInputString.length){
-
-        this.cachedKey = this.key;
-        this.key = (this.caretIndex > 0) ? this.element.value[ this.caretIndex - 1 ] : '';
-
-        if(!util.isDevanagari(this.key)){
-          this.cachedInputStringKeyRemoved  = (this.inputStringKeyRemoved != null) ? this.inputStringKeyRemoved : '';
-          this.inputStringKeyRemoved        = util.removeKey(this.inputString, this.key);
-        } else {
-          return false;
-        }
-
-        if(!util.isWhiteSpaceChar(this.key)){
-
-          this.setDevObj();
-          this.appendDevanagariChar();
-
-          this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-          this.inputString = this.element.value;
-
-        } else {
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
-
-        }
+        outputString(this, output);
 
       } else {
 
-        if(event && event.which === 16){
+        spaceChar                        = this.inputString.slice(this.caretIndex - 1, this.caretIndex);
+        inputStrStartSubSpaceCharRemoved = this.inputString.slice(0, this.caretIndex - 1);
+        inputStrEndSub                   = this.inputString.slice(this.caretIndex);
+        outputStartSub                   = devanagari.removeVirama(inputStrStartSubSpaceCharRemoved);
+        output                           = outputStartSub + spaceChar + inputStrEndSub;
 
-        } else {
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
-        }
+        outputString(this, output);
+        util.setCaretIndex(this, outputStartSub.length + 1);
 
       }
 
@@ -2415,8 +2522,10 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
         } else {
 
           if(removeLast){
+
             outputSubstr1 = devanagari.appendChar(cachedInputSubstr1, devanagariCharObj, settings);
             output = outputSubstr1 + inputSubstr2;
+
           } else {
 
             outputSubstr1 = devanagari.appendChar(inputSubstr1, devanagariCharObj, settings);
@@ -2425,7 +2534,7 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
           }
 
           outputString(this, output);
-          setCaretIndex(this, outputSubstr1.length);
+          util.setCaretIndex(this, outputSubstr1.length);
           return;
 
         }
@@ -2436,7 +2545,7 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
         outputString(this, output);
 
         // -1 to account for the removed key
-        setCaretIndex(this, caretIndex -1);
+        util.setCaretIndex(this, caretIndex -1);
 
       }
 
@@ -2460,22 +2569,30 @@ define('textField',[ 'util', 'keyMap', 'devanagari' ], function(util, keyMap, de
         this.devanagariCharObj = null;
       }
 
-    }
+    };
 
-    return DevanagariTextField;
+    DevanagariTextField.prototype.onKeydown = events.onKeydown;
+
+    DevanagariTextField.prototype.onKeyup   = events.onKeyup;
+
+    var init = function(elementId, options){
+      var te = document.getElementById(elementId);
+      return new DevanagariTextField(te, options);
+    };
+
+    return init;
 
 });
 
-define( 'main',[ "textField" ], function( DevanagariTextField ) {
+/*global define */
 
-    return function( elementId, options ){
+define('main',['require','textField'],function (require) {
 
-      var el = document.getElementById( elementId ),
-          devanagariTextField = new DevanagariTextField( el, options ) ;
 
-      return devanagariTextField;
+    var devanagariTextField = require('textField');
 
-    }
+    //Return the module value.
+    return devanagariTextField;
 
 });
 

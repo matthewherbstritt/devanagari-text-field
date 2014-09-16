@@ -11,7 +11,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     tf.cachedInputString = null;
     tf.cachedInputStringKeyRemoved = null;
 
-  };
+  }; 
 
   var handleBlur = function(tf){
 
@@ -22,8 +22,12 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   };
 
+  /*
+  * Not sure if this is needed. Affects
+  * testing with Syn, so commented out for now.
+  */
   var handleFocus = function(tf){
-    tf.inputString = tf.element.value;
+    //tf.inputString = tf.element.value;
   };
 
   var handleChange = function(tf){

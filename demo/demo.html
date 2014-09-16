@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html ng-app='demo' >
+    <head>
+        <title>Devanagari Text Field</title>
+        <link rel='stylesheet' type='text/css' href='css/main.css'/>
+
+    </head>
+    <body>
+
+      <header>
+        <div class='container'>
+          <h1>Devanagari Text Field</h1>
+          <nav>
+            <ul>
+              <li><a href='#about'>About</a></li>
+              <li><a href='#usage'>Usage</a></li>
+              <li><a href='#issues'>Issues</a></li>
+              <li><a href='#repo'>Repo</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <div class='container'>
+
+        <span class='anchor' id='about'></span>
+        <section>
+          <h1>About</h1>
+          <article>
+            <p>Devanagari Text Field is small open source JavaScript plugin which enables
+            users to type Devanagari characters in HTML text inputs and textareas
+            using standard Latin script keyboards.</p>
+            <p>The project is still in development but can be tried out on this page.</p>
+          </article>
+        </section>
+
+        <span class='anchor' id='usage'></span>
+        <section>
+
+          <h1>Usage</h1>
+
+          <div class='usage-left-col'>
+
+            <div class='panel'>
+
+              <div class='header'>
+                <h1>Default Settings</h1>
+              </div>
+
+              <div class='body'>
+                <div class='row'><input type='text' id='default-tb' autocomplete='off'/></div>
+                <div class='row'><textarea id='default-ta' autocomplete='off'></textarea></div>
+              </div>
+
+            </div>
+
+            <div class='panel'>
+
+              <div class='header'>
+                <h1>Auto Add Virama</h1>
+              </div>
+
+              <div class='body'>
+                <div class='row'><input type='text' autocomplete='off'/></div>
+                <div class='row'><textarea></textarea></div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class='usage-right-col'>
+
+            <aside class='panel' ng-controller='charMapController'>
+
+              <div class='header'>
+                <h1>Charachter Map</h1>
+              </div>
+
+              <div class='body'>
+
+
+                  <div class='row' ng-repeat="charObj in chars">
+
+                    <span>{{charObj.key}}</span>
+                    <span>{{charObj.char}}</span>
+
+                  </div>
+
+
+              </div>
+
+            </aside>
+
+          </div>
+
+
+
+
+
+        </section>
+
+        <span class='anchor' id='issues'></span>
+        <section >
+          <h1>Issues</h1>
+          <p>n order to illustrate how Angular enhances standard HTML, you will create a purely
+            static HTML page and then examine how we can turn this HTML code into a template that
+            Angular will use to dynamically display the same result with any set of data.In this step
+            you will add some basic information about two cell phones to an HTML page.</p>
+        </section>
+
+        <span class='anchor' id='repo'></span>
+        <section>
+          <h1>Repo</h1>
+        </section>
+
+      </div>
+
+
+
+
+
+      <script src='../dist/devanagariTextField.js'></script>
+      <script src='js/angular.min.js'></script>
+      <script src='js/demo.js'></script>
+      <script src="//localhost:35729/livereload.js"></script>
+    </body>
+</html>

@@ -1,0 +1,121 @@
+@import '_reset.scss';
+
+@import '../bourbon/_bourbon.scss';
+@import '../neat/_neat.scss';
+
+@import '_variables.scss';
+@import '_mixins.scss';
+
+@import '_header.scss';
+
+body{
+  background: $body-bg;
+  font-size: 15px;
+  font-family: $lucida-grande;
+}
+
+
+
+div.container {
+
+  @include outer-container;
+
+  padding:0 1em;
+}
+
+
+.anchor{
+
+  width:100%;
+  display:block;
+  height:112px; /* this is the height of your header */
+  //margin-top:-112px; /* this is again negative value of the height of your header */
+  visibility:hidden;
+
+}
+section{
+
+  min-height:800px;
+  margin-top:1em;
+
+    > h1{
+      font-size:2em;
+      margin:1em 0;
+    }
+
+    p{
+      font-size:1.1em;
+      line-height:1.4em;
+      margin-bottom:0.5em;
+    }
+
+}
+
+.usage-left-col{
+  @include span-columns(8);
+
+}
+
+.usage-right-col{
+  @include span-columns(4);
+
+}
+
+.panel{
+
+  border: $panel-border;
+  border-radius:6px;
+  margin-bottom:1em;
+
+  .header{
+
+    width:100%;
+
+    border-top-right-radius:6px;
+    border-top-left-radius:6px;
+    border-bottom: $panel-border;
+
+    background: lighten( grey, 40% );
+    padding: 1em;
+    h1{
+      font-size:1.2em;
+    }
+  }
+  .body{
+
+    background: #fff;
+    padding: 1em;
+
+    border-bottom-left-radius:6px;
+    border-bottom-right-radius:6px;
+
+    .row{
+
+      width:100%;
+      margin-bottom:1em;
+
+      &:last-child{
+        margin-bottom:0;
+      }
+
+      input[type='text'], textarea{
+        font-family:$kalimati;
+        font-size:1.5em;
+        padding: 0.25em 0.5em;
+        width:100%;
+      }
+
+      textarea{
+        resize: none;
+      }
+
+    }
+  }
+}
+
+
+#textBox{
+  padding:5px;
+  font-size:3em;
+  font-family: $cdac;
+}

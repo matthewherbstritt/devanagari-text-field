@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'samanata';
+  src: url('../fonts/samanata.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'kalimati';
+  src: url('../fonts/kalimati.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'gargi';
+  src: url('../fonts/gargi.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'cdac';
+  src: url('../fonts/cdac.ttf')  format('truetype');
+}
+
+
+
+// colors
+$orange: #ff9922;
+$blue: #3299bb;
+$light-orange: lighten( $orange, 25% );
+$pink: #998078;
+$code-bg: darken( white, 15% );
+$blue-comp: complement( $blue );
+
+$header-bg: complement( $blue-comp );
+$body-bg: lighten( $header-bg,  50% );
+$panel-header-bg: darken( complement( $body-bg ), 30% );
+$panel-body-bg: #fff;
+
+$panel-header-color: darken( #fff, 5% );
+
+$nav-links-color:#efefef;
+
+// borders
+$panel-border: 1px solid lighten( black, 10% );
+
+
+// fonts
+$samanata: 'samanata';
+$kalimati: 'kalimati';
+$gargi: 'gargi';
+$cdac: 'cdac';
+$bitstream: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
+
+
+// font-sizes
+$nav-links-fs: 1.5em;

@@ -1,0 +1,52 @@
+header{
+
+  padding:2em;
+  background-color: $header-bg;
+  position:fixed;
+  top:0;
+  width:100%;
+  float:left;
+
+  h1, nav{
+    display:inline-block;
+    vertical-align:baseline;
+  }
+
+  h1{
+    font-size:3em;
+    color: lighten( black, 25% );
+    margin-right:-4px;
+  }
+
+  nav{
+
+      margin-left:2em;
+
+    ul{
+
+      li{
+
+        display:inline-block;
+        float:left;
+        margin: 0 1.5em;
+
+        a{
+
+            text-decoration:none;
+            text-align:center;
+            color: $nav-links-color;
+            font-size: $nav-links-fs;
+
+            &:hover{
+                opacity:0.75;
+            }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
