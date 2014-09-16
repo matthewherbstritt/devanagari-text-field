@@ -57,7 +57,6 @@ define(['util'], function(util){
      ].indexOf(keyCode) > -1);
   }
 
-
   function toggleScript(tf){
 
     var caretIndex  = util.getCaretIndex(tf.element);
@@ -95,7 +94,6 @@ define(['util'], function(util){
 
   function isValidCtrlCombo(ctrlKey, keyCode){
     return (
-      (typeof ctrlKey !== undefined && typeof keyCode !== undefined) ||
       (ctrlKey && keyCode === 17) || // control keydown
       (ctrlKey && keyCode === 65) || // control + a = select all
       (ctrlKey && keyCode === 67) || // control + c = copy
@@ -107,9 +105,6 @@ define(['util'], function(util){
   }
 
   function incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey){
-
-    var eventType = event.type,
-        keyCode   = event.which || event.keyCode;
 
     if(eventType === 'keydown'){
       if(isValidCtrlCombo(ctrlKey, keyCode)){
