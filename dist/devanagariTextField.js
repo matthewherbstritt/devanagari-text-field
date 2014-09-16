@@ -1,7 +1,7 @@
 (function ( root, factory ) {
 
     if (typeof define === 'function' && define.amd) {
-
+    
         // AMD
         define([], factory);
     } else {
@@ -2364,7 +2364,7 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
     tf.cachedInputString = null;
     tf.cachedInputStringKeyRemoved = null;
 
-  };
+  }; 
 
   var handleBlur = function(tf){
 
@@ -2587,7 +2587,7 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
 /*global define */
 
 define('main',['require','textField'],function (require) {
-
+    
 
     var devanagariTextField = require('textField');
 
