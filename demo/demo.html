@@ -14,8 +14,8 @@
             <ul>
               <li><a href='#about'>About</a></li>
               <li><a href='#usage'>Usage</a></li>
-              <li><a href='#issues'>Issues</a></li>
-              <li><a href='#repo'>Repo</a></li>
+              <li><a href='#characters'>Characters</a></li>
+              <li><a href='https://github.com/matt-herbstritt/devanagari-text-field'>Repo</a></li>
             </ul>
           </nav>
         </div>
@@ -29,8 +29,13 @@
           <article>
             <p>Devanagari Text Field is small open source JavaScript plugin which enables
             users to type Devanagari characters in HTML text inputs and textareas
-            using standard Latin script keyboards.</p>
-            <p>The project is still in development but can be tried out on this page.</p>
+            using standard Latin script keyboards. The default key mappings are designed to reflect the
+            sound of each Devanagari character rather than attempt to mimic the layout of
+            <a href='http://en.wikipedia.org/wiki/InScript_keyboard'>InScript keyboards</a>. It is hoped
+            that in future versions there will be support for adding custom key mappings.
+            </p>
+            <p>The project is still in development and is largely untested. However, most of
+              the functionality is there and you can try it out in the text fields below.</p>
           </article>
         </section>
 
@@ -39,15 +44,24 @@
 
           <h1>Usage</h1>
 
-          <div class='usage-left-col'>
-
+            <p>
+              The devangariTextField wrapper is exposed as a global
+              function or as an AMD module. To enable Devanagari script
+              to be typed into a text element simply pass the id of the
+              target element as the first argument. Additional configuration
+              can be achieved by passing your desired settings as an
+              optional second argument as demonstrated below.
+            </p>
             <div class='panel'>
 
               <div class='header'>
                 <h1>Default Settings</h1>
               </div>
-
+              <div class='usage-code-wrp'>
+                <pre><code>devanagariTextField( <span class='string'>'default-tb'</span> );</code></pre>
+              </div>
               <div class='body'>
+
                 <div class='row'><input type='text' id='default-tb' autocomplete='off'/></div>
                 <div class='row'><textarea id='default-ta' autocomplete='off'></textarea></div>
               </div>
@@ -57,62 +71,100 @@
             <div class='panel'>
 
               <div class='header'>
-                <h1>Auto Add Virama</h1>
+                <h1>Auto Add Virama </h1>
               </div>
-
+              <div class='usage-code-wrp'>
+                <pre><code>devanagariTextField( <span class='string'>'no-auto-virama-tb'</span>, {
+    autoAddVirama: <span class='boolean'>false</span>
+});</code></pre>
+              </div>
               <div class='body'>
-                <div class='row'><input type='text' autocomplete='off'/></div>
-                <div class='row'><textarea></textarea></div>
+                <div class='row'><input type='text' id='no-auto-virama-tb' autocomplete='off'/></div>
+                <div class='row'><textarea id='no-auto-virama-ta'></textarea></div>
               </div>
 
             </div>
 
-          </div>
-
-          <div class='usage-right-col'>
-
-            <aside class='panel' ng-controller='charMapController'>
+            <div class='panel'>
 
               <div class='header'>
-                <h1>Charachter Map</h1>
+                <h1>Auto Remove Virama </h1>
               </div>
-
+              <div class='usage-code-wrp'>
+                <pre><code>devanagariTextField( <span class='string'>'no-auto-remove-tb'</span>, {
+    autoRemoveVirama: <span class='boolean'>false</span>
+});</code></pre>
+              </div>
               <div class='body'>
-
-
-                  <div class='row' ng-repeat="charObj in chars">
-
-                    <span>{{charObj.key}}</span>
-                    <span>{{charObj.char}}</span>
-
-                  </div>
-
-
+                <div class='row'><input type='text' id='no-auto-remove-tb' autocomplete='off'/></div>
+                <div class='row'><textarea id='no-auto-remove-ta'></textarea></div>
               </div>
 
-            </aside>
+            </div>
 
+        </section>
+
+
+        <span class='characters' id='characters'></span>
+        <section ng-controller='charMapController'>
+          <h1>Characters</h1>
+          <p>
+            Almost all the available Devanagari UTF-8 characters can be
+            typed. Unfortunately there are very few fonts which support
+            every character. This is why you will occasionally see blank
+            boxes next to some of the more obscure characters.
+          </p>
+          <div class='panel'>
+            <div class='header'>
+              <h1>Vowels</h1>
+            </div>
+            <div class='body'>
+              <div class='row'>
+                <span class='heading'>Input Key</span>
+                <span class='heading'>Output</span>
+                <span class='heading'>Name</span>
+              </div>
+              <div class='row' ng-repeat="v in vowels">
+                <span>{{v.key}}</span>
+                <span class='devanagari'>{{v.char}}{{v.matra}}</span>
+                <span >{{v.name}}</span>
+              </div>
+            </div>
+            <div class='panel inner'>
+              <div class='header inner'>
+                <h1>Consonants</h1>
+              </div>
+              <div class='body'>
+                <div class='row'>
+                  <span class='heading'>Input Key</span>
+                  <span class='heading'>Output</span>
+                  <span class='heading'>Name</span>
+                </div>
+                <div class='row' ng-repeat="c in consonants">
+                  <span>{{c.key}}</span>
+                  <span class='devanagari'>{{c.char}}</span>
+                  <span >{{c.name}}</span>
+                </div>
+              </div>
+            <div class='panel inner'>
+              <div class='header inner'>
+                <h1>Digits</h1>
+              </div>
+              <div class='body'>
+                <div class='row'>
+                  <span class='heading'>Input Key</span>
+                  <span class='heading'>Output</span>
+                  <span class='heading'>Name</span>
+                </div>
+                <div class='row' ng-repeat="n in numbers">
+                  <span>{{n.key}}</span>
+                  <span class='devanagari'>{{n.char}}</span>
+                  <span >{{n.name}}</span>
+                </div>
+              </div>
           </div>
-
-
-
-
-
         </section>
 
-        <span class='anchor' id='issues'></span>
-        <section >
-          <h1>Issues</h1>
-          <p>n order to illustrate how Angular enhances standard HTML, you will create a purely
-            static HTML page and then examine how we can turn this HTML code into a template that
-            Angular will use to dynamically display the same result with any set of data.In this step
-            you will add some basic information about two cell phones to an HTML page.</p>
-        </section>
-
-        <span class='anchor' id='repo'></span>
-        <section>
-          <h1>Repo</h1>
-        </section>
 
       </div>
 
@@ -120,9 +172,9 @@
 
 
 
-      <script src='../dist/devanagariTextField.js'></script>
+      <script src='../dist/devanagariTextField.min.js'></script>
       <script src='js/angular.min.js'></script>
       <script src='js/demo.js'></script>
-      <script src="//localhost:35729/livereload.js"></script>
+      <!--<script src="//localhost:35729/livereload.js"></script>-->
     </body>
 </html>

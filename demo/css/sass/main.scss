@@ -35,7 +35,7 @@ div.container {
 }
 section{
 
-  min-height:800px;
+  //min-height:800px;
   margin-top:1em;
 
     > h1{
@@ -51,21 +51,20 @@ section{
 
 }
 
-.usage-left-col{
-  @include span-columns(8);
 
-}
 
-.usage-right-col{
-  @include span-columns(4);
-
-}
 
 .panel{
 
   border: $panel-border;
   border-radius:6px;
   margin-bottom:1em;
+
+  .inner{
+    border-radius:0;
+    border:0;
+
+  }
 
   .header{
 
@@ -79,8 +78,34 @@ section{
     padding: 1em;
     h1{
       font-size:1.2em;
+      
+    }
+    &.inner{
+      border-top:$panel-border;
+      border-top-right-radius:0;
+      border-top-left-radius:0;
     }
   }
+
+
+  .usage-code-wrp{
+    background:#B9DDD4;
+    box-shadow: inset 0 0 10px #000000;
+    padding:1em;
+    line-height:1.5em;
+    font-family: Menlo, Monaco, monospace;
+    font-size:1.2em;
+
+    .string{
+      color:orange;
+    }
+
+    .boolean{
+      color:blue;
+    }
+  }
+
+
   .body{
 
     background: #fff;
@@ -88,6 +113,8 @@ section{
 
     border-bottom-left-radius:6px;
     border-bottom-right-radius:6px;
+
+
 
     .row{
 
@@ -100,13 +127,32 @@ section{
 
       input[type='text'], textarea{
         font-family:$kalimati;
-        font-size:1.5em;
+        font-size:2.5em;
         padding: 0.25em 0.5em;
         width:100%;
       }
 
       textarea{
         resize: none;
+      }
+
+      span{
+        width:33.33333%;
+        display:inline-block;
+        margin-right:-4px;
+        vertical-align:baseline;
+        font-size:1.25em;
+        text-align:center;
+
+        &.heading{
+          text-decoration:underline;
+          font-weight:bold;
+        }
+        &.hindi{
+          //font-family:$kalimati;
+          font-size:2em;
+        }
+
       }
 
     }

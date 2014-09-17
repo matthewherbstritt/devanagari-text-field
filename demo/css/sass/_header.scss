@@ -7,6 +7,10 @@ header{
   width:100%;
   float:left;
 
+  @media screen and (max-width: 720px) {
+    padding:0.75em;
+  }
+
   h1, nav{
     display:inline-block;
     vertical-align:baseline;
@@ -16,11 +20,17 @@ header{
     font-size:3em;
     color: lighten( black, 25% );
     margin-right:-4px;
+    @media screen and (max-width: 720px) {
+      display:none;
+    }
   }
 
   nav{
 
       margin-left:2em;
+      @media screen and (max-width: 720px) {
+        margin-left:0.25em;
+      }
 
     ul{
 
@@ -29,6 +39,12 @@ header{
         display:inline-block;
         float:left;
         margin: 0 1.5em;
+
+        @media screen and (max-width: 720px) {
+          margin: 0 0.5em;
+        }
+
+
 
         a{
 
@@ -39,6 +55,10 @@ header{
 
             &:hover{
                 opacity:0.75;
+            }
+
+            @media screen and (max-width: 720px) {
+              font-size:1em;
             }
 
         }

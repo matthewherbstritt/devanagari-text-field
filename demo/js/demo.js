@@ -5,8 +5,48 @@
   devanagariTextField( 'default-ta' );
   devanagariTextField( 'default-tb' );
 
-  angular.module('demo',[] )
-  .controller('charMapController', function( $scope ){
+  devanagariTextField( 'no-auto-virama-tb', {
+    autoAddVirama: false
+  });
+  devanagariTextField( 'no-auto-virama-ta', {
+    autoAddVirama: false
+  } );
+
+  devanagariTextField( 'no-auto-remove-tb', {
+    autoRemoveVirama: false
+  });
+  devanagariTextField( 'no-auto-remove-ta', {
+    autoRemoveVirama: false
+  } );
+
+  angular.module('demo', [])
+  .controller('charMapController', function($scope){
+
+    var getChars = function(type){
+
+      var key, o,
+          chars = [];
+
+      for(key in map){
+
+        o = map[key];
+
+        if(o.category === type){
+
+          chars.push({
+            name: o.name,
+            key: key,
+            char: o.char,
+            matra: hasProp( o, 'matra' ) ? ' - '+o.matra : ''
+          });
+
+        }
+
+      }
+
+      return chars;
+
+    };
 
     var map = {
 
@@ -825,30 +865,16 @@
     };
 
     var hasProp = function( obj, prop ){
-      return( obj.hasOwnProperty( 'prop' ) );
+      return( obj.hasOwnProperty( prop ) );
     };
 
-    $scope.chars = (function(){
+    $scope.vowels = getChars('VOWEL');
+    $scope.consonants = getChars('CONSONANT');
+    $scope.numbers = getChars('NUMBER');
+    $scope.indSigns = getChars('SIGN: IND');
+    $scope.depSigns = getChars('SIGN: DEP');
 
-      var key, o,
-          chars = [];
-
-      for( key in map ){
-
-        o = map[key];
-
-        chars.push({
-          name: o.name,
-          key: key,
-          char: o.char,
-          matra: hasProp( o, 'matra' ) ? o.matra : ''
-        });
-
-      }
-
-      return chars;
-
-    }());
+    console.log( $scope.vowels)
 
   });
 
