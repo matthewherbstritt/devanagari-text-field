@@ -11,7 +11,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     tf.cachedInputString = null;
     tf.cachedInputStringKeyRemoved = null;
 
-  }; 
+  };
 
   var handleBlur = function(tf){
 
