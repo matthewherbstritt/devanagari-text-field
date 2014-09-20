@@ -161,14 +161,10 @@ define(['util'], function(util){
         ctrlKey     = e.ctrlKey,
         settings    = this.settings;
 
-    this.cachedCtrlKey = this.ctrlKey;
-    this.ctrlKey = ctrlKey;
+    this.cacheCtrlKey(ctrlKey);
+    this.cacheShiftKey(shiftKey);
+    this.cacheKeyCode(keyCode);
 
-    this.cachedShiftKey = this.shiftKey;
-    this.shiftKey = shiftKey;
-
-    this.cachedKeyCode = this.keyCode;
-    this.keyCode = keyCode;
 
     incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
   }
@@ -181,14 +177,9 @@ define(['util'], function(util){
           ctrlKey     = event.ctrlKey,
           settings    = this.settings;
 
-      this.cachedCtrlKey = this.ctrlKey;
-      this.ctrlKey = ctrlKey;
-
-      this.cachedShiftKey = this.shiftKey;
-      this.shiftKey = shiftKey;
-
-      this.cachedKeyCode = this.keyCode;
-      this.keyCode = keyCode;
+      this.cacheCtrlKey(ctrlKey);
+      this.cacheShiftKey(shiftKey);
+      this.cacheKeyCode(keyCode);
 
       if(shiftKey && ctrlKey && keyCode === 54){
         toggleScript(this);

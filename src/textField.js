@@ -1,9 +1,5 @@
 define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
-  var outputString = function(tf, string){
-    tf.element.value = string;
-  };
-
   var handleClick = function(tf){
 
     tf.key = null;
@@ -110,7 +106,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     DevanagariTextField.prototype.autoRemoveVirama = function(){
 
       var output, spaceChar, inputStrSpaceCharRemoved, inputStrStartSubSpaceCharRemoved,
-          caretIsAtEnd = caretIsAtEnd      = (this.caretIndex === this.element.value.length);
+          caretIsAtEnd = (this.caretIndex === this.element.value.length);
 
       if(caretIsAtEnd){
 
@@ -118,7 +114,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         inputStrSpaceCharRemoved = this.inputString.slice(0, -1);
         output                   = devanagari.removeVirama(inputStrSpaceCharRemoved) + spaceChar;
 
-        outputString(this, output);
+        this.outputString(output);
 
       } else {
 
@@ -128,7 +124,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         outputStartSub                   = devanagari.removeVirama(inputStrStartSubSpaceCharRemoved);
         output                           = outputStartSub + spaceChar + inputStrEndSub;
 
-        outputString(this, output);
+        this.outputString(output);
         util.setCaretIndex(this, outputStartSub.length + 1);
 
       }
@@ -162,7 +158,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
             output = devanagari.appendChar(inputString, devanagariCharObj, settings);
           }
 
-          outputString(this, output);
+          this.outputString(output);
 
           return;
 
@@ -180,7 +176,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
           }
 
-          outputString(this, output);
+          this.outputString(output);
           util.setCaretIndex(this, outputSubstr1.length);
           return;
 
@@ -189,7 +185,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
       } else {
 
         output = this.inputStringKeyRemoved;
-        outputString(this, output);
+        this.outputString(output);
 
         // -1 to account for the removed key
         util.setCaretIndex(this, caretIndex -1);
@@ -218,8 +214,26 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
     };
 
-    DevanagariTextField.prototype.onKeydown = events.onKeydown;
+    DevanagariTextField.prototype.cacheShiftKey = function(shiftKey){
+      this.cachedShiftKey = this.shiftKey;
+      this.shiftKey = shiftKey;
+    };
 
+    DevanagariTextField.prototype.cacheCtrlKey = function(ctrlKey){
+      this.cachedCtrlKey = this.ctrlKey;
+      this.ctrlKey = ctrlKey;
+    };
+
+    DevanagariTextField.prototype.cacheKeyCode = function(keyCode){
+      this.cachedKeyCode = this.keyCode;
+      this.keyCode = keyCode;
+    };
+
+    DevanagariTextField.prototype.outputString = function(string){
+      this.element.value = string;
+    }
+
+    DevanagariTextField.prototype.onKeydown = events.onKeydown;
     DevanagariTextField.prototype.onKeyup   = events.onKeyup;
 
     var init = function(elementId, options){
