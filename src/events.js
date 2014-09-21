@@ -165,8 +165,8 @@ define(['util'], function(util){
     this.cacheShiftKey(shiftKey);
     this.cacheKeyCode(keyCode);
 
-
     incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+    
   }
 
   events.onKeyup = function(event){
@@ -238,20 +238,15 @@ define(['util'], function(util){
             return;
           }
 
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
+          this.clearKeyAndStringCache();
+
         }
 
       } else {
 
         // don't clear cache on shift key keyup, otherwise keys accessed via shift key combos won't work
         if(keyCode !== 16 && keyCode !== 17){
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
+          this.clearKeyAndStringCache();
         }
 
       }
@@ -259,10 +254,7 @@ define(['util'], function(util){
   };
 
   events.onClick = function(){
-    this.key = null;
-    this.cachedKey = null;
-    this.cachedInputString = null;
-    this.cachedInputStringKeyRemoved = null;
+    this.clearKeyAndStringCache();
   }
 
   events.onChange = function(){
@@ -270,10 +262,7 @@ define(['util'], function(util){
   }
 
   events.onBlur = function(){
-    this.key = null;
-    this.cachedKey = null;
-    this.cachedInputString = null;
-    this.cachedInputStringKeyRemoved = null;
+    this.clearKeyAndStringCache();
   }
 
   return events;
