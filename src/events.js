@@ -3,7 +3,7 @@ define(['util'], function(util){
   var events = {};
 
   function keyHeldDown(tf){
-    return(tf.keyupCount !== tf.keydownCount)
+    return(tf.keyupCount !== tf.keydownCount);
   }
 
   function undoKeyHeldDown(tf){
@@ -166,7 +166,7 @@ define(['util'], function(util){
     this.cacheKeyCode(keyCode);
 
     incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
-    
+
   }
 
   events.onKeyup = function(event){
@@ -199,8 +199,7 @@ define(['util'], function(util){
       this.keydownCount = 0;
       this.keyupCount = 0;
 
-      this.cachedInputString = (this.inputString != null) ? this.inputString : '';
-      this.inputString = this.element.value;
+      this.cacheInputString();
 
       if(this.inputString.length > this.cachedInputString.length){
 
@@ -225,17 +224,16 @@ define(['util'], function(util){
 
           this.setDevObj();
           this.appendDevanagariChar();
-
-          this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-          this.inputString = this.element.value;
+          this.cacheInputString();
 
         } else {
 
           if(settings.autoRemoveVirama){
+
             this.autoRemoveVirama();
-            this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-            this.inputString = this.element.value;
+            this.cacheInputString();
             return;
+
           }
 
           this.clearKeyAndStringCache();

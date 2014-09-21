@@ -195,6 +195,11 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     this.keyCode = keyCode;
   };
 
+  DevanagariTextField.prototype.cacheInputString = function(){
+    this.cachedInputString = (this.inputString != null) ? this.inputString : '';
+    this.inputString = this.element.value;
+  }
+
   DevanagariTextField.prototype.outputString = function(string){
     this.element.value = string;
   };
