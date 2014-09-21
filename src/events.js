@@ -265,5 +265,16 @@ define(['util'], function(util){
     this.cachedInputStringKeyRemoved = null;
   }
 
+  events.onChange = function(){
+    this.inputString = this.element.value;
+  }
+
+  events.onBlur = function(){
+    this.key = null;
+    this.cachedKey = null;
+    this.cachedInputString = null;
+    this.cachedInputStringKeyRemoved = null;
+  }
+
   return events;
 });

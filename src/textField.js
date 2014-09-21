@@ -1,13 +1,6 @@
 define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
-  var handleClick = function(tf){
-
-    tf.key = null;
-    tf.cachedKey = null;
-    tf.cachedInputString = null;
-    tf.cachedInputStringKeyRemoved = null;
-
-  };
+  
 
   var handleBlur = function(tf){
 
@@ -18,14 +11,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   };
 
-  /*
-  * Not sure if this is needed. Affects
-  * testing with Syn, so commented out for now.
-  */
-  var handleFocus = function(tf){
-    //tf.inputString = tf.element.value;
-  };
-
+  
   var handleChange = function(tf){
     tf.inputString = tf.element.value;
   };
@@ -85,16 +71,12 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
           self.onClick();
         });
 
-        util.addEvent(this.element, 'blur', function(event){
-          handleBlur(self, event || window.event);
+        util.addEvent(this.element, 'blur', function(){
+          self.onBlur();
         });
 
-        util.addEvent(this.element, 'focus', function(event){
-          handleFocus(self, event || window.event);
-        });
-
-        util.addEvent(this.element, 'change', function(event){
-          handleChange(self, event || window.event);
+        util.addEvent(this.element, 'change', function(){
+          self.onChange();
         });
 
       } else {
@@ -231,11 +213,13 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
     DevanagariTextField.prototype.outputString = function(string){
       this.element.value = string;
-    }
+    };
 
     DevanagariTextField.prototype.onKeydown = events.onKeydown;
     DevanagariTextField.prototype.onKeyup   = events.onKeyup;
     DevanagariTextField.prototype.onClick   = events.onClick;
+    DevanagariTextField.prototype.onChange  = events.onChange;
+    DevanagariTextField.prototype.onBlur    = events.onBlur;
 
     var init = function(elementId, options){
       var te = document.getElementById(elementId);
