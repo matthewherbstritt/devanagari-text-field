@@ -82,7 +82,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         });
 
         util.addEvent(this.element, 'click', function(){
-          handleClick(self);
+          self.onClick();
         });
 
         util.addEvent(this.element, 'blur', function(event){
@@ -235,6 +235,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
     DevanagariTextField.prototype.onKeydown = events.onKeydown;
     DevanagariTextField.prototype.onKeyup   = events.onKeyup;
+    DevanagariTextField.prototype.onClick   = events.onClick;
 
     var init = function(elementId, options){
       var te = document.getElementById(elementId);

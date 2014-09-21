@@ -256,7 +256,14 @@ define(['util'], function(util){
 
       }
 
-    };
+  };
+
+  events.onClick = function(){
+    this.key = null;
+    this.cachedKey = null;
+    this.cachedInputString = null;
+    this.cachedInputStringKeyRemoved = null;
+  }
 
   return events;
 });
