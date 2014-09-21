@@ -2,6 +2,12 @@
 
   var textBox, textArea,
      fixture = document.getElementById('qunit-fixture');
+     
+   var vals = [
+    {input: 'a', output: 'अ'},
+    {input: '^a', output: 'ॲ'},
+    {input: 'aa', output: 'आ'},
+   ];
 
   QUnit.module( "module", {
 
@@ -20,6 +26,8 @@
       fixture.appendChild(textBox);
       fixture.appendChild(textArea);
 
+      devanagariTextField('textBox');
+
     },
 
     teardown: function( assert ) {
@@ -31,36 +39,29 @@
 
   });
 
-  QUnit.asyncTest( "test a", function( assert ) {
+  for(var i = 0; i < vals.length; i++){
 
-    expect(1);
+    var v = vals[i];
+    var inp = v.input;
+    var out = v.output;
 
-    //Syn.type('ka[left][space][left]ka', textBox);
+    QUnit.asyncTest( inp + " === " + out, function( assert ) {
 
-    setTimeout(function() {
-      textBox.value = 'a'
-    }, 250);
+      expect(1);
 
-    setTimeout(function() {
-      assert.deepEqual(textBox.value, 'a');
-      QUnit.start();
-    }, 500);
+      Syn.type(inp, textBox);
 
-  });
+      
 
-  QUnit.asyncTest( "test b", function( assert ) {
+      setTimeout(function() {
+        assert.deepEqual(textBox.value, out);
+        QUnit.start();
+      }, 500);
 
-   expect(1);
+    });
 
-    setTimeout(function() {
-      textBox.value = 'b'
-    }, 250);
+  }
 
-    setTimeout(function() {
-      assert.deepEqual(textBox.value, 'b');
-      QUnit.start();
-    }, 500);
-
-  });
+  
 
 }());
