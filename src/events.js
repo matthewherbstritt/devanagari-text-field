@@ -57,40 +57,6 @@ define(['util'], function(util){
      ].indexOf(keyCode) > -1);
   }
 
-  function toggleScript(tf){
-
-    var caretIndex  = util.getCaretIndex(tf.element);
-
-    if(tf.settings.scriptMode === 'Devanagari'){
-
-      tf.settings.scriptMode = 'Roman';
-      tf.key = null;
-      tf.cachedKey = null;
-      tf.cachedInputString = null;
-      tf.cachedInputStringKeyRemoved = null;
-      tf.keydownCount   = 0;
-      tf.keyupCount     = 0;
-
-    } else {
-
-      tf.settings.scriptMode = 'Devanagari';
-
-      tf.keydownCount = 0;
-      tf.keyupCount = 0;
-
-      tf.devanagariCharObj = null;
-
-      tf.key = null;
-      tf.cachedKey = null;
-
-      tf.inputString = tf.element.value;
-      tf.cachedInputString = null;
-
-      tf.inputStringKeyRemoved = null;
-      tf.cachedInputStringKeyRemoved = null;
-    }
-
-  }
 
   function isValidCtrlCombo(ctrlKey, keyCode){
     return (
@@ -103,6 +69,32 @@ define(['util'], function(util){
       (ctrlKey && keyCode === 90)    // control + z = back
     );
   }
+
+  events.toggleScript = function(){
+
+    var caretIndex    = util.getCaretIndex(this.element),
+        switchToRoman = (this.settings.scriptMode === 'Devanagari');
+
+    if(switchToRoman){
+
+      this.settings.scriptMode = 'Roman';
+      this.clearKeyAndStringCache();
+      this.resetKeyEventCount();
+
+    } else {
+
+      this.settings.scriptMode = 'Devanagari';
+      this.clearKeyAndStringCache();
+      this.resetKeyEventCount();
+
+      this.devanagariCharObj = null;
+      this.inputStringKeyRemoved = null;
+
+      this.inputString = this.element.value;
+      
+    }
+
+  };
 
   events.resetKeyEventCount = function(){
     this.keydownCount = 0;
@@ -192,7 +184,7 @@ define(['util'], function(util){
       this.cacheKeyCode(keyCode);
 
       if(shiftKey && ctrlKey && keyCode === 54){
-        toggleScript(this);
+        this.toggleScript();
         return
       }
 

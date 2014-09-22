@@ -204,6 +204,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   DevanagariTextField.prototype.incrementKeyEventCount  = events.incrementKeyEventCount;
   DevanagariTextField.prototype.resetKeyEventCount      = events.resetKeyEventCount;
+  DevanagariTextField.prototype.toggleScript            = events.toggleScript;
   DevanagariTextField.prototype.onKeydown               = events.onKeydown;
   DevanagariTextField.prototype.onKeyup                 = events.onKeyup;
   DevanagariTextField.prototype.onClick                 = events.onClick;
