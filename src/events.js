@@ -2,6 +2,10 @@ define(['util'], function(util){
 
   var events = {};
 
+  function keyIsHeldDown(keydownCount, keyupCount){
+    return(keydownCount > keyupCount);
+  }
+
   function keyHeldDown(tf){
     return(tf.keyupCount !== tf.keydownCount);
   }
@@ -195,8 +199,8 @@ define(['util'], function(util){
 
       this.incrementKeyEventCount(eventType);
 
-      if(keyHeldDown(this)){
-
+      //if(keyHeldDown(this)){
+      if(keyIsHeldDown(this.keydownCount, this.keyupCount))}
         undoKeyHeldDown(this);
         return;
       }
