@@ -2,17 +2,21 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    qunit: {
+      all: ['tests/**/*.html']
+    }, 
+
     requirejs: {
       compile: {
         options: {
-          baseUrl: "../src",
+          baseUrl: "src",
           name: "../tools/almond",
           include: ["main"],
 
-          out: "../dist/devanagariTextField.js",
+          out: "dist/devanagariTextField.js",
           wrap: {
-              "startFile": "wrap.start",
-              "endFile": "wrap.end"
+              "startFile": "tools/wrap.start",
+              "endFile": "tools/wrap.end"
           },
           optimize: "none"
         }
@@ -40,6 +44,11 @@ module.exports = function(grunt) {
         files: 'src/*.js',
         tasks: ['requirejs']
       }
+      //,
+      // qunit:{
+      //   files: 'src/*.js',
+      //   tasks: ['qunit']
+      // }
     },
 
     express:{
@@ -56,13 +65,13 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
-
+  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-express');
 
-  grunt.registerTask('server', ['express', 'watch']);
+  grunt.registerTask('server', ['express', 'watch', 'express-keepalive']);
 
 
 };
