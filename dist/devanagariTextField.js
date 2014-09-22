@@ -348,39 +348,9 @@ define('util',[], function(){
 
   return {
 
-    setCaretIndex: function(tf, caretIndex){
+    isDependentSign: function (char) {
 
-      var range;
-
-      if(tf.element != null){
-
-          if(tf.element.createTextRange){ // for < IE 9
-
-              range = tf.element.createTextRange();
-
-              range.move('character', caretIndex);
-              range.select();
-
-          } else {
-
-              if(tf.element.selectionStart){
-
-                  tf.element.focus();
-                  tf.element.setSelectionRange(caretIndex, caretIndex);
-
-              } else {
-                  tf.element.focus();
-              }
-
-          }
-
-      }
-
-    },
-
-    isDependentSign: function ( char ) {
-
-      return ( [
+      return ([
 
           'ऀ', // INVERTED CANDRABINDU
           'ॕ', // CANDRA LONG E
@@ -391,13 +361,13 @@ define('util',[], function(){
           '॑', // UDATTA
           '॒' // ANUDATTA
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isIndependentSign: function ( char ) {
+    isIndependentSign: function (char) {
 
-      return ( [
+      return ([
 
           'ॐ',
           '।',
@@ -407,13 +377,13 @@ define('util',[], function(){
           'ॽ',
           'ऽ'
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isIndependentVowel: function ( char ) {
+    isIndependentVowel: function (char) {
 
-      return ( [
+      return ([
 
           'ॷ', // 'UUE'
           'ॶ', // 'UE',
@@ -441,13 +411,13 @@ define('util',[], function(){
           'अ', // 'A',
           'ऄ' // 'SHORT A',
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isDependentVowel: function ( char ) {
+    isDependentVowel: function (char) {
 
-      return ( [
+      return ([
 
           'ॗ', // 'UUE',
           'ॖ', // 'UE' '\u0956'
@@ -472,13 +442,13 @@ define('util',[], function(){
           'ि', // 'I', '\u093F'
           'ा' // '\u093E'
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isConsonant: function ( char ) {
+    isConsonant: function (char) {
 
-      return ( [
+      return ([
           'क',
           'ख',
           'ग',
@@ -519,17 +489,17 @@ define('util',[], function(){
           'ॼ',
           'ॾ',
           'ॿ'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isNumeral: function( char ){
-      return ( ['०','१','२','३','४','५','६','७','८','९'].indexOf( char ) > -1 );
+    isNumeral: function(char){
+      return (['०','१','२','३','४','५','६','७','८','९'].indexOf(char) > -1);
     },
 
-    isViramaConsonant: function ( char ) {
+    isViramaConsonant: function (char) {
 
-      return ( [
+      return ([
           'क्',
           'ख्',
           'ग्',
@@ -570,12 +540,12 @@ define('util',[], function(){
           'ॼ्',
           'ॾ्',
           'ॿ्'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
     },
 
-    isNuktaConsonant: function ( char ) {
+    isNuktaConsonant: function (char) {
 
-      return ( [
+      return ([
           'क़',
           'ख़',
           'ग़',
@@ -587,48 +557,48 @@ define('util',[], function(){
           'ऱ',
           'ऴ',
           'ऩ'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isAnusvara: function ( char ) {
-      return ( 'ं' === char );
+    isAnusvara: function (char) {
+      return ('ं' === char);
     },
 
-    isVirama: function ( char ) {
-      return ( '्' === char );
+    isVirama: function (char) {
+      return ('्' === char);
     },
 
-    isNukta: function ( char ) {
-      return ( '़' === char );
+    isNukta: function (char) {
+      return ('़' === char);
     },
 
-    vowelExtendsSchwa: function ( vowel ) {
-      return ( [ 'आ', 'ऐ', 'औ', 'ा', 'ै', 'ौ' ].indexOf( vowel ) > -1 );
+    vowelExtendsSchwa: function (vowel) {
+      return (['आ', 'ऐ', 'औ', 'ा', 'ै', 'ौ'].indexOf(vowel) > -1);
     },
 
-    vowelExtendsMatra: function ( matra1, matra2 ) {
+    vowelExtendsMatra: function (matra1, matra2) {
 
       return (
-          ( matra1 === 'ि' && matra2 === 'ी' ) ||
-          ( matra1 === 'ु' && matra2 === 'ू' ) ||
-          ( matra1 === 'े' && matra2 === 'ै' ) ||
-          ( matra1 === 'ो' && matra2 === 'ौ' ) ||
-          ( matra1 === 'ॖ' && matra2 === 'ॗ' ) || // UE - UUE
-          ( matra1 === 'ऺ' && matra2 === 'ऻ' ) || // OE - OOE
-          ( matra1 === 'ॢ' && matra2 === 'ॣ' ) || // L - LL
-          ( matra1 === 'ृ' && matra2 === '-R' ) // -r -R
+          (matra1 === 'ि' && matra2 === 'ी') ||
+          (matra1 === 'ु' && matra2 === 'ू') ||
+          (matra1 === 'े' && matra2 === 'ै') ||
+          (matra1 === 'ो' && matra2 === 'ौ') ||
+          (matra1 === 'ॖ' && matra2 === 'ॗ') || // UE - UUE
+          (matra1 === 'ऺ' && matra2 === 'ऻ') || // OE - OOE
+          (matra1 === 'ॢ' && matra2 === 'ॣ') || // L - LL
+          (matra1 === 'ृ' && matra2 === '-R') // -r -R
 
-      );
+     );
 
     },
 
-    getMatra: function ( charObject ) {
-      return ( charObject.hasOwnProperty( 'matra' ) ) ? charObject.matra : false;
+    getMatra: function (charObject) {
+      return (charObject.hasOwnProperty('matra')) ? charObject.matra : false;
     },
 
-    isDevanagari: function ( str ) {
-      var devanagari = [ '०',
+    isDevanagari: function (str) {
+      var devanagari = ['०',
           '१',
           '२',
           '३',
@@ -753,34 +723,34 @@ define('util',[], function(){
           'ॱ',
           'ॽ',
           'ऽ'
-      ];
+     ];
 
-      return ( devanagari.indexOf( str ) > -1 );
+      return (devanagari.indexOf(str) > -1);
 
     },
 
-    suppressesVirama: function ( char ) {
-      return ( [ 'अ' ].indexOf( char ) > -1 );
+    suppressesVirama: function (char) {
+      return (['अ'].indexOf(char) > -1);
     },
 
-    addEvent: function( elem, event, fn ) {
+    addEvent: function(elem, event, fn) {
 
         // Lifted from jfriend00 http://stackoverflow.com/questions/10149963/adding-event-listener-cross-browser
 
         // avoid memory overhead of new anonymous functions for every event handler that's installed
         // by using local functions
-        function listenHandler( e ) {
+        function listenHandler(e) {
 
-            var ret = fn.apply( this, arguments );
+            var ret = fn.apply(this, arguments);
 
-            if ( ret === false ) {
+            if (ret === false) {
 
                 e.stopPropagation();
                 e.preventDefault();
 
             }
 
-            return( ret );
+            return(ret);
 
         }
 
@@ -788,81 +758,33 @@ define('util',[], function(){
 
             // set the this pointer same as addEventListener when fn is called
             // and make sure the event is passed to the fn also so that works the same too
-            var ret = fn.call( elem, window.event );
+            var ret = fn.call(elem, window.event);
 
-            if ( ret === false ) {
+            if (ret === false) {
                 window.event.returnValue = false;
                 window.event.cancelBubble = true;
             }
 
-            return( ret );
+            return(ret);
         }
 
-        if ( elem.addEventListener ) {
-            elem.addEventListener( event, listenHandler, false );
+        if (elem.addEventListener) {
+            elem.addEventListener(event, listenHandler, false);
         } else {
-            elem.attachEvent( 'on' + event, attachHandler );
+            elem.attachEvent('on' + event, attachHandler);
         }
 
     },
 
-    getCaretIndex: function( el ){
-
-      var start = 0,
-          end = 0,
-          normalizedValue, range,
-          textInputRange, len, endRange;
-
-      if ( typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number' ) {
-          start = el.selectionStart;
-          end = el.selectionEnd;
-
-
-      } else {
-          range = document.selection.createRange();
-
-          if ( range && range.parentElement() === el ) {
-              len = el.value.length;
-              normalizedValue = el.value.replace( /\r\n/g, '\n' );
-
-              // Create a working TextRange that lives only in the input
-              textInputRange = el.createTextRange();
-              textInputRange.moveToBookmark( range.getBookmark() );
-
-              // Check if the start and end of the selection are at the very end
-              // of the input, since moveStart/moveEnd doesn't return what we want
-              // in those cases
-              endRange = el.createTextRange();
-              endRange.collapse( false );
-
-              if ( textInputRange.compareEndPoints( 'StartToEnd', endRange ) > -1 ) {
-                  start = end = len;
-              } else {
-                  start = -textInputRange.moveStart( 'character', -len );
-                  start += normalizedValue.slice( 0, start ).split( '\n' ).length - 1;
-
-                  if ( textInputRange.compareEndPoints( 'EndToEnd', endRange ) > -1 ) {
-                      end = len;
-                  } else {
-                      end = -textInputRange.moveEnd( 'character', -len );
-                      end += normalizedValue.slice( 0, end ).split( '\n' ).length - 1;
-                  }
-              }
-          }
-      }
-
-      return end;
-    },
-
-    getSettings: function( defaults, options ){
+    getSettings: function(defaults, options){
 
       var key,
           settings = {};
 
-      if( options && typeof options === 'object' ){
+      if(options && typeof options === 'object'){
 
-        for( key in defaults ){
-            settings[ key ] = ( options.hasOwnProperty( key ) ) ? options[ key ] : defaults[ key ];
+        for(key in defaults){
+            settings[key] = (options.hasOwnProperty(key)) ? options[key] : defaults[key];
         }
 
         return settings;
@@ -873,7 +795,7 @@ define('util',[], function(){
 
     },
 
-    keyCodeAltersInputString: function(  keyCode, shiftKey, ctrlKey ){
+    keyCodeAltersInputString: function( keyCode, shiftKey, ctrlKey){
 
       var nonTransKeys = [
           0, // Firefox arrow keys
@@ -909,53 +831,53 @@ define('util',[], function(){
           123, // F12
           144, // Num Lock
           255
-      ];
+     ];
 
-      if( shiftKey === true ) {
+      if(shiftKey === true) {
         return true;
       } else
       if (
-          ( ctrlKey === true && keyCode === 65 ) || // select all
-          ( ctrlKey === true && keyCode === 67 ) || // copy
-          ( ctrlKey === true && keyCode === 86 ) || // paste
-          ( ctrlKey === true && keyCode === 88 ) || // cut
-          ( ctrlKey === true && keyCode === 90 ) // back
-      ) {
+          (ctrlKey === true && keyCode === 65) || // select all
+          (ctrlKey === true && keyCode === 67) || // copy
+          (ctrlKey === true && keyCode === 86) || // paste
+          (ctrlKey === true && keyCode === 88) || // cut
+          (ctrlKey === true && keyCode === 90) // back
+     ) {
           return false;
       } else {
-          return nonTransKeys.indexOf( keyCode ) === -1;
+          return nonTransKeys.indexOf(keyCode) === -1;
       }
     },
 
-    isArrowKey: function ( keyCode ) {
-        return ( [ 37, 38, 39, 40 ].indexOf( keyCode ) > -1 );
+    isArrowKey: function (keyCode) {
+        return ([37, 38, 39, 40].indexOf(keyCode) > -1);
     },
 
-    isSpaceKey: function ( keyCode ) {
-        return ( 32 === keyCode );
+    isSpaceKey: function (keyCode) {
+        return (32 === keyCode);
     },
 
-    isShiftKey: function( keyCode ){
-        return ( 16 === keyCode );
+    isShiftKey: function(keyCode){
+        return (16 === keyCode);
     },
 
-    isBackspaceKey: function ( keyCode ) {
-        return ( 8 === keyCode );
+    isBackspaceKey: function (keyCode) {
+        return (8 === keyCode);
     },
 
-    isValidTextElement: function ( element ) {
+    isValidTextElement: function (element) {
         return (
-            ( element.nodeName === 'INPUT' && element.type === 'text' ) ||
-            ( element.nodeName === 'TEXTAREA' && element.type === 'textarea' )
-        );
+            (element.nodeName === 'INPUT' && element.type === 'text') ||
+            (element.nodeName === 'TEXTAREA' && element.type === 'textarea')
+       );
     },
 
-    isBlankOrEmptyString: function ( char ) {
-        return ( [ ' ', '', '\n', '\r', '\t' ].indexOf( char ) > -1 );
+    isBlankOrEmptyString: function (char) {
+        return ([' ', '', '\n', '\r', '\t'].indexOf(char) > -1);
     },
 
-    isWhiteSpaceChar: function ( char ) {
-        return ( [ ' ', '\n', '\r', '\t' ].indexOf( char ) > -1 );
+    isWhiteSpaceChar: function (char) {
+        return ([' ', '\n', '\r', '\t'].indexOf(char) > -1);
     }
 
   };
@@ -2083,21 +2005,8 @@ define('events',['util'], function(util){
 
   var events = {};
 
-  function keyHeldDown(tf){
-    return(tf.keyupCount !== tf.keydownCount)
-  }
-
-  function undoKeyHeldDown(tf){
-
-    var caretIndex    = util.getCaretIndex(tf.element),
-        newCaretIndex = caretIndex - tf.keydownCount;
-
-    tf.element.value  = tf.inputString;
-    tf.keydownCount   = 0;
-    tf.keyupCount     = 0;
-
-    util.setCaretIndex(tf, newCaretIndex);
-
+  function keyIsHeldDown(keydownCount, keyupCount){
+    return(keydownCount > keyupCount);
   }
 
   function canIgnoreKeyCode(keyCode){
@@ -2138,41 +2047,6 @@ define('events',['util'], function(util){
      ].indexOf(keyCode) > -1);
   }
 
-  function toggleScript(tf){
-
-    var caretIndex  = util.getCaretIndex(tf.element);
-
-    if(tf.settings.scriptMode === 'Devanagari'){
-
-      tf.settings.scriptMode = 'Roman';
-      tf.key = null;
-      tf.cachedKey = null;
-      tf.cachedInputString = null;
-      tf.cachedInputStringKeyRemoved = null;
-      tf.keydownCount   = 0;
-      tf.keyupCount     = 0;
-
-    } else {
-
-      tf.settings.scriptMode = 'Devanagari';
-
-      tf.keydownCount = 0;
-      tf.keyupCount = 0;
-
-      tf.devanagariCharObj = null;
-
-      tf.key = null;
-      tf.cachedKey = null;
-
-      tf.inputString = tf.element.value;
-      tf.cachedInputString = null;
-
-      tf.inputStringKeyRemoved = null;
-      tf.cachedInputStringKeyRemoved = null;
-    }
-
-  }
-
   function isValidCtrlCombo(ctrlKey, keyCode){
     return (
       (ctrlKey && keyCode === 17) || // control keydown
@@ -2185,7 +2059,43 @@ define('events',['util'], function(util){
     );
   }
 
-  function incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey){
+  events.toggleScript = function(){
+
+    var caretIndex    = this.getCaretIndex(),
+        switchToRoman = (this.settings.scriptMode === 'Devanagari');
+
+    if(switchToRoman){
+
+      this.settings.scriptMode = 'Roman';
+
+      this.clearKeyAndStringCache();
+      this.resetKeyEventCount();
+
+    } else {
+
+      this.settings.scriptMode    = 'Devanagari';
+      this.devanagariCharObj      = null;
+      this.inputStringKeyRemoved  = null;
+      this.inputString            = this.element.value;
+
+      this.clearKeyAndStringCache();
+      this.resetKeyEventCount();
+      
+    }
+
+  };
+
+  events.resetKeyEventCount = function(){
+    this.keydownCount = 0;
+    this.keyupCount   = 0;
+  };
+
+  events.incrementKeyEventCount = function(eventType){
+
+    var cachedCtrlKey = this.cachedCtrlKey,
+        ctrlKey       = this.ctrlKey,
+        cachedKeyCode = this.cachedKeyCode,
+        keyCode       = this.keyCode;
 
     if(eventType === 'keydown'){
       if(isValidCtrlCombo(ctrlKey, keyCode)){
@@ -2194,43 +2104,55 @@ define('events',['util'], function(util){
     } else
     if(eventType === 'keyup'){
       if(
-        (tf.cachedCtrlKey && tf.keyCode === 17) || // ctrl + ctrl
-        (tf.cachedCtrlKey && tf.keyCode === 65) || // ctrl + a
-        (tf.cachedCtrlKey && tf.keyCode === 67) || // ctrl + c
-        (tf.cachedCtrlKey && tf.keyCode === 86) || // ctrl + v
-        (tf.cachedCtrlKey && tf.keyCode === 88) || // ctrl + x
-        (tf.cachedCtrlKey && tf.keyCode === 89) || // ctrl + x
-        (tf.cachedCtrlKey && tf.keyCode === 90) || // ctrl + z
+        (cachedCtrlKey && keyCode === 17) || // ctrl + ctrl
+        (cachedCtrlKey && keyCode === 65) || // ctrl + a
+        (cachedCtrlKey && keyCode === 67) || // ctrl + c
+        (cachedCtrlKey && keyCode === 86) || // ctrl + v
+        (cachedCtrlKey && keyCode === 88) || // ctrl + x
+        (cachedCtrlKey && keyCode === 89) || // ctrl + x
+        (cachedCtrlKey && keyCode === 90) || // ctrl + z
 
-        (tf.cachedKeyCode === 65 && tf.keyCode === 17) || // a keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 65) || // control keyup then a keyup
+        (cachedKeyCode === 65 && keyCode === 17) || // a keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 65) || // control keyup then a keyup
 
-        (tf.cachedKeyCode === 67 && tf.keyCode === 17) || // c keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 67) || // control keyup then c keyup
+        (cachedKeyCode === 67 && keyCode === 17) || // c keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 67) || // control keyup then c keyup
 
-        (tf.cachedKeyCode === 86 && tf.keyCode === 17) || // c keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 86) || // control keyup then c keyup
+        (cachedKeyCode === 86 && keyCode === 17) || // c keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 86) || // control keyup then c keyup
 
-        (tf.cachedKeyCode === 88 && tf.keyCode === 17) || // x keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 88) || // control keyup then x keyup
+        (cachedKeyCode === 88 && keyCode === 17) || // x keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 88) || // control keyup then x keyup
 
-        (tf.cachedKeyCode === 89 && tf.keyCode === 17) || // y keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 89) || // control keyup then y keyup
+        (cachedKeyCode === 89 && keyCode === 17) || // y keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 89) || // control keyup then y keyup
 
-        (tf.cachedKeyCode === 90 && tf.keyCode === 17) || // z keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 90)  // control keyup then z keyup
+        (cachedKeyCode === 90 && keyCode === 17) || // z keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 90)  // control keyup then z keyup
 
       ){ return; }
     }
 
     if(!canIgnoreKeyCode(keyCode)){
       if(eventType === 'keyup'){
-        tf.keyupCount = tf.keyupCount += 1;
+        this.keyupCount = this.keyupCount += 1;
       } else
       if(eventType === 'keydown'){
-        tf.keydownCount = tf.keydownCount += 1;
+        this.keydownCount = this.keydownCount += 1;
       }
     }
+
+  };
+
+  events.onKeyHeldDown = function(){
+
+    var caretIndex    = this.getCaretIndex(),
+        newCaretIndex = caretIndex - this.keydownCount;
+
+    this.element.value = this.inputString;
+
+    this.resetKeyEventCount();
+    this.setCaretIndex(newCaretIndex);
 
   };
 
@@ -2242,16 +2164,12 @@ define('events',['util'], function(util){
         ctrlKey     = e.ctrlKey,
         settings    = this.settings;
 
-    this.cachedCtrlKey = this.ctrlKey;
-    this.ctrlKey = ctrlKey;
+    this.cacheCtrlKey(ctrlKey);
+    this.cacheShiftKey(shiftKey);
+    this.cacheKeyCode(keyCode);
 
-    this.cachedShiftKey = this.shiftKey;
-    this.shiftKey = shiftKey;
+    this.incrementKeyEventCount(eventType);
 
-    this.cachedKeyCode = this.keyCode;
-    this.keyCode = keyCode;
-
-    incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
   }
 
   events.onKeyup = function(event){
@@ -2262,50 +2180,35 @@ define('events',['util'], function(util){
           ctrlKey     = event.ctrlKey,
           settings    = this.settings;
 
-      this.cachedCtrlKey = this.ctrlKey;
-      this.ctrlKey = ctrlKey;
-
-      this.cachedShiftKey = this.shiftKey;
-      this.shiftKey = shiftKey;
-
-      this.cachedKeyCode = this.keyCode;
-      this.keyCode = keyCode;
+      this.cacheCtrlKey(ctrlKey);
+      this.cacheShiftKey(shiftKey);
+      this.cacheKeyCode(keyCode);
 
       if(shiftKey && ctrlKey && keyCode === 54){
-        toggleScript(this);
+        this.toggleScript();
         return
       }
 
-      if( settings.scriptMode === 'Roman' ){ return; };
+      if(settings.scriptMode === 'Roman'){ return; };
 
-      incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+      this.incrementKeyEventCount(eventType);
 
-      if(keyHeldDown(this)){
-
-        undoKeyHeldDown(this);
-        return ;
+      if(keyIsHeldDown(this.keydownCount, this.keyupCount)){
+        this.onKeyHeldDown();
+        return;
       }
 
-      this.keydownCount = 0;
-      this.keyupCount = 0;
-
-      this.cachedInputString = (this.inputString != null) ? this.inputString : '';
-      this.inputString = this.element.value;
+      this.resetKeyEventCount();
+      this.cacheInputString();
 
       if(this.inputString.length > this.cachedInputString.length){
 
-        this.cachedCaretIndex = this.caretIndex;
-        this.caretIndex = util.getCaretIndex(this.element);
-
-        this.cachedKey = this.key;
-        this.key = (this.caretIndex > 0) ? this.element.value[ this.caretIndex - 1 ] : '';
+        this.cacheCaretIndex();
+        this.cacheKey();
 
         if(!util.isDevanagari(this.key)){
 
-          var elVal = this.element.value;
-
-          this.cachedInputStringKeyRemoved  = (this.inputStringKeyRemoved != null) ? this.inputStringKeyRemoved : '';
-          this.inputStringKeyRemoved = (this.caretIndex > 0) ? elVal.slice(0, this.caretIndex - 1 ) + elVal.slice(this.caretIndex): '';
+          this.cacheInputStringKeyRemoved();
 
         } else {
           return false;
@@ -2315,272 +2218,375 @@ define('events',['util'], function(util){
 
           this.setDevObj();
           this.appendDevanagariChar();
-
-          this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-          this.inputString = this.element.value;
+          this.cacheInputString();
 
         } else {
 
           if(settings.autoRemoveVirama){
+
             this.autoRemoveVirama();
-            this.cachedInputString = (this.inputString !== undefined) ? this.inputString : '';
-            this.inputString = this.element.value;
+            this.cacheInputString();
             return;
+
           }
 
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
+          this.clearKeyAndStringCache();
+
         }
 
       } else {
 
         // don't clear cache on shift key keyup, otherwise keys accessed via shift key combos won't work
         if(keyCode !== 16 && keyCode !== 17){
-          this.key = null;
-          this.cachedKey = null;
-          this.cachedInputString = null;
-          this.cachedInputStringKeyRemoved = null;
+          this.clearKeyAndStringCache();
         }
 
       }
 
-    };
+  };
 
-  return events;
+  events.onClick = function(){
+    this.clearKeyAndStringCache();
+  }
+
+  events.onChange = function(){
+    this.inputString = this.element.value;
+  }
+
+  events.onBlur = function(){
+    this.clearKeyAndStringCache();
+  }
+
+  return events; 
+
 });
 
 define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devanagari, events){
 
-  var outputString = function(tf, string){
-    tf.element.value = string;
-  };
+  function DevanagariTextField(element, options){
 
-  var handleClick = function(tf){
+    var self      = this, 
+        settings  = util.getSettings({
 
-    tf.key = null;
-    tf.cachedKey = null;
-    tf.cachedInputString = null;
-    tf.cachedInputStringKeyRemoved = null;
+          autoAddVirama:true, 
+          autoRemoveVirama:true,
+          toggleScriptButton: false,
+          toggleScriptKey: 'Ctrl+Shift+T',
+          scriptMode: 'Devanagari',
+          customKeyMap: false
+
+        }, options);
+
+    if(!util.isValidTextElement(element)){
+      throw new Error('Element must be a text element.');
+    }
+
+    this.element                      = element;
+    this.settings                     = settings;
+    this.keyMap                       = keyMap.build(settings);
+    this.devanagariCharObj            = null;
+
+    this.keydownCount                 = 0;
+    this.keyupCount                   = 0;
+
+    this.caretIndex                   = this.getCaretIndex();
+    this.cachedCaretIndex             = null;
+
+    this.key                          = null;
+    this.cachedKey                    = null;
+
+    this.inputString                  = element.value;
+    this.cachedInputString            = null;
+
+    this.inputStringKeyRemoved        = null;
+    this.cachedInputStringKeyRemoved  = null;
+
+    util.addEvent(this.element, 'keyup', function(event){
+      self.onKeyup(event || window.event);
+    });
+
+    util.addEvent(this.element, 'keydown', function(event){
+      self.onKeydown(event || winow.event);
+    });
+
+    util.addEvent(this.element, 'click', function(){
+      self.onClick();
+    });
+
+    util.addEvent(this.element, 'blur', function(){
+      self.onBlur();
+    });
+
+    util.addEvent(this.element, 'change', function(){
+      self.onChange();
+    });
+
+  }
+
+  DevanagariTextField.prototype.autoRemoveVirama = function(){
+
+    var output, spaceChar, inputStrSpaceCharRemoved, inputStrStartSubSpaceCharRemoved,
+        caretIsAtEnd = (this.caretIndex === this.element.value.length);
+
+    if(caretIsAtEnd){
+
+      spaceChar                = this.inputString.slice(-1);
+      inputStrSpaceCharRemoved = this.inputString.slice(0, -1);
+      output                   = devanagari.removeVirama(inputStrSpaceCharRemoved) + spaceChar;
+
+      this.outputString(output);
+
+    } else {
+
+      spaceChar                        = this.inputString.slice(this.caretIndex - 1, this.caretIndex);
+      inputStrStartSubSpaceCharRemoved = this.inputString.slice(0, this.caretIndex - 1);
+      inputStrEndSub                   = this.inputString.slice(this.caretIndex);
+      outputStartSub                   = devanagari.removeVirama(inputStrStartSubSpaceCharRemoved);
+      output                           = outputStartSub + spaceChar + inputStrEndSub;
+
+      this.outputString(output);
+      this.setCaretIndex(outputStartSub.length + 1);
+
+    }
 
   }; 
 
-  var handleBlur = function(tf){
+  DevanagariTextField.prototype.appendDevanagariChar = function(){
 
-    tf.key = null;
-    tf.cachedKey = null;
-    tf.cachedInputString = null;
-    tf.cachedInputStringKeyRemoved = null;
+    var output, outputSubstr1, removeLast,
+
+        caretIndex        = this.caretIndex,
+        cachedCaretIndex  = this.cachedCaretIndex,
+        cachedInputString = (this.cachedInputStringKeyRemoved !== null) ? this.cachedInputStringKeyRemoved :false,
+        cachedInputSubstr1= (cachedInputString) ? cachedInputString.slice(0, cachedCaretIndex -1) : false,
+        caretIsAtEnd      = (this.caretIndex === this.element.value.length),
+        inputString       = (this.inputStringKeyRemoved !== null) ? this.inputStringKeyRemoved : false,
+        inputSubstr1      = (inputString) ? inputString.slice(0, caretIndex - 1) : false,
+        inputSubstr2      = (inputString) ? inputString.slice(caretIndex - 1) : false,
+        devanagariCharObj = this.devanagariCharObj,
+        settings          = this.settings;
+
+    if(devanagariCharObj != null){
+
+      removeLast = devanagariCharObj.removeLast;
+
+      if(caretIsAtEnd){
+
+        if(removeLast){
+          output = devanagari.appendChar(cachedInputString, devanagariCharObj, settings);
+        } else {
+          output = devanagari.appendChar(inputString, devanagariCharObj, settings);
+        }
+
+        this.outputString(output);
+
+        return;
+
+      } else {
+
+        if(removeLast){
+
+          outputSubstr1 = devanagari.appendChar(cachedInputSubstr1, devanagariCharObj, settings);
+          output = outputSubstr1 + inputSubstr2;
+
+        } else {
+
+          outputSubstr1 = devanagari.appendChar(inputSubstr1, devanagariCharObj, settings);
+          output =  outputSubstr1 + inputSubstr2;
+
+        }
+
+        this.outputString(output);
+        this.setCaretIndex(outputSubstr1.length);
+        return;
+
+      }
+
+    } else {
+
+      output = this.inputStringKeyRemoved;
+      this.outputString(output);
+
+      // -1 to account for the removed key
+      this.setCaretIndex(caretIndex -1);
+
+    }
 
   };
 
   /*
-  * Not sure if this is needed. Affects
-  * testing with Syn, so commented out for now.
+  * Adapted from Tim Down's answer see
+  * http://stackoverflow.com/questions/4928586/get-caret-position-in-html-input
   */
-  var handleFocus = function(tf){
-    //tf.inputString = tf.element.value;
-  };
+  DevanagariTextField.prototype.getCaretIndex = function(){
 
-  var handleChange = function(tf){
-    tf.inputString = tf.element.value;
-  };
+    var normalizedValue, range, textInputRange, len, endRange,
 
-  function DevanagariTextField(element, options){
-
-      var startingCaretIndex,
-
-          self = this,
-          settings = util.getSettings({
-
-            autoAddVirama:true,
-            autoRemoveVirama:true,
-            allowModeToggle:true,
-            toggleScriptButton: false,
-            toggleScriptKey: 'Ctrl+Shift+T',
-            scriptMode: 'Devanagari',
-            customKeyMap: false
-
-          }, options);
-
-      if(util.isValidTextElement(element)){
-
-        startingCaretIndex = util.getCaretIndex(element);
-
-        this.keyMap = keyMap.build(settings);
-
-        this.keydownCount = 0;
-        this.keyupCount = 0;
-
-        this.element = element;
-        this.settings = settings;
-
-        this.caretIndex = util.getCaretIndex(this.element);
-        this.cachedCaretIndex = null;
-
-        this.devanagariCharObj = null;
-
-        this.key = null;
-        this.cachedKey = null;
-
-        this.inputString = this.element.value;
-        this.cachedInputString = null;
-
-        this.inputStringKeyRemoved = null;
-        this.cachedInputStringKeyRemoved = null;
-
-        util.addEvent(this.element, 'keyup', function(event){
-          self.onKeyup(event || window.event);
-        });
-
-        util.addEvent(this.element, 'keydown', function(event){
-          self.onKeydown(event || winow.event);
-        });
-
-        util.addEvent(this.element, 'click', function(){
-          handleClick(self);
-        });
-
-        util.addEvent(this.element, 'blur', function(event){
-          handleBlur(self, event || window.event);
-        });
-
-        util.addEvent(this.element, 'focus', function(event){
-          handleFocus(self, event || window.event);
-        });
-
-        util.addEvent(this.element, 'change', function(event){
-          handleChange(self, event || window.event);
-        });
-
+        start = 0,
+        end   = 0,
+        el    = this.element;
+        
+      if (typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number'){
+          start = el.selectionStart;
+          end   = el.selectionEnd;
       } else {
-        throw new Error('Element must be a text element.');
+          range = document.selection.createRange();
+
+          if (range && range.parentElement() === el) {
+              len = el.value.length;
+              normalizedValue = el.value.replace(/\r\n/g, '\n');
+
+              // Create a working TextRange that lives only in the input
+              textInputRange = el.createTextRange();
+              textInputRange.moveToBookmark(range.getBookmark());
+
+              // Check if the start and end of the selection are at the very end
+              // of the input, since moveStart/moveEnd doesn't return what we want
+              // in those cases
+              endRange = el.createTextRange();
+              endRange.collapse(false);
+
+              if (textInputRange.compareEndPoints('StartToEnd', endRange) > -1) {
+                  start = end = len;
+              } else {
+                  start = -textInputRange.moveStart('character', -len);
+                  start += normalizedValue.slice(0, start).split('\n').length - 1;
+
+                  if (textInputRange.compareEndPoints('EndToEnd', endRange) > -1) {
+                      end = len;
+                  } else {
+                      end = -textInputRange.moveEnd('character', -len);
+                      end += normalizedValue.slice(0, end).split('\n').length - 1;
+                  }
+              }
+          }
       }
 
+      return end;
+  };
+
+  DevanagariTextField.prototype.setCaretIndex = function(caretIndex){
+
+    var range;
+
+      if(this.element != null){
+
+          if(this.element.createTextRange){ // for < IE 9
+
+              range = this.element.createTextRange();
+
+              range.move('character', caretIndex);
+              range.select();
+
+          } else {
+
+              if(this.element.selectionStart){
+
+                  this.element.focus();
+                  this.element.setSelectionRange(caretIndex, caretIndex);
+
+              } else {
+                  this.element.focus();
+              }
+
+          }
+
+      }
+
+  };
+
+  DevanagariTextField.prototype.setDevObj = function(){
+
+    var twoCharKey = (this.cachedKey != null) ? this.cachedKey + this.key : false,
+        oneCharKey = (this.key !== null) ? this.key : false;
+
+    var map = this.keyMap;
+
+    if(twoCharKey && map.hasOwnProperty(twoCharKey)){
+      this.devanagariCharObj  = map[twoCharKey];
+      this.cachedKey          = null;
+      this.key                = null;
+    } else
+    if(oneCharKey && map.hasOwnProperty(oneCharKey)){
+      this.devanagariCharObj = map[oneCharKey];
+    } else {
+      this.devanagariCharObj = null;
     }
 
-    DevanagariTextField.prototype.autoRemoveVirama = function(){
+  };
 
-      var output, spaceChar, inputStrSpaceCharRemoved, inputStrStartSubSpaceCharRemoved,
-          caretIsAtEnd = caretIsAtEnd      = (this.caretIndex === this.element.value.length);
+  DevanagariTextField.prototype.cacheShiftKey = function(shiftKey){
+    this.cachedShiftKey = this.shiftKey;
+    this.shiftKey       = shiftKey;
+  };
 
-      if(caretIsAtEnd){
+  DevanagariTextField.prototype.cacheCtrlKey = function(ctrlKey){
+    this.cachedCtrlKey  = this.ctrlKey;
+    this.ctrlKey        = ctrlKey;
+  };
 
-        spaceChar                = this.inputString.slice(-1);
-        inputStrSpaceCharRemoved = this.inputString.slice(0, -1);
-        output                   = devanagari.removeVirama(inputStrSpaceCharRemoved) + spaceChar;
+  DevanagariTextField.prototype.cacheKeyCode = function(keyCode){
+    this.cachedKeyCode  = this.keyCode;
+    this.keyCode        = keyCode;
+  };
 
-        outputString(this, output);
+  DevanagariTextField.prototype.cacheInputString = function(){
+    this.cachedInputString  = (this.inputString != null) ? this.inputString : '';
+    this.inputString        = this.element.value;
+  };
 
-      } else {
+  DevanagariTextField.prototype.cacheInputStringKeyRemoved = function(){
 
-        spaceChar                        = this.inputString.slice(this.caretIndex - 1, this.caretIndex);
-        inputStrStartSubSpaceCharRemoved = this.inputString.slice(0, this.caretIndex - 1);
-        inputStrEndSub                   = this.inputString.slice(this.caretIndex);
-        outputStartSub                   = devanagari.removeVirama(inputStrStartSubSpaceCharRemoved);
-        output                           = outputStartSub + spaceChar + inputStrEndSub;
+    var elVal                 = this.element.value,
+        inputStringKeyRemoved = this.inputStringKeyRemoved,
+        caretIndex            = this.caretIndex;
 
-        outputString(this, output);
-        util.setCaretIndex(this, outputStartSub.length + 1);
+    this.cachedInputStringKeyRemoved = (inputStringKeyRemoved != null) ? inputStringKeyRemoved : '';
+    this.inputStringKeyRemoved       = (caretIndex > 0) ? elVal.slice(0, caretIndex - 1 ) + elVal.slice(caretIndex): '';
 
-      }
+  };
 
-    };
+  DevanagariTextField.prototype.outputString = function(string){
+    this.element.value = string;
+  };
 
-    DevanagariTextField.prototype.appendDevanagariChar = function(){
+  DevanagariTextField.prototype.clearKeyAndStringCache = function(){
+    this.key                          = null;
+    this.cachedKey                    = null;
+    this.cachedInputString            = null;
+    this.cachedInputStringKeyRemoved  = null;
+  };
 
-      var output, outputSubstr1, removeLast,
+  DevanagariTextField.prototype.cacheCaretIndex = function(){
+    this.cachedCaretIndex = this.caretIndex;
+    this.caretIndex       = this.getCaretIndex();
+  };
 
-          caretIndex        = this.caretIndex,
-          cachedCaretIndex  = this.cachedCaretIndex,
-          cachedInputString = (this.cachedInputStringKeyRemoved !== null) ? this.cachedInputStringKeyRemoved :false,
-          cachedInputSubstr1= (cachedInputString) ? cachedInputString.slice(0, cachedCaretIndex -1) : false,
-          caretIsAtEnd      = (this.caretIndex === this.element.value.length),
-          inputString       = (this.inputStringKeyRemoved !== null) ? this.inputStringKeyRemoved : false,
-          inputSubstr1      = (inputString) ? inputString.slice(0, caretIndex - 1) : false,
-          inputSubstr2      = (inputString) ? inputString.slice(caretIndex - 1) : false,
-          devanagariCharObj = this.devanagariCharObj,
-          settings          = this.settings;
+  DevanagariTextField.prototype.cacheKey = function(){
 
-      if(devanagariCharObj != null){
+    var caretIndex = this.caretIndex;
 
-        removeLast = devanagariCharObj.removeLast;
+    this.cachedKey = this.key;
+    this.key       = (caretIndex > 0) ? this.element.value[caretIndex - 1] : '';
 
-        if(caretIsAtEnd){
+  };
 
-          if(removeLast){
-            output = devanagari.appendChar(cachedInputString, devanagariCharObj, settings);
-          } else {
-            output = devanagari.appendChar(inputString, devanagariCharObj, settings);
-          }
+  DevanagariTextField.prototype.incrementKeyEventCount  = events.incrementKeyEventCount;
+  DevanagariTextField.prototype.resetKeyEventCount      = events.resetKeyEventCount;
+  DevanagariTextField.prototype.toggleScript            = events.toggleScript;
+  DevanagariTextField.prototype.onKeyHeldDown           = events.onKeyHeldDown;
+  DevanagariTextField.prototype.onKeydown               = events.onKeydown;
+  DevanagariTextField.prototype.onKeyup                 = events.onKeyup;
+  DevanagariTextField.prototype.onClick                 = events.onClick;
+  DevanagariTextField.prototype.onChange                = events.onChange;
+  DevanagariTextField.prototype.onBlur                  = events.onBlur;
 
-          outputString(this, output);
+  var init = function(elementId, options){
+    var te = document.getElementById(elementId);
+    return new DevanagariTextField(te, options);
+  };
 
-          return;
-
-        } else {
-
-          if(removeLast){
-
-            outputSubstr1 = devanagari.appendChar(cachedInputSubstr1, devanagariCharObj, settings);
-            output = outputSubstr1 + inputSubstr2;
-
-          } else {
-
-            outputSubstr1 = devanagari.appendChar(inputSubstr1, devanagariCharObj, settings);
-            output =  outputSubstr1 + inputSubstr2;
-
-          }
-
-          outputString(this, output);
-          util.setCaretIndex(this, outputSubstr1.length);
-          return;
-
-        }
-
-      } else {
-
-        output = this.inputStringKeyRemoved;
-        outputString(this, output);
-
-        // -1 to account for the removed key
-        util.setCaretIndex(this, caretIndex -1);
-
-      }
-
-    };
-
-    DevanagariTextField.prototype.setDevObj = function(){
-
-      var twoCharKey = (this.cachedKey != null) ? this.cachedKey + this.key : false,
-          oneCharKey = (this.key !== null) ? this.key : false;
-
-      var map = this.keyMap;
-
-      if(twoCharKey && map.hasOwnProperty(twoCharKey)){
-        this.devanagariCharObj  = map[twoCharKey];
-        this.cachedKey          = null;
-        this.key                = null;
-      } else
-      if(oneCharKey && map.hasOwnProperty(oneCharKey)){
-        this.devanagariCharObj = map[oneCharKey];
-      } else {
-        this.devanagariCharObj = null;
-      }
-
-    };
-
-    DevanagariTextField.prototype.onKeydown = events.onKeydown;
-
-    DevanagariTextField.prototype.onKeyup   = events.onKeyup;
-
-    var init = function(elementId, options){
-      var te = document.getElementById(elementId);
-      return new DevanagariTextField(te, options);
-    };
-
-    return init;
+  return init;
 
 });
 
