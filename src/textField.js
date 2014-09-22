@@ -26,7 +26,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     this.keydownCount                 = 0;
     this.keyupCount                   = 0;
 
-    this.caretIndex                   = util.getCaretIndex(element);
+    this.caretIndex                   = this.getCaretIndex();
     this.cachedCaretIndex             = null;
 
     this.key                          = null;
@@ -82,11 +82,11 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
       output                           = outputStartSub + spaceChar + inputStrEndSub;
 
       this.outputString(output);
-      util.setCaretIndex(this, outputStartSub.length + 1);
+      this.setCaretIndex(outputStartSub.length + 1);
 
     }
 
-  };
+  }; 
 
   DevanagariTextField.prototype.appendDevanagariChar = function(){
 
@@ -134,7 +134,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
         }
 
         this.outputString(output);
-        util.setCaretIndex(this, outputSubstr1.length);
+        this.setCaretIndex(outputSubstr1.length);
         return;
 
       }
@@ -145,9 +145,90 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
       this.outputString(output);
 
       // -1 to account for the removed key
-      util.setCaretIndex(this, caretIndex -1);
+      this.setCaretIndex(caretIndex -1);
 
     }
+
+  };
+
+  /*
+  * Adapted from Tim Down's answer see
+  * http://stackoverflow.com/questions/4928586/get-caret-position-in-html-input
+  */
+  DevanagariTextField.prototype.getCaretIndex = function(){
+
+    var normalizedValue, range, textInputRange, len, endRange,
+
+        start = 0,
+        end   = 0,
+        el    = this.element;
+        
+      if (typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number'){
+          start = el.selectionStart;
+          end   = el.selectionEnd;
+      } else {
+          range = document.selection.createRange();
+
+          if (range && range.parentElement() === el) {
+              len = el.value.length;
+              normalizedValue = el.value.replace(/\r\n/g, '\n');
+
+              // Create a working TextRange that lives only in the input
+              textInputRange = el.createTextRange();
+              textInputRange.moveToBookmark(range.getBookmark());
+
+              // Check if the start and end of the selection are at the very end
+              // of the input, since moveStart/moveEnd doesn't return what we want
+              // in those cases
+              endRange = el.createTextRange();
+              endRange.collapse(false);
+
+              if (textInputRange.compareEndPoints('StartToEnd', endRange) > -1) {
+                  start = end = len;
+              } else {
+                  start = -textInputRange.moveStart('character', -len);
+                  start += normalizedValue.slice(0, start).split('\n').length - 1;
+
+                  if (textInputRange.compareEndPoints('EndToEnd', endRange) > -1) {
+                      end = len;
+                  } else {
+                      end = -textInputRange.moveEnd('character', -len);
+                      end += normalizedValue.slice(0, end).split('\n').length - 1;
+                  }
+              }
+          }
+      }
+
+      return end;
+  };
+
+  DevanagariTextField.prototype.setCaretIndex = function(caretIndex){
+
+    var range;
+
+      if(this.element != null){
+
+          if(this.element.createTextRange){ // for < IE 9
+
+              range = this.element.createTextRange();
+
+              range.move('character', caretIndex);
+              range.select();
+
+          } else {
+
+              if(this.element.selectionStart){
+
+                  this.element.focus();
+                  this.element.setSelectionRange(caretIndex, caretIndex);
+
+              } else {
+                  this.element.focus();
+              }
+
+          }
+
+      }
 
   };
 
@@ -215,7 +296,7 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   DevanagariTextField.prototype.cacheCaretIndex = function(){
     this.cachedCaretIndex = this.caretIndex;
-    this.caretIndex       = util.getCaretIndex(this.element);
+    this.caretIndex       = this.getCaretIndex();
   };
 
   DevanagariTextField.prototype.cacheKey = function(){

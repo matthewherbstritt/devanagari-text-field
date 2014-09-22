@@ -2,39 +2,9 @@ define([], function(){
 
   return {
 
-    setCaretIndex: function(tf, caretIndex){
+    isDependentSign: function (char) {
 
-      var range;
-
-      if(tf.element != null){
-
-          if(tf.element.createTextRange){ // for < IE 9
-
-              range = tf.element.createTextRange();
-
-              range.move('character', caretIndex);
-              range.select();
-
-          } else {
-
-              if(tf.element.selectionStart){
-
-                  tf.element.focus();
-                  tf.element.setSelectionRange(caretIndex, caretIndex);
-
-              } else {
-                  tf.element.focus();
-              }
-
-          }
-
-      }
-
-    },
-
-    isDependentSign: function ( char ) {
-
-      return ( [
+      return ([
 
           'ऀ', // INVERTED CANDRABINDU
           'ॕ', // CANDRA LONG E
@@ -45,13 +15,13 @@ define([], function(){
           '॑', // UDATTA
           '॒' // ANUDATTA
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isIndependentSign: function ( char ) {
+    isIndependentSign: function (char) {
 
-      return ( [
+      return ([
 
           'ॐ',
           '।',
@@ -61,13 +31,13 @@ define([], function(){
           'ॽ',
           'ऽ'
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isIndependentVowel: function ( char ) {
+    isIndependentVowel: function (char) {
 
-      return ( [
+      return ([
 
           'ॷ', // 'UUE'
           'ॶ', // 'UE',
@@ -95,13 +65,13 @@ define([], function(){
           'अ', // 'A',
           'ऄ' // 'SHORT A',
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isDependentVowel: function ( char ) {
+    isDependentVowel: function (char) {
 
-      return ( [
+      return ([
 
           'ॗ', // 'UUE',
           'ॖ', // 'UE' '\u0956'
@@ -126,13 +96,13 @@ define([], function(){
           'ि', // 'I', '\u093F'
           'ा' // '\u093E'
 
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isConsonant: function ( char ) {
+    isConsonant: function (char) {
 
-      return ( [
+      return ([
           'क',
           'ख',
           'ग',
@@ -173,17 +143,17 @@ define([], function(){
           'ॼ',
           'ॾ',
           'ॿ'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isNumeral: function( char ){
-      return ( ['०','१','२','३','४','५','६','७','८','९'].indexOf( char ) > -1 );
+    isNumeral: function(char){
+      return (['०','१','२','३','४','५','६','७','८','९'].indexOf(char) > -1);
     },
 
-    isViramaConsonant: function ( char ) {
+    isViramaConsonant: function (char) {
 
-      return ( [
+      return ([
           'क्',
           'ख्',
           'ग्',
@@ -224,12 +194,12 @@ define([], function(){
           'ॼ्',
           'ॾ्',
           'ॿ्'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
     },
 
-    isNuktaConsonant: function ( char ) {
+    isNuktaConsonant: function (char) {
 
-      return ( [
+      return ([
           'क़',
           'ख़',
           'ग़',
@@ -241,48 +211,48 @@ define([], function(){
           'ऱ',
           'ऴ',
           'ऩ'
-      ].indexOf( char ) > -1 );
+     ].indexOf(char) > -1);
 
     },
 
-    isAnusvara: function ( char ) {
-      return ( 'ं' === char );
+    isAnusvara: function (char) {
+      return ('ं' === char);
     },
 
-    isVirama: function ( char ) {
-      return ( '्' === char );
+    isVirama: function (char) {
+      return ('्' === char);
     },
 
-    isNukta: function ( char ) {
-      return ( '़' === char );
+    isNukta: function (char) {
+      return ('़' === char);
     },
 
-    vowelExtendsSchwa: function ( vowel ) {
-      return ( [ 'आ', 'ऐ', 'औ', 'ा', 'ै', 'ौ' ].indexOf( vowel ) > -1 );
+    vowelExtendsSchwa: function (vowel) {
+      return (['आ', 'ऐ', 'औ', 'ा', 'ै', 'ौ'].indexOf(vowel) > -1);
     },
 
-    vowelExtendsMatra: function ( matra1, matra2 ) {
+    vowelExtendsMatra: function (matra1, matra2) {
 
       return (
-          ( matra1 === 'ि' && matra2 === 'ी' ) ||
-          ( matra1 === 'ु' && matra2 === 'ू' ) ||
-          ( matra1 === 'े' && matra2 === 'ै' ) ||
-          ( matra1 === 'ो' && matra2 === 'ौ' ) ||
-          ( matra1 === 'ॖ' && matra2 === 'ॗ' ) || // UE - UUE
-          ( matra1 === 'ऺ' && matra2 === 'ऻ' ) || // OE - OOE
-          ( matra1 === 'ॢ' && matra2 === 'ॣ' ) || // L - LL
-          ( matra1 === 'ृ' && matra2 === '-R' ) // -r -R
+          (matra1 === 'ि' && matra2 === 'ी') ||
+          (matra1 === 'ु' && matra2 === 'ू') ||
+          (matra1 === 'े' && matra2 === 'ै') ||
+          (matra1 === 'ो' && matra2 === 'ौ') ||
+          (matra1 === 'ॖ' && matra2 === 'ॗ') || // UE - UUE
+          (matra1 === 'ऺ' && matra2 === 'ऻ') || // OE - OOE
+          (matra1 === 'ॢ' && matra2 === 'ॣ') || // L - LL
+          (matra1 === 'ृ' && matra2 === '-R') // -r -R
 
-      );
+     );
 
     },
 
-    getMatra: function ( charObject ) {
-      return ( charObject.hasOwnProperty( 'matra' ) ) ? charObject.matra : false;
+    getMatra: function (charObject) {
+      return (charObject.hasOwnProperty('matra')) ? charObject.matra : false;
     },
 
-    isDevanagari: function ( str ) {
-      var devanagari = [ '०',
+    isDevanagari: function (str) {
+      var devanagari = ['०',
           '१',
           '२',
           '३',
@@ -407,34 +377,34 @@ define([], function(){
           'ॱ',
           'ॽ',
           'ऽ'
-      ];
+     ];
 
-      return ( devanagari.indexOf( str ) > -1 );
+      return (devanagari.indexOf(str) > -1);
 
     },
 
-    suppressesVirama: function ( char ) {
-      return ( [ 'अ' ].indexOf( char ) > -1 );
+    suppressesVirama: function (char) {
+      return (['अ'].indexOf(char) > -1);
     },
 
-    addEvent: function( elem, event, fn ) {
+    addEvent: function(elem, event, fn) {
 
         // Lifted from jfriend00 http://stackoverflow.com/questions/10149963/adding-event-listener-cross-browser
 
         // avoid memory overhead of new anonymous functions for every event handler that's installed
         // by using local functions
-        function listenHandler( e ) {
+        function listenHandler(e) {
 
-            var ret = fn.apply( this, arguments );
+            var ret = fn.apply(this, arguments);
 
-            if ( ret === false ) {
+            if (ret === false) {
 
                 e.stopPropagation();
                 e.preventDefault();
 
             }
 
-            return( ret );
+            return(ret);
 
         }
 
@@ -442,81 +412,33 @@ define([], function(){
 
             // set the this pointer same as addEventListener when fn is called
             // and make sure the event is passed to the fn also so that works the same too
-            var ret = fn.call( elem, window.event );
+            var ret = fn.call(elem, window.event);
 
-            if ( ret === false ) {
+            if (ret === false) {
                 window.event.returnValue = false;
                 window.event.cancelBubble = true;
             }
 
-            return( ret );
+            return(ret);
         }
 
-        if ( elem.addEventListener ) {
-            elem.addEventListener( event, listenHandler, false );
+        if (elem.addEventListener) {
+            elem.addEventListener(event, listenHandler, false);
         } else {
-            elem.attachEvent( 'on' + event, attachHandler );
+            elem.attachEvent('on' + event, attachHandler);
         }
 
     },
 
-    getCaretIndex: function( el ){
-
-      var start = 0,
-          end = 0,
-          normalizedValue, range,
-          textInputRange, len, endRange;
-
-      if ( typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number' ) {
-          start = el.selectionStart;
-          end = el.selectionEnd;
-
-
-      } else {
-          range = document.selection.createRange();
-
-          if ( range && range.parentElement() === el ) {
-              len = el.value.length;
-              normalizedValue = el.value.replace( /\r\n/g, '\n' );
-
-              // Create a working TextRange that lives only in the input
-              textInputRange = el.createTextRange();
-              textInputRange.moveToBookmark( range.getBookmark() );
-
-              // Check if the start and end of the selection are at the very end
-              // of the input, since moveStart/moveEnd doesn't return what we want
-              // in those cases
-              endRange = el.createTextRange();
-              endRange.collapse( false );
-
-              if ( textInputRange.compareEndPoints( 'StartToEnd', endRange ) > -1 ) {
-                  start = end = len;
-              } else {
-                  start = -textInputRange.moveStart( 'character', -len );
-                  start += normalizedValue.slice( 0, start ).split( '\n' ).length - 1;
-
-                  if ( textInputRange.compareEndPoints( 'EndToEnd', endRange ) > -1 ) {
-                      end = len;
-                  } else {
-                      end = -textInputRange.moveEnd( 'character', -len );
-                      end += normalizedValue.slice( 0, end ).split( '\n' ).length - 1;
-                  }
-              }
-          }
-      }
-
-      return end;
-    },
-
-    getSettings: function( defaults, options ){
+    getSettings: function(defaults, options){
 
       var key,
           settings = {};
 
-      if( options && typeof options === 'object' ){
+      if(options && typeof options === 'object'){
 
-        for( key in defaults ){
-            settings[ key ] = ( options.hasOwnProperty( key ) ) ? options[ key ] : defaults[ key ];
+        for(key in defaults){
+            settings[key] = (options.hasOwnProperty(key)) ? options[key] : defaults[key];
         }
 
         return settings;
@@ -527,7 +449,7 @@ define([], function(){
 
     },
 
-    keyCodeAltersInputString: function(  keyCode, shiftKey, ctrlKey ){
+    keyCodeAltersInputString: function( keyCode, shiftKey, ctrlKey){
 
       var nonTransKeys = [
           0, // Firefox arrow keys
@@ -563,53 +485,53 @@ define([], function(){
           123, // F12
           144, // Num Lock
           255
-      ];
+     ];
 
-      if( shiftKey === true ) {
+      if(shiftKey === true) {
         return true;
       } else
       if (
-          ( ctrlKey === true && keyCode === 65 ) || // select all
-          ( ctrlKey === true && keyCode === 67 ) || // copy
-          ( ctrlKey === true && keyCode === 86 ) || // paste
-          ( ctrlKey === true && keyCode === 88 ) || // cut
-          ( ctrlKey === true && keyCode === 90 ) // back
-      ) {
+          (ctrlKey === true && keyCode === 65) || // select all
+          (ctrlKey === true && keyCode === 67) || // copy
+          (ctrlKey === true && keyCode === 86) || // paste
+          (ctrlKey === true && keyCode === 88) || // cut
+          (ctrlKey === true && keyCode === 90) // back
+     ) {
           return false;
       } else {
-          return nonTransKeys.indexOf( keyCode ) === -1;
+          return nonTransKeys.indexOf(keyCode) === -1;
       }
     },
 
-    isArrowKey: function ( keyCode ) {
-        return ( [ 37, 38, 39, 40 ].indexOf( keyCode ) > -1 );
+    isArrowKey: function (keyCode) {
+        return ([37, 38, 39, 40].indexOf(keyCode) > -1);
     },
 
-    isSpaceKey: function ( keyCode ) {
-        return ( 32 === keyCode );
+    isSpaceKey: function (keyCode) {
+        return (32 === keyCode);
     },
 
-    isShiftKey: function( keyCode ){
-        return ( 16 === keyCode );
+    isShiftKey: function(keyCode){
+        return (16 === keyCode);
     },
 
-    isBackspaceKey: function ( keyCode ) {
-        return ( 8 === keyCode );
+    isBackspaceKey: function (keyCode) {
+        return (8 === keyCode);
     },
 
-    isValidTextElement: function ( element ) {
+    isValidTextElement: function (element) {
         return (
-            ( element.nodeName === 'INPUT' && element.type === 'text' ) ||
-            ( element.nodeName === 'TEXTAREA' && element.type === 'textarea' )
-        );
+            (element.nodeName === 'INPUT' && element.type === 'text') ||
+            (element.nodeName === 'TEXTAREA' && element.type === 'textarea')
+       );
     },
 
-    isBlankOrEmptyString: function ( char ) {
-        return ( [ ' ', '', '\n', '\r', '\t' ].indexOf( char ) > -1 );
+    isBlankOrEmptyString: function (char) {
+        return ([' ', '', '\n', '\r', '\t'].indexOf(char) > -1);
     },
 
-    isWhiteSpaceChar: function ( char ) {
-        return ( [ ' ', '\n', '\r', '\t' ].indexOf( char ) > -1 );
+    isWhiteSpaceChar: function (char) {
+        return ([' ', '\n', '\r', '\t'].indexOf(char) > -1);
     }
 
   };

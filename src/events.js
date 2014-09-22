@@ -58,7 +58,7 @@ define(['util'], function(util){
 
   events.toggleScript = function(){
 
-    var caretIndex    = util.getCaretIndex(this.element),
+    var caretIndex    = this.getCaretIndex(),
         switchToRoman = (this.settings.scriptMode === 'Devanagari');
 
     if(switchToRoman){
@@ -143,13 +143,13 @@ define(['util'], function(util){
 
   events.onKeyHeldDown = function(){
 
-    var caretIndex    = util.getCaretIndex(this.element),
+    var caretIndex    = this.getCaretIndex(),
         newCaretIndex = caretIndex - this.keydownCount;
 
     this.element.value = this.inputString;
 
     this.resetKeyEventCount();
-    util.setCaretIndex(this, newCaretIndex);
+    this.setCaretIndex(newCaretIndex);
 
   };
 
