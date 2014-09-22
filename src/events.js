@@ -104,7 +104,12 @@ define(['util'], function(util){
     );
   }
 
-  function incrementKeyEventCount(tf, eventType, keyCode, ctrlKey, shiftKey){
+  events.incrementKeyEventCount = function(eventType){
+
+    var cachedCtrlKey = this.cachedCtrlKey,
+        ctrlKey       = this.ctrlKey,
+        cachedKeyCode = this.cachedKeyCode,
+        keyCode       = this.keyCode;
 
     if(eventType === 'keydown'){
       if(isValidCtrlCombo(ctrlKey, keyCode)){
@@ -113,41 +118,41 @@ define(['util'], function(util){
     } else
     if(eventType === 'keyup'){
       if(
-        (tf.cachedCtrlKey && tf.keyCode === 17) || // ctrl + ctrl
-        (tf.cachedCtrlKey && tf.keyCode === 65) || // ctrl + a
-        (tf.cachedCtrlKey && tf.keyCode === 67) || // ctrl + c
-        (tf.cachedCtrlKey && tf.keyCode === 86) || // ctrl + v
-        (tf.cachedCtrlKey && tf.keyCode === 88) || // ctrl + x
-        (tf.cachedCtrlKey && tf.keyCode === 89) || // ctrl + x
-        (tf.cachedCtrlKey && tf.keyCode === 90) || // ctrl + z
+        (cachedCtrlKey && keyCode === 17) || // ctrl + ctrl
+        (cachedCtrlKey && keyCode === 65) || // ctrl + a
+        (cachedCtrlKey && keyCode === 67) || // ctrl + c
+        (cachedCtrlKey && keyCode === 86) || // ctrl + v
+        (cachedCtrlKey && keyCode === 88) || // ctrl + x
+        (cachedCtrlKey && keyCode === 89) || // ctrl + x
+        (cachedCtrlKey && keyCode === 90) || // ctrl + z
 
-        (tf.cachedKeyCode === 65 && tf.keyCode === 17) || // a keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 65) || // control keyup then a keyup
+        (cachedKeyCode === 65 && keyCode === 17) || // a keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 65) || // control keyup then a keyup
 
-        (tf.cachedKeyCode === 67 && tf.keyCode === 17) || // c keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 67) || // control keyup then c keyup
+        (cachedKeyCode === 67 && keyCode === 17) || // c keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 67) || // control keyup then c keyup
 
-        (tf.cachedKeyCode === 86 && tf.keyCode === 17) || // c keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 86) || // control keyup then c keyup
+        (cachedKeyCode === 86 && keyCode === 17) || // c keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 86) || // control keyup then c keyup
 
-        (tf.cachedKeyCode === 88 && tf.keyCode === 17) || // x keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 88) || // control keyup then x keyup
+        (cachedKeyCode === 88 && keyCode === 17) || // x keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 88) || // control keyup then x keyup
 
-        (tf.cachedKeyCode === 89 && tf.keyCode === 17) || // y keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 89) || // control keyup then y keyup
+        (cachedKeyCode === 89 && keyCode === 17) || // y keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 89) || // control keyup then y keyup
 
-        (tf.cachedKeyCode === 90 && tf.keyCode === 17) || // z keyup then control keyup
-        (tf.cachedKeyCode === 17 && tf.keyCode === 90)  // control keyup then z keyup
+        (cachedKeyCode === 90 && keyCode === 17) || // z keyup then control keyup
+        (cachedKeyCode === 17 && keyCode === 90)  // control keyup then z keyup
 
       ){ return; }
     }
 
     if(!canIgnoreKeyCode(keyCode)){
       if(eventType === 'keyup'){
-        tf.keyupCount = tf.keyupCount += 1;
+        this.keyupCount = this.keyupCount += 1;
       } else
       if(eventType === 'keydown'){
-        tf.keydownCount = tf.keydownCount += 1;
+        this.keydownCount = this.keydownCount += 1;
       }
     }
 
@@ -165,7 +170,7 @@ define(['util'], function(util){
     this.cacheShiftKey(shiftKey);
     this.cacheKeyCode(keyCode);
 
-    incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+    this.incrementKeyEventCount(eventType);
 
   }
 
@@ -186,14 +191,14 @@ define(['util'], function(util){
         return
       }
 
-      if( settings.scriptMode === 'Roman' ){ return; };
+      if(settings.scriptMode === 'Roman'){ return; };
 
-      incrementKeyEventCount(this, eventType, keyCode, ctrlKey, shiftKey);
+      this.incrementKeyEventCount(eventType);
 
       if(keyHeldDown(this)){
 
         undoKeyHeldDown(this);
-        return ;
+        return;
       }
 
       this.keydownCount = 0;
@@ -263,5 +268,6 @@ define(['util'], function(util){
     this.clearKeyAndStringCache();
   }
 
-  return events;
+  return events; 
+
 });

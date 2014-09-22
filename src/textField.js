@@ -4,10 +4,10 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
     var startingCaretIndex,
 
-        self = this,
+        self = this, 
         settings = util.getSettings({
 
-          autoAddVirama:true,
+          autoAddVirama:true, 
           autoRemoveVirama:true,
           allowModeToggle:true,
           toggleScriptButton: false,
@@ -209,8 +209,9 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     this.cachedKey = null;
     this.cachedInputString = null;
     this.cachedInputStringKeyRemoved = null;
-  };
+  }
 
+  DevanagariTextField.prototype.incrementKeyEventCount = events.incrementKeyEventCount;
   DevanagariTextField.prototype.onKeydown = events.onKeydown;
   DevanagariTextField.prototype.onKeyup   = events.onKeyup;
   DevanagariTextField.prototype.onClick   = events.onClick;
