@@ -6,10 +6,6 @@ define(['util'], function(util){
     return(keydownCount > keyupCount);
   }
 
-  function keyHeldDown(tf){
-    return(tf.keyupCount !== tf.keydownCount);
-  }
-
   function undoKeyHeldDown(tf){
 
     var caretIndex    = util.getCaretIndex(tf.element),
@@ -108,6 +104,11 @@ define(['util'], function(util){
     );
   }
 
+  events.resetKeyEventCount = function(){
+    this.keydownCount = 0;
+    this.keyupCount = 0;
+  };
+
   events.incrementKeyEventCount = function(eventType){
 
     var cachedCtrlKey = this.cachedCtrlKey,
@@ -199,15 +200,12 @@ define(['util'], function(util){
 
       this.incrementKeyEventCount(eventType);
 
-      //if(keyHeldDown(this)){
-      if(keyIsHeldDown(this.keydownCount, this.keyupCount))}
+      if(keyIsHeldDown(this.keydownCount, this.keyupCount)){
         undoKeyHeldDown(this);
         return;
       }
 
-      this.keydownCount = 0;
-      this.keyupCount = 0;
-
+      this.resetKeyEventCount();
       this.cacheInputString();
 
       if(this.inputString.length > this.cachedInputString.length){

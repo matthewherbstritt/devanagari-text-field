@@ -2,14 +2,11 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   function DevanagariTextField(element, options){
 
-    var startingCaretIndex,
-
-        self = this, 
-        settings = util.getSettings({
+    var self      = this, 
+        settings  = util.getSettings({
 
           autoAddVirama:true, 
           autoRemoveVirama:true,
-          allowModeToggle:true,
           toggleScriptButton: false,
           toggleScriptKey: 'Ctrl+Shift+T',
           scriptMode: 'Devanagari',
@@ -17,55 +14,49 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
         }, options);
 
-    if(util.isValidTextElement(element)){
-
-      startingCaretIndex = util.getCaretIndex(element);
-
-      this.keyMap = keyMap.build(settings);
-
-      this.keydownCount = 0;
-      this.keyupCount = 0;
-
-      this.element = element;
-      this.settings = settings;
-
-      this.caretIndex = util.getCaretIndex(this.element);
-      this.cachedCaretIndex = null;
-
-      this.devanagariCharObj = null;
-
-      this.key = null;
-      this.cachedKey = null;
-
-      this.inputString = this.element.value;
-      this.cachedInputString = null;
-
-      this.inputStringKeyRemoved = null;
-      this.cachedInputStringKeyRemoved = null;
-
-      util.addEvent(this.element, 'keyup', function(event){
-        self.onKeyup(event || window.event);
-      });
-
-      util.addEvent(this.element, 'keydown', function(event){
-        self.onKeydown(event || winow.event);
-      });
-
-      util.addEvent(this.element, 'click', function(){
-        self.onClick();
-      });
-
-      util.addEvent(this.element, 'blur', function(){
-        self.onBlur();
-      });
-
-      util.addEvent(this.element, 'change', function(){
-        self.onChange();
-      });
-
-    } else {
+    if(!util.isValidTextElement(element)){
       throw new Error('Element must be a text element.');
     }
+
+    this.element                      = element;
+    this.settings                     = settings;
+    this.keyMap                       = keyMap.build(settings);
+    this.devanagariCharObj            = null;
+
+    this.keydownCount                 = 0;
+    this.keyupCount                   = 0;
+
+    this.caretIndex                   = util.getCaretIndex(element);
+    this.cachedCaretIndex             = null;
+
+    this.key                          = null;
+    this.cachedKey                    = null;
+
+    this.inputString                  = element.value;
+    this.cachedInputString            = null;
+
+    this.inputStringKeyRemoved        = null;
+    this.cachedInputStringKeyRemoved  = null;
+
+    util.addEvent(this.element, 'keyup', function(event){
+      self.onKeyup(event || window.event);
+    });
+
+    util.addEvent(this.element, 'keydown', function(event){
+      self.onKeydown(event || winow.event);
+    });
+
+    util.addEvent(this.element, 'click', function(){
+      self.onClick();
+    });
+
+    util.addEvent(this.element, 'blur', function(){
+      self.onBlur();
+    });
+
+    util.addEvent(this.element, 'change', function(){
+      self.onChange();
+    });
 
   }
 
@@ -211,12 +202,13 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
     this.cachedInputStringKeyRemoved = null;
   }
 
-  DevanagariTextField.prototype.incrementKeyEventCount = events.incrementKeyEventCount;
-  DevanagariTextField.prototype.onKeydown = events.onKeydown;
-  DevanagariTextField.prototype.onKeyup   = events.onKeyup;
-  DevanagariTextField.prototype.onClick   = events.onClick;
-  DevanagariTextField.prototype.onChange  = events.onChange;
-  DevanagariTextField.prototype.onBlur    = events.onBlur;
+  DevanagariTextField.prototype.incrementKeyEventCount  = events.incrementKeyEventCount;
+  DevanagariTextField.prototype.resetKeyEventCount      = events.resetKeyEventCount;
+  DevanagariTextField.prototype.onKeydown               = events.onKeydown;
+  DevanagariTextField.prototype.onKeyup                 = events.onKeyup;
+  DevanagariTextField.prototype.onClick                 = events.onClick;
+  DevanagariTextField.prototype.onChange                = events.onChange;
+  DevanagariTextField.prototype.onBlur                  = events.onBlur;
 
   var init = function(elementId, options){
     var te = document.getElementById(elementId);
