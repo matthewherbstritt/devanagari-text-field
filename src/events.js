@@ -6,19 +6,6 @@ define(['util'], function(util){
     return(keydownCount > keyupCount);
   }
 
-  function undoKeyHeldDown(tf){
-
-    var caretIndex    = util.getCaretIndex(tf.element),
-        newCaretIndex = caretIndex - tf.keydownCount;
-
-    tf.element.value  = tf.inputString;
-    tf.keydownCount   = 0;
-    tf.keyupCount     = 0;
-
-    util.setCaretIndex(tf, newCaretIndex);
-
-  }
-
   function canIgnoreKeyCode(keyCode){
      return([
          0, // Firefox arrow keys
@@ -57,7 +44,6 @@ define(['util'], function(util){
      ].indexOf(keyCode) > -1);
   }
 
-
   function isValidCtrlCombo(ctrlKey, keyCode){
     return (
       (ctrlKey && keyCode === 17) || // control keydown
@@ -78,19 +64,19 @@ define(['util'], function(util){
     if(switchToRoman){
 
       this.settings.scriptMode = 'Roman';
+
       this.clearKeyAndStringCache();
       this.resetKeyEventCount();
 
     } else {
 
-      this.settings.scriptMode = 'Devanagari';
+      this.settings.scriptMode    = 'Devanagari';
+      this.devanagariCharObj      = null;
+      this.inputStringKeyRemoved  = null;
+      this.inputString            = this.element.value;
+
       this.clearKeyAndStringCache();
       this.resetKeyEventCount();
-
-      this.devanagariCharObj = null;
-      this.inputStringKeyRemoved = null;
-
-      this.inputString = this.element.value;
       
     }
 
@@ -98,7 +84,7 @@ define(['util'], function(util){
 
   events.resetKeyEventCount = function(){
     this.keydownCount = 0;
-    this.keyupCount = 0;
+    this.keyupCount   = 0;
   };
 
   events.incrementKeyEventCount = function(eventType){
@@ -155,6 +141,18 @@ define(['util'], function(util){
 
   };
 
+  events.onKeyHeldDown = function(){
+
+    var caretIndex    = util.getCaretIndex(this.element),
+        newCaretIndex = caretIndex - this.keydownCount;
+
+    this.element.value = this.inputString;
+
+    this.resetKeyEventCount();
+    util.setCaretIndex(this, newCaretIndex);
+
+  };
+
   events.onKeydown = function(e){
 
     var keyCode     = e.keyCode ? e.keyCode : e.which,
@@ -193,7 +191,7 @@ define(['util'], function(util){
       this.incrementKeyEventCount(eventType);
 
       if(keyIsHeldDown(this.keydownCount, this.keyupCount)){
-        undoKeyHeldDown(this);
+        this.onKeyHeldDown();
         return;
       }
 
@@ -202,18 +200,12 @@ define(['util'], function(util){
 
       if(this.inputString.length > this.cachedInputString.length){
 
-        this.cachedCaretIndex = this.caretIndex;
-        this.caretIndex = util.getCaretIndex(this.element);
-
-        this.cachedKey = this.key;
-        this.key = (this.caretIndex > 0) ? this.element.value[ this.caretIndex - 1 ] : '';
+        this.cacheCaretIndex();
+        this.cacheKey();
 
         if(!util.isDevanagari(this.key)){
 
-          var elVal = this.element.value;
-
-          this.cachedInputStringKeyRemoved  = (this.inputStringKeyRemoved != null) ? this.inputStringKeyRemoved : '';
-          this.inputStringKeyRemoved = (this.caretIndex > 0) ? elVal.slice(0, this.caretIndex - 1 ) + elVal.slice(this.caretIndex): '';
+          this.cacheInputStringKeyRemoved();
 
         } else {
           return false;

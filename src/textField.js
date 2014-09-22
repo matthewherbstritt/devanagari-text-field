@@ -173,38 +173,64 @@ define(['util', 'keyMap', 'devanagari', 'events'], function(util, keyMap, devana
 
   DevanagariTextField.prototype.cacheShiftKey = function(shiftKey){
     this.cachedShiftKey = this.shiftKey;
-    this.shiftKey = shiftKey;
+    this.shiftKey       = shiftKey;
   };
 
   DevanagariTextField.prototype.cacheCtrlKey = function(ctrlKey){
-    this.cachedCtrlKey = this.ctrlKey;
-    this.ctrlKey = ctrlKey;
+    this.cachedCtrlKey  = this.ctrlKey;
+    this.ctrlKey        = ctrlKey;
   };
 
   DevanagariTextField.prototype.cacheKeyCode = function(keyCode){
-    this.cachedKeyCode = this.keyCode;
-    this.keyCode = keyCode;
+    this.cachedKeyCode  = this.keyCode;
+    this.keyCode        = keyCode;
   };
 
   DevanagariTextField.prototype.cacheInputString = function(){
-    this.cachedInputString = (this.inputString != null) ? this.inputString : '';
-    this.inputString = this.element.value;
-  }
+    this.cachedInputString  = (this.inputString != null) ? this.inputString : '';
+    this.inputString        = this.element.value;
+  };
+
+  DevanagariTextField.prototype.cacheInputStringKeyRemoved = function(){
+
+    var elVal                 = this.element.value,
+        inputStringKeyRemoved = this.inputStringKeyRemoved,
+        caretIndex            = this.caretIndex;
+
+    this.cachedInputStringKeyRemoved = (inputStringKeyRemoved != null) ? inputStringKeyRemoved : '';
+    this.inputStringKeyRemoved       = (caretIndex > 0) ? elVal.slice(0, caretIndex - 1 ) + elVal.slice(caretIndex): '';
+
+  };
 
   DevanagariTextField.prototype.outputString = function(string){
     this.element.value = string;
   };
 
   DevanagariTextField.prototype.clearKeyAndStringCache = function(){
-    this.key = null;
-    this.cachedKey = null;
-    this.cachedInputString = null;
-    this.cachedInputStringKeyRemoved = null;
-  }
+    this.key                          = null;
+    this.cachedKey                    = null;
+    this.cachedInputString            = null;
+    this.cachedInputStringKeyRemoved  = null;
+  };
+
+  DevanagariTextField.prototype.cacheCaretIndex = function(){
+    this.cachedCaretIndex = this.caretIndex;
+    this.caretIndex       = util.getCaretIndex(this.element);
+  };
+
+  DevanagariTextField.prototype.cacheKey = function(){
+
+    var caretIndex = this.caretIndex;
+
+    this.cachedKey = this.key;
+    this.key       = (caretIndex > 0) ? this.element.value[caretIndex - 1] : '';
+
+  };
 
   DevanagariTextField.prototype.incrementKeyEventCount  = events.incrementKeyEventCount;
   DevanagariTextField.prototype.resetKeyEventCount      = events.resetKeyEventCount;
   DevanagariTextField.prototype.toggleScript            = events.toggleScript;
+  DevanagariTextField.prototype.onKeyHeldDown           = events.onKeyHeldDown;
   DevanagariTextField.prototype.onKeydown               = events.onKeydown;
   DevanagariTextField.prototype.onKeyup                 = events.onKeyup;
   DevanagariTextField.prototype.onClick                 = events.onClick;
