@@ -1,0 +1,146 @@
+.panel {
+
+  border: $panel--border;
+  border-top-right-radius: $panel--border-radius-outer;
+  border-top-left-radius: $panel--border-radius-outer;
+  border-bottom-right-radius: $panel--border-radius-outer;
+  border-bottom-left-radius: $panel--border-radius-outer;
+
+  .panel-heading {
+
+    border-top-right-radius: $panel--border-radius-inner;
+    border-top-left-radius: $panel--border-radius-inner;
+    background-clip: border-box;
+    background: $panel-heading--bg-color;
+    position:relative;
+    padding: em($panel-heading--padding);
+    color: $white;
+
+    .panel-actions {
+      position:absolute;
+      top: 18px;
+      right: 18px;
+
+      a{
+        color: $white;
+        &:not(:last-child){
+          margin-right:em(16);
+        }
+      }
+    }
+
+  }
+
+  .panel-options{
+    font-size: em(14);
+    padding: em(16, 14);
+    border-top:$panel--border;
+    border-bottom:$panel--border;
+    background: lighten($panel-heading--bg-color, 22%);
+
+    h3 {
+      @include mq(em($tablet-large)){
+        display:none;
+      }
+      text-decoration:underline;
+      margin-bottom: em(8,14);
+      font-weight: $font-weight--semibold ;
+    }
+
+    .group{
+  
+
+      .row{
+
+        @include mq(em($tablet-large)){
+
+          display:inline-block;
+          margin-right: -4px;
+          vertical-align:middle;
+          margin-bottom:0;
+          width:33.333%;
+
+          &:not(:first-child) {
+            padding-left: em(16);
+          }
+
+          &.fonts {
+            width:100%;
+            margin-bottom:0;
+          }
+
+          &.fonts label {
+            width:15%
+          }
+
+          &.fonts select {
+            width:85%
+          }
+
+        }
+
+        &.fonts label {
+          width:30%
+        }
+
+        &.fonts select {
+          width:70%
+        }
+
+        width:100%;
+        margin-bottom: em(16,14);
+
+        label{
+
+          @include mq(em($tablet-large)){
+
+            width:25%;
+          }
+
+
+
+          width:15%;
+          vertical-align:middle;
+          display:inline-block;
+          margin-right:-4px;
+
+        }
+
+        select,
+        input[type='text'] {
+
+          @include mq(em($tablet-large)){
+            width:75%;
+          }
+
+
+
+          display:inline-block;
+          margin-right:-4px;
+          vertical-align:middle;
+          width:85%;
+          padding:em(2,14) em(2,14);
+        }
+
+        &:last-child{
+          margin-bottom:0;
+        }
+
+      }
+
+    }
+
+
+
+  }
+
+  .panel-body{
+    background:lighten(grey, 40%);
+    min-height:em(160);
+    padding: em(16);
+    border-bottom-right-radius: $panel--border-radius-inner;
+    border-bottom-left-radius: $panel--border-radius-inner;
+  }
+
+
+}

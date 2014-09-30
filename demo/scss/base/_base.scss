@@ -1,0 +1,49 @@
+* {
+	box-sizing: border-box;
+}
+
+body{
+  font-family: $hind;
+//background: palette(orange, light);
+  background: $white;
+}
+
+h1, h2, h3{
+	margin: 0;
+	padding:0;
+}
+
+h1{
+	font-size: em(30);
+}
+
+h2{
+	font-size: em(24);
+}
+
+h3{
+	font-size: em(18);
+	font-weight: $font-weight--light;
+}
+
+
+p{
+	margin:0;
+	padding:0;
+	line-height:em($base-line-height);
+}
+
+a{
+  text-decoration: none;
+}
+
+b{
+  @extend %visuallyhidden;
+}
+
+select,
+textarea,
+input[type='text']
+{
+	@extend %formdefaults;
+}

@@ -1,0 +1,104 @@
+// ==========================================================================
+// Navbar
+// ==========================================================================
+
+.navbar {
+	background: $green;
+	position: fixed;
+	width:100%;
+	top:0;
+	padding: em(24) 0;
+	z-index: map-get($zindex, header);
+
+	a{
+		color:$white;
+	}
+
+	.site-logo{
+		font-size: em(24);
+		padding:0;
+		margin:0;
+		line-height:0;
+	}
+
+	.menu-icon{
+
+		@include mq(em($tablet-large)){
+			display:none;
+		}
+
+		position:relative;
+
+		height:19px;
+		width:20px;
+		float:right;
+		display:inline-block;
+
+		border-top:3px solid $white;
+		border-bottom:3px solid $white;
+
+		&:before{
+			content: '';
+			position:absolute;
+			width:20px;
+			border-top:3px solid $white;
+			top:5px;
+			right:0;
+		}
+
+	}
+
+	nav{
+
+		position:absolute;
+		top:58px;
+		right:0;
+		width:100%;
+
+		@include mq(em($tablet-large)){
+			position:static;
+			display:inline-block;
+			float:right;
+			width:auto;
+			vertical-align:middle;
+		}
+
+
+		ul{
+
+			display:block;
+			list-style:none;
+			padding:0;
+			margin:0;
+
+			background:lighten($green, 12%);
+
+			@include mq(em($tablet-large)){
+				position:relative;
+				display:inline-block;
+				float:right;
+				background:$green;
+			}
+
+			li{
+				@include mq(em($tablet-large)){
+					display:inline-block;
+					&:last-child a{
+						padding-right:0;
+					}
+				}
+				a{
+					@include mq(em($tablet-large)){
+						display:inline-block;
+						padding:0 em(16);
+					}
+					display:inline-block;
+					padding:em(16);
+				}
+			}
+		}
+
+	}
+
+
+}

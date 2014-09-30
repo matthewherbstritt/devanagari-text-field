@@ -1,180 +1,339 @@
 <!DOCTYPE html>
 <html ng-app='demo' >
     <head>
+      <meta charset="utf-8">
         <title>Devanagari Text Field</title>
-        <link rel='stylesheet' type='text/css' href='css/main.css'/>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Glegoo:700|Halant|Teko|Noto+Sans|Khand|Rozha+One|Ek+Mukta|Hind:400,700,600,500,300|Kalam|Karma|Vesper+Libre|Sarpanch|Laila&subset=latin,devanagari' rel='stylesheet' type='text/css'>
+        <link rel='stylesheet' type='text/css' href='css/demo.css'/>
 
     </head>
-    <body>
+
+    <body ng-controller="demoController">
 
       <header>
-        <div class='container'>
-          <h1>Devanagari Text Field</h1>
-          <nav>
-            <ul>
-              <li><a href='#about'>About</a></li>
-              <li><a href='#usage'>Usage</a></li>
-              <li><a href='#characters'>Characters</a></li>
-              <li><a href='https://github.com/matt-herbstritt/devanagari-text-field'>Repo</a></li>
-            </ul>
-          </nav>
-        </div>
+          <div class='navbar'>
+            <div class='container'>
+              <a class="site-logo" href="#about" >Devanagari Text Field</a>
+              <a class='menu-icon' href="javascript:;" ng-click='hideMobileMenu = !hideMobileMenu'></a>
+              <nav ng-class='{"is-hidden-mobile" : hideMobileMenu}'>
+                <ul>
+                  <li class="nav__item"><a href="#about" ng-click='hideMobileMenu=true' >About</a></li>
+                  <li class="nav__item"><a href="#install" ng-click='hideMobileMenu=true'>Installation</a></li>
+                  <li class="nav__item"><a href="#chars" ng-click='hideMobileMenu=true'>Characters</a></li>
+                  <li class="nav__item"><a href="#demo" ng-click='hideMobileMenu=true'>Demo</a></li>
+                  <li class="nav__item"><a href="#" ng-click='hideMobileMenu=true'>GitHub</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
       </header>
 
       <div class='container'>
 
-        <span class='anchor' id='about'></span>
-        <section>
-          <h1>About</h1>
-          <article>
-            <p>Devanagari Text Field is small open source JavaScript plugin which enables
-            users to type Devanagari characters in HTML text inputs and textareas
-            using standard Latin script keyboards. The default key mappings are designed to reflect the
-            sound of each Devanagari character rather than attempt to mimic the layout of
-            <a href='http://en.wikipedia.org/wiki/InScript_keyboard'>InScript keyboards</a>. It is hoped
-            that in future versions there will be support for adding custom key mappings.
-            </p>
-            <p>The project is still in development and is largely untested. However, most of
-              the functionality is there and you can try it out in the text fields below.</p>
-          </article>
-        </section>
+        <!-- ==================================================================================================== -->
+        <!-- ABOUT -->
+        <!-- ==================================================================================================== -->
 
-        <span class='anchor' id='usage'></span>
-        <section>
-
-          <h1>Usage</h1>
-
-            <p>
-              The devangariTextField wrapper is exposed as a global
-              function or as an AMD module. To enable Devanagari script
-              to be typed into a text element simply pass the id of the
-              target element as the first argument. Additional configuration
-              can be achieved by passing your desired settings as an
-              optional second argument as demonstrated below.
-            </p>
-            <div class='panel'>
-
-              <div class='header'>
-                <h1>Default Settings</h1>
-              </div>
-              <div class='usage-code-wrp'>
-                <pre><code>devanagariTextField( <span class='string'>'default-tb'</span> );</code></pre>
-              </div>
-              <div class='body'>
-
-                <div class='row'><input type='text' id='default-tb' autocomplete='off'/></div>
-                <div class='row'><textarea id='default-ta' autocomplete='off'></textarea></div>
-              </div>
-
-            </div>
-
-            <div class='panel'>
-
-              <div class='header'>
-                <h1>Auto Add Virama </h1>
-              </div>
-              <div class='usage-code-wrp'>
-                <pre><code>devanagariTextField( <span class='string'>'no-auto-virama-tb'</span>, {
-    autoAddVirama: <span class='boolean'>false</span>
-});</code></pre>
-              </div>
-              <div class='body'>
-                <div class='row'><input type='text' id='no-auto-virama-tb' autocomplete='off'/></div>
-                <div class='row'><textarea id='no-auto-virama-ta'></textarea></div>
-              </div>
-
-            </div>
-
-            <div class='panel'>
-
-              <div class='header'>
-                <h1>Auto Remove Virama </h1>
-              </div>
-              <div class='usage-code-wrp'>
-                <pre><code>devanagariTextField( <span class='string'>'no-auto-remove-tb'</span>, {
-    autoRemoveVirama: <span class='boolean'>false</span>
-});</code></pre>
-              </div>
-              <div class='body'>
-                <div class='row'><input type='text' id='no-auto-remove-tb' autocomplete='off'/></div>
-                <div class='row'><textarea id='no-auto-remove-ta'></textarea></div>
-              </div>
-
-            </div>
-
-        </section>
-
-
-        <span class='characters' id='characters'></span>
-        <section ng-controller='charMapController'>
-          <h1>Characters</h1>
+        <section id='about'>
+          <h2>About</h1>
           <p>
-            Almost all the available Devanagari UTF-8 characters can be
-            typed. Unfortunately there are very few fonts which support
-            every character. This is why you will occasionally see blank
-            boxes next to some of the more obscure characters.
+            Devanagari Text Field is small open source JavaScript plugin which enables
+            users to type Devanagari characters into HTML text inputs and textareas using
+            standard Roman script keyboards. The default key mappings are designed to
+            reflect the sound of each Devanagari character rather than attempt to mimic
+            the layout of InScript keyboards. It is hoped that in future versions there
+            will be support for adding custom key mappings.
           </p>
-          <div class='panel'>
-            <div class='header'>
-              <h1>Vowels</h1>
-            </div>
-            <div class='body'>
-              <div class='row'>
-                <span class='heading'>Input Key</span>
-                <span class='heading'>Output</span>
-                <span class='heading'>Name</span>
-              </div>
-              <div class='row' ng-repeat="v in vowels">
-                <span>{{v.key}}</span>
-                <span class='devanagari'>{{v.char}}{{v.matra}}</span>
-                <span >{{v.name}}</span>
-              </div>
-            </div>
-            <div class='panel inner'>
-              <div class='header inner'>
-                <h1>Consonants</h1>
-              </div>
-              <div class='body'>
-                <div class='row'>
-                  <span class='heading'>Input Key</span>
-                  <span class='heading'>Output</span>
-                  <span class='heading'>Name</span>
-                </div>
-                <div class='row' ng-repeat="c in consonants">
-                  <span>{{c.key}}</span>
-                  <span class='devanagari'>{{c.char}}</span>
-                  <span >{{c.name}}</span>
-                </div>
-              </div>
-            <div class='panel inner'>
-              <div class='header inner'>
-                <h1>Digits</h1>
-              </div>
-              <div class='body'>
-                <div class='row'>
-                  <span class='heading'>Input Key</span>
-                  <span class='heading'>Output</span>
-                  <span class='heading'>Name</span>
-                </div>
-                <div class='row' ng-repeat="n in numbers">
-                  <span>{{n.key}}</span>
-                  <span class='devanagari'>{{n.char}}</span>
-                  <span >{{n.name}}</span>
-                </div>
-              </div>
-          </div>
         </section>
+
+        <!-- ==================================================================================================== -->
+        <!-- INSTALLATION -->
+        <!-- ==================================================================================================== -->
+
+        <section id='install'>
+          <h2 >Installation</h2>
+          <p>As a global variable: </p>
+
+          <pre><code class='code html-syntax'>
+              <span class='tb tb-0 comment'>&lt;!DOCTYPE html&gt;</span>
+              <span class='tb tb-0 tag'>&lt;html&gt;</span>
+              <span class='tb tb-1 tag'>&lt;head&gt;&lt;/head&gt;</span>
+              <span class='tb tb-1 tag'>&lt;body&gt;</span>
+              <span class='tb tb-2 tag'>&lt;input <span class="attr">type=</span><span class="string">'text'</span> <span class="attr">id=</span><span class="string">'myTextElement'</span>/&gt;</span>
+              <span class='tb tb-2 tag'>&lt;script <span class="attr">src=</span><span class="string">'devanagariTextField.js'</span>&gt;&lt;/script&gt;</span>
+              <span class='tb tb-2 tag'>&lt;script <span class="attr">src=</span><span class="string">'scripts.js'</span>&gt;&lt;/script&gt;</span>
+              <span class='tb tb-1 tag'>&lt;/body&gt;</span>
+              <span class='tb tb-0 tag'>&lt;/html&gt;</span>
+          </code></pre>
+
+
+          <pre><code class='code javascript-syntax'>
+            <span class='tb tb-0 comments'>// scripts.js</span>
+            <span class='tb tb-0 space-above-x2'>(<span class='keyword'>function</span>(devanagariTextField){</span>
+            <span class='tb tb-1 space-above'>devanagariTextField(<span class='string'>'myTextElement'</span>);</span>
+            <span class='tb tb-0 space-above'>}(devanagariTextField));</span>
+          </code></pre>
+
+          <p>Using an AMD loader:</p>
+
+          <pre><code class='code javascript-syntax'>
+            <span class='tb tb-0 comments'>// scripts.js</span>
+            <span class='tb tb-0 space-above-x2'>require([<span class='string'>'devanagariTextField'</span>], <span class='keyword'>function</span>(devanagariTextField) {</span>
+            <span class='tb tb-1 space-above'>devanagariTextField(<span class='string'>'myTextElement'</span>);</span>
+            <span class='tb tb-0 space-above'>});</span>
+          </code></pre>
+        </section>
+
+        <!-- ==================================================================================================== -->
+        <!-- DEMO -->
+        <!-- ==================================================================================================== -->
+
+        <section id='demo'>
+
+          <h2>Demo</h2>
+
+          <p>
+            Type in the text fields below to try it out. The default settings are applied to
+            each field but you can alter them by clicking on the settings button in the top right cornor.
+          </p>
+
+          <div class='panel demo'>
+
+            <header class='panel-heading'>
+              <h3>Type Devanagari </h3>
+              <div class='panel-actions'>
+                <a href='javascript:;' ng-click='showDemoOptions = !showDemoOptions'>
+                  <span class='is-hidden-mobile'>options</span>
+                  <i class='fa fa-cog'></i>
+                </a>
+              </div>
+            </header>
+
+            <div class='panel-options' ng-show='showDemoOptions'>
+
+              <div class='row'>
+                <label for='autoAddVirama'>Auto Add Virama</label>
+                <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoAddVirama" name='autoAddVirama' value='autoAddVirama' ng-checked="cbmodel.autoAddVirama">
+              </div>
+              <div class='row'>
+                <label for='autoRemoveVirama'>Auto Remove Virama</label>
+                <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoRemoveVirama" name='autoRemoveVirama' value='autoRemoveVirama' ng-checked="cbmodel.autoRemoveVirama">
+              </div>
+
+              <div class='row'>
+                <pre><code class='code javascript-syntax'>
+                  <span class='tb tb-0 space-above'>devanagariTextField(<span class='string'>'myTextElement'</span>, {</span>
+                  <span class='tb tb-1 space-above'>autoAddVirama: <span class='boolean'>{{cbmodel.autoAddVirama}}</span>,</span>
+                  <span class='tb tb-1 space-above'>autoRemoveVirama: <span class='boolean'>{{cbmodel.autoRemoveVirama}}</span></span>
+                  <span class='tb tb-0 space-above'>});</span>
+                </code></pre>
+              </div>
+
+            </div>
+
+            <div class='panel-body'>
+
+              <div class='row'>
+                <input type='text' id='default-tb'                class='{{demoFont.value}}' ng-class='{hidden: hideInputs.defaultInput}'                  ng-model='textInputs.defaultInput' autocomplete='off'/>
+                <input type='text' id='no-auto-virama-tb'         class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                 ng-model='textInputs.autoAddVirama' autocomplete='off'/>
+                <input type='text' id='no-auto-remove-tb'         class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'              ng-model='textInputs.autoRemoveVirama' autocomplete='off'/>
+                <input type='text' id='no-auto-remove-no-add-tb'  class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}' ng-model='textInputs.autoRemoveViramaAutoAddVirama' autocomplete='off'/>
+              </div>
+              <div class='row'>
+                <textarea id='default-ta'               class='{{demoFont.value}}' ng-class='{hidden: hideInputs.defaultInput}'                           autocomplete='off'></textarea>
+                <textarea id='no-auto-virama-ta'        class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                          autocomplete='off'></textarea>
+                <textarea id='no-auto-remove-ta'        class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'                       autocomplete='off'></textarea>
+                <textarea id='no-auto-remove-no-add-ta' class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}'          autocomplete='off'></textarea>
+              </div>
+
+           </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================================================================================================== -->
+        <!-- CHARACTERS -->
+        <!-- ==================================================================================================== -->
+
+        <section id='chars'>
+
+          <h2>Characters</h2>
+
+          <p>
+            Currently there is support for 125 of the 128 characters specified
+            in the Unicode Consortium's <a href='http://www.unicode.org/charts/PDF/U0900.pdf'>chart</a> for
+            standard Devanagari characters. You can review these characters and their default key bindings in the table below.
+          </p>
+
+          <p>
+            Not all fonts have support for every character and so some of the characters below will appear
+            as a blank box, a box with a cross inside or, in some cases, not at all. You can change the font
+            used to display the Devanagari characters by clicking on the settings
+            button in the top right cornor of the panel below and choosing a different font. The fonts used are all
+            available from <a href='https://www.google.com/fonts'>Google Fonts</a>.
+          </p>
+
+          <div class='panel'>
+
+            <header class='panel-heading'>
+              <h3>Default Key Bindings</h3>
+              <div class='panel-actions'>
+                <a href='javascript:;' ng-click='showOneOpts("fonts")'>
+                  <span class='is-hidden-mobile'>fonts</span>
+                  <i class='fa fa-font'></i>
+                </a>
+                <a href='javascript:;' ng-click='showOneOpts("filters")'>
+                  <span class='is-hidden-mobile'>filters</span>
+                  <i class='fa fa-filter'></i>
+                </a>
+              </div>
+            </header>
+
+            <div class='panel-options' ng-show='showFontOpts || showFilterOpts'>
+
+
+              <div class='group' ng-show='showFontOpts'>
+                <h3>Fonts</h3>
+                <div class='row fonts'>
+                  <label>Font-Family:</label>
+                  <select ng-options="o.text for o in options" ng-model="selectedFont"></select>
+                </div>
+              </div>
+
+
+              <div class='group' ng-show='showFilterOpts'>
+                <h3>Filters</h3>
+                <div class='row'>
+                  <label>Type:</label>
+                  <select  ng-model="searchparam.cat">
+                      <option value="">Any</option>
+                      <option value="VOWEL">Vowels</option>
+                      <option value="CONSONANT">Consonants</option>
+                      <option value="NUMBER">Digits</option>
+                      <option value="SIGN: DEP">Dependent Signs</option>
+                      <option value="SIGN: IND">Independent Signs</option>
+                  </select>
+                </div>
+
+                <div class='row'>
+                  <label>Key:</label>
+                  <input type='text' ng-model="searchparam.key"/>
+                </div>
+
+                <div class='row'>
+                  <label>Name:</label>
+                  <input type='text' ng-model="searchparam.name"/>
+                </div>
+
+
+
+              </div>
+
+            </div>
+
+            <div class='panel-body'>
+
+              <table>
+
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Nagari</th>
+                    <th class='sm-screen-hide'>Name</th>
+                    <th class='sm-screen-hide'>Type</th>
+                    <th class='sm-screen-hide'>UTF-8</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr ng-repeat-start='row in rows | filter: searchparam' ng-class-odd="'odd'">
+                    <td>{{row.key}}</td>
+                    <td><span ng-class='selectedFont.value'>{{row.char}}</span>
+
+                      <a href='javascript:;' class='toggle-hidden-data' ng-click='showHiddenData = !showHiddenData'>
+                        <i class='fa fa-chevron-down' ng-show='!showHiddenData'></i>
+                        <i class='fa fa-chevron-up' ng-show='showHiddenData'></i>
+                      </a>
+
+                    </td>
+                    <td class='sm-screen-hide'>{{row.name  | lowercase}}</td>
+                    <td class='sm-screen-hide'>{{row.cat  | lowercase}}</td>
+                    <td class='sm-screen-hide'>{{row.code }}</td>
+                  </tr>
+
+                  <tr ng-repeat-end='row in rows' class='hidden-row' ng-show='showHiddenData'>
+                      <td>
+                        <span>Name:</span>
+                        <span>Type:</span>
+                        <span>UTF-8:</span>
+                      </td>
+                      <td>
+                        <span>{{row.name  | lowercase}}</span>
+                        <span>{{row.cat  | lowercase}}</span>
+                        <span>{{row.code}}</span>
+                      </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <section>
+
+          <h2>License</h2>
+
+          <p>The MIT License (MIT)</p>
+
+          <p>Copyright (c) 2014 Matthew Herbstritt.</p>
+
+          <p>
+            Permission is hereby granted, free of charge, to any person obtaining a copy
+            of this software and associated documentation files (the "Software"), to deal
+            in the Software without restriction, including without limitation the rights
+            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+            copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions:
+          </p>
+
+          <p>
+            The above copyright notice and this permission notice shall be included in
+            all copies or substantial portions of the Software.
+          </p>
+
+          <p>
+            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+            IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+            FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+            AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+            LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+            THE SOFTWARE.
+          </p>
+
+        </section>
+
+        <footer>
+
+        </footer>
+
 
 
       </div>
 
-
-
-
-
       <script src='../dist/devanagariTextField.js'></script>
       <script src='js/angular.min.js'></script>
       <script src='js/demo.js'></script>
-      <!--<script src="//localhost:35729/livereload.js"></script>-->
+      <!--
+      <script src="//localhost:35729/livereload.js"></script>
+    -->
     </body>
 </html>

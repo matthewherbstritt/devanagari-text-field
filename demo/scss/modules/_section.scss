@@ -1,0 +1,33 @@
+section{
+
+
+  margin-bottom:em(32);
+
+  h2{
+    margin-bottom: em(16);
+  }
+
+  p {
+    margin-bottom: em(16);
+
+    a{
+      color: palette(orange, dark);
+      font-weight: $font-weight--bold;
+      text-decoration:underline;
+    }
+  }
+
+
+  &:first-child{
+    margin-top:74px + 24px;
+  }
+
+  &:before{
+    display: block;
+    content: " ";
+    margin-top: -74px - 24px;
+    height: 74px  + 24px;
+    visibility: hidden;
+  }
+
+}

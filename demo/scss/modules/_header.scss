@@ -1,0 +1,58 @@
+
+
+header{
+
+
+  .site-logo-wrp{
+
+    @extend %inlineblock;
+    @include mq(em($tablet-large)){
+      width:50%;
+      background:pink;
+    }
+
+    width:90%;
+
+    .site-logo{
+
+      font-size:em(24);
+      color:$white;
+
+    }
+
+  }
+
+
+
+}
+
+.menu-icon-wrp{
+
+  @extend %inlineblock;
+  @include mq(em($tablet-large)){
+    display:none;
+  }
+  height:19px;
+  width:10%;
+  position:relative;
+  background:blue;
+  .menu-icon{
+
+
+
+      @include p-el(before, 24px, 3px){
+        background: $white;
+        top:5px;
+      }
+
+      width:24px;
+      height:19px;
+      position:absolute;
+      top: em(0);
+      right: em(0);
+
+      border-top: solid 3px $white;
+      border-bottom: solid 3px $white;
+
+  }
+}

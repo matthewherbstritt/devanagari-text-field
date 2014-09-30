@@ -1,0 +1,833 @@
+/**
+ * CSS layout debugging
+ * @link http://pesticide.io/
+ * @type boolean
+ */
+/**
+ * Define width for browsers w/out media query support
+ * @link http://jakearchibald.github.com/sass-ie/
+ * @type boolean
+ */
+/**
+ * Turn on/off IE specific styles
+ * @link http://jakearchibald.github.com/sass-ie/
+ * @type boolean
+ */
+/**
+ * Base font size in used in _mixins.scss
+ * @type number
+ */
+/**
+ * Base line-height in used in _mixins.scss
+ * @type number
+ */
+/**
+* This Does not load properly - loading fonts from inside link tag for now.
+* $google-fonts-url          : '@import url(http://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700|Glegoo:700|Halant|Teko|Noto+Sans|Khand|Rozha+One|Ek+Mukta|Hind|Kalam|Karma|Vesper+Libre|Sarpanch|Laila&subset=latin,devanagari);';
+*/
+/**
+ * define font stack used for sans-serifs
+ * @type string
+ */
+/**
+ * define font stack used for serifs
+ * @type string
+ */
+/**
+ * define font stack used for monospaced copy
+ * @type string
+ */
+/**
+ * define font stack used for headings
+ * @requires {variable} $font-family-serif
+ * @type string
+ */
+/**
+ * define font stack used for paragraphs
+ * @requires {variable} font-family-sans
+ * @type string
+ */
+/**
+ * Define z-indexes for various elements
+ * @link http://www.sitepoint.com/using-sass-maps/
+ * @type number
+ */
+/**
+ * px to em conversion
+ * @link http://www.pjmccormick.com/sweet-sass-function-convert-px-em
+ * @requires {variable} $base-font-size
+ * @param {number} $target - size to convert
+ * @param {number} $context ($base-font-size) - context conversion is based on
+ * @example scss
+ * .foobar { padding-bottom: em(30); }
+ * @returns {number}
+ */
+/**
+ * px to rem
+ * @link http://www.pjmccormick.com/sweet-sass-function-convert-px-em
+ * @requires {variable} $base-font-size
+ * @param {number} $target - size to convert
+ * @param {number} $context ($base-font-size) - context conversion is based on
+ * @example scss
+ * .foobar { padding-bottom: rem(30); }
+ * @returns {number}
+ */
+/**
+ * em to px conversion
+ * @link http://www.pjmccormick.com/sweet-sass-function-convert-px-em
+ * @requires {variable} $base-font-size
+ * @param {number} $target - size to convert
+ * @param {number} $context ($base-font-size) - context conversion is based on
+ * @example scss
+ * .foobar { padding-bottom: px(30); }
+ * @returns {number}
+ */
+/**
+ * Aspect Ratio
+ * @param {number} $ratio-numerator - ratio numerator
+ * @param {number} $ratio-denominator - ratio denominator
+ * @example scss
+ * .foobar { padding-bottom: aspect-ratio(16,9); } // @returns 56.25%
+ * @returns {number}
+ */
+/**
+ * Aspect Ratio
+ * Based on Fixed Image Dimensions
+ * @param {number} $w - image width
+ * @param {number} $h - image height
+ * @example scss
+ * .foobar { padding: 0 0 aspect-ratio-fixed(1080, 720); } // @returns 66.666666666667%
+ * @returns {number}
+ */
+/**
+ * Context Calculator
+ * @param {number} $target
+ * @param {number} $context
+ * @example scss
+ * .foobar { padding-bottom: context-calc(30,15); }
+ * @returns {number}
+ */
+/**
+ * Strip Unit Values
+ * @link http://hugogiraudel.com/2013/08/12/sass-functions
+ * @param {string} $num
+ * @example scss
+ * .foobar { padding-bottom: strip-unit(30px); }
+ * @returns {number}
+ */
+/**
+ * SMACSS Theming
+ * @example scss
+ * .foobar {
+ *   background: #ff3377;
+ *   @include theme(beccapurple){
+ *     background: #663399;
+ *   }
+ * }
+ * @param {String} $name - theme name
+ */
+/**
+ * Buttons
+ * This customises your buttons with a different background color and text color.
+ * If no text color is specified it will default to white.
+ * @param {String} $color-background - background color
+ * @param {String} $color-text (#fff) - text color
+ * @example scss
+ * .foobar { @include btn(#f37) { ... } }
+ */
+/**
+ * Media Queries
+ * Allows you to use inline media queries.
+ * @link http://jakearchibald.github.com/sass-ie/
+ * @param {String} $breakpoint - breakpoint
+ * @param {String} $query (min-width) - query type
+ * @param {String} $type (screen) - media type
+ * @example scss
+ * .foobar { @include mq(20em) { ... } }
+ */
+/**
+ * IE Specific Styles
+ * @example scss
+ * .foobar {
+ *   .lt-ie8 & { @include old-ie { ... } }
+ *   .lt-ie9 & { @include old-ie { ... } }
+ * }
+ */
+/**
+ * Sass version of Sticky Footer by Ryan Fait
+ * @link http://ryanfait.com/sticky-footer/
+ * @param {String} $footer_height - height of footer including padding or borders
+ * @param {String} $root_selector (.site) - main wrapper element
+ * @param {String} $root_footer_selector (.push) - hidden element that "pushes" down the footer
+ * @param {String} $footer_selector (footer) - footer element
+ * @example scss
+ * .foobar { @include sticky-footer(4em) { ... } }
+ */
+/**
+ * Fullscreen Background for < IE8
+ * @link http://css-tricks.com/perfect-full-page-background-image/
+ * @example scss
+ * .foobar { @include fullscreen-bg() { ... } }
+ */
+/**
+ * @param {number} $opacity
+ * @example scss
+ * .foobar { @include opacity(4) { ... } }
+ */
+/**
+ * @link http://bit.ly/thoughtbot-bourbon-inline-block
+ * @require {mixin} old-ie
+ * @param {String} $alignment (baseline)
+ * @example scss
+ * .foobar { @include inline-block() { ... } }
+ */
+/**
+ * Retina Displays
+ * @param {String} $image - image url
+ * @param {String} $width - image width
+ * @param {String} $height - image height
+ * @example scss
+ * .foobar { @include image-2x('img/logo.png', 200px, 300px) { ... } }
+ */
+/**
+ * RGBA Fallback
+ * @param {String} $color
+ * @param {String} $percent
+ * @example scss
+ * .foobar { @include rgba-bg(#f37,.9) { ... } }
+ */
+b, .demo .panel-body input[type='text'].hidden, .demo .panel-body textarea.hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+  b.focusable:active, .demo .panel-body input.focusable[type='text'].hidden:active, .demo .panel-body textarea.focusable.hidden:active, b.focusable:focus, .demo .panel-body input.focusable[type='text'].hidden:focus, .demo .panel-body textarea.focusable.hidden:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto; }
+
+.menu-icon-wrp .menu-icon:before {
+  display: block;
+  content: '';
+  position: absolute; }
+
+select,
+textarea,
+input[type='text'] {
+  padding: 0.25em 0.5em; }
+
+header .site-logo-wrp, .menu-icon-wrp {
+  display: inline-block;
+  margin-right: -4px; }
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0; }
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block; }
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline; }
+
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+[hidden],
+template {
+  display: none; }
+
+a {
+  background: transparent; }
+
+a:active,
+a:hover {
+  outline: 0; }
+
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+b,
+strong {
+  font-weight: bold; }
+
+dfn {
+  font-style: italic; }
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+mark {
+  background: #ff0;
+  color: #000; }
+
+small {
+  font-size: 80%; }
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+img {
+  border: 0; }
+
+svg:not(:root) {
+  overflow: hidden; }
+
+figure {
+  margin: 1em 40px; }
+
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0; }
+
+pre {
+  overflow: auto; }
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0; }
+
+button {
+  overflow: visible; }
+
+button,
+select {
+  text-transform: none; }
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer; }
+
+button[disabled],
+html input[disabled] {
+  cursor: default; }
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+input {
+  line-height: normal; }
+
+*
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0; }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto; }
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; }
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+legend {
+  border: 0;
+  padding: 0; }
+
+textarea {
+  overflow: auto; }
+
+optgroup {
+  font-weight: bold; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td,
+th {
+  padding: 0; }
+
+* {
+  box-sizing: border-box; }
+
+body {
+  font-family: "Hind", sans-serif;
+  background: white; }
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0; }
+
+h1 {
+  font-size: 1.875em; }
+
+h2 {
+  font-size: 1.5em; }
+
+h3 {
+  font-size: 1.125em;
+  font-weight: 300; }
+
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.75em; }
+
+a {
+  text-decoration: none; }
+
+.container {
+  max-width: 61.25em;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1em; }
+
+header .site-logo-wrp {
+  width: 90%; }
+  @media screen and (min-width: 48em) {
+    header .site-logo-wrp {
+      width: 50%;
+      background: pink; } }
+  header .site-logo-wrp .site-logo {
+    font-size: 1.5em;
+    color: white; }
+
+.menu-icon-wrp {
+  height: 19px;
+  width: 10%;
+  position: relative;
+  background: blue; }
+  @media screen and (min-width: 48em) {
+    .menu-icon-wrp {
+      display: none; } }
+  .menu-icon-wrp .menu-icon {
+    width: 24px;
+    height: 19px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: solid 3px white;
+    border-bottom: solid 3px white; }
+    .menu-icon-wrp .menu-icon:before {
+      width: 24px;
+      height: 3px;
+      background: white;
+      top: 5px; }
+
+.navbar {
+  background: #7d8c87;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  padding: 1.5em 0;
+  z-index: 6000; }
+  .navbar a {
+    color: white; }
+  .navbar .site-logo {
+    font-size: 1.5em;
+    padding: 0;
+    margin: 0;
+    line-height: 0; }
+  .navbar .menu-icon {
+    position: relative;
+    height: 19px;
+    width: 20px;
+    float: right;
+    display: inline-block;
+    border-top: 3px solid white;
+    border-bottom: 3px solid white; }
+    @media screen and (min-width: 48em) {
+      .navbar .menu-icon {
+        display: none; } }
+    .navbar .menu-icon:before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      border-top: 3px solid white;
+      top: 5px;
+      right: 0; }
+  .navbar nav {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    width: 100%; }
+    @media screen and (min-width: 48em) {
+      .navbar nav {
+        position: static;
+        display: inline-block;
+        float: right;
+        width: auto;
+        vertical-align: middle; } }
+    .navbar nav ul {
+      display: block;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: #9da9a5; }
+      @media screen and (min-width: 48em) {
+        .navbar nav ul {
+          position: relative;
+          display: inline-block;
+          float: right;
+          background: #7d8c87; } }
+      @media screen and (min-width: 48em) {
+        .navbar nav ul li {
+          display: inline-block; }
+          .navbar nav ul li:last-child a {
+            padding-right: 0; } }
+      .navbar nav ul li a {
+        display: inline-block;
+        padding: 1em; }
+        @media screen and (min-width: 48em) {
+          .navbar nav ul li a {
+            display: inline-block;
+            padding: 0 1em; } }
+
+table {
+  border: 1px solid #cccccc;
+  background: white;
+  table-layout: fixed;
+  width: 100%;
+  font-size: 1.375em; }
+  table .rajdhani {
+    font-family: "Rajdhani", sans-serif; }
+  table .glegoo {
+    font-family: "Glegoo", serif; }
+  table .halant {
+    font-family: "Halant", serif; }
+  table .teko {
+    font-family: "Teko", sans-serif; }
+  table .noto-sans {
+    font-family: "Noto Sans", sans-serif; }
+  table .khand {
+    font-family: "Khand", sans-serif; }
+  table .rozha-one {
+    font-family: "Rozha One", serif; }
+  table .ek-mukta {
+    font-family: "Ek Mukta", sans-serif; }
+  table .hind {
+    font-family: "Hind", sans-serif; }
+  table .kalam {
+    font-family: "Kalam", cursive; }
+  table .karma {
+    font-family: "Karma", serif; }
+  table .vesper-libre {
+    font-family: "Vesper Libre", serif; }
+  table .sarpanch {
+    font-family: "Sarpanch", sans-serif; }
+  table .laila {
+    font-family: "Laila", serif; }
+  table .sm-screen-hide {
+    display: none; }
+    @media screen and (min-width: 48em) {
+      table .sm-screen-hide {
+        display: table-cell; } }
+  table thead {
+    width: 100%; }
+    table thead tr {
+      border-bottom: 1px solid #cccccc; }
+  table tr {
+    text-align: left; }
+    table tr th, table tr td {
+      padding: 0.5em 1em;
+      width: 50%; }
+      @media screen and (min-width: 48em) {
+        table tr th, table tr td {
+          width: 20%; } }
+    table tr td .toggle-hidden-data {
+      float: right;
+      color: #6f7c87;
+      font-size: 0.54545em; }
+      @media screen and (min-width: 48em) {
+        table tr td .toggle-hidden-data {
+          display: none !important; } }
+    table tr.hidden-row {
+      background: #efdcc3;
+      border-top: 1px dashed grey; }
+      @media screen and (min-width: 48em) {
+        table tr.hidden-row {
+          display: none !important; } }
+      table tr.hidden-row td span {
+        font-size: 0.875em;
+        display: inline-block;
+        margin-right: -4px;
+        vertical-align: middle;
+        width: 100%; }
+    table tr.odd {
+      background: #f3f3f3; }
+
+.demo .row {
+  margin-bottom: 0.5em; }
+  .demo .row:last-child {
+    margin-bottom: 0; }
+.demo .panel-options .row label {
+  width: 60% !important; }
+.demo .panel-body {
+  background: #ebebeb;
+  padding: 0.66667em; }
+  .demo .panel-body input[type='text'], .demo .panel-body textarea {
+    width: 100%;
+    font-size: 2em;
+    font-family: "Ek Mukta", sans-serif; }
+  .demo .panel-body textarea {
+    resize: none;
+    height: 8.33333em; }
+
+pre {
+  background: #424242;
+  padding: 1em;
+  border-radius: 4px;
+  font-family: "source-code-pro", "Inconsolata", "Menlo", Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; }
+
+.code {
+  font-size: 1em;
+  white-space: nowrap;
+  color: #efefef; }
+  .code .tb {
+    display: block;
+    margin-bottom: 2px; }
+  .code .tb-0 {
+    margin-right: 0; }
+  .code .tb-1 {
+    margin-left: 1em; }
+  .code .tb-2 {
+    margin-left: 2em; }
+  .code .space-above {
+    margin-top: 0.5em; }
+  .code .space-above-x2 {
+    margin-top: 1em; }
+
+.html-syntax .tag {
+  color: #CE89B8; }
+.html-syntax .attr {
+  color: #99bb23; }
+.html-syntax .string {
+  color: #3299bb; }
+.html-syntax .comment {
+  color: #cccccc; }
+
+.javascript-syntax .keyword {
+  color: #59c2b1; }
+.javascript-syntax .string {
+  color: #d9ad73; }
+.javascript-syntax .comments {
+  color: grey; }
+.javascript-syntax .boolean {
+  color: #7a7aff; }
+
+.panel {
+  border: 1px solid #cccccc;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px; }
+  .panel .panel-heading {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    background-clip: border-box;
+    background: #909aa3;
+    position: relative;
+    padding: 1em;
+    color: white; }
+    .panel .panel-heading .panel-actions {
+      position: absolute;
+      top: 18px;
+      right: 18px; }
+      .panel .panel-heading .panel-actions a {
+        color: white; }
+        .panel .panel-heading .panel-actions a:not(:last-child) {
+          margin-right: 1em; }
+  .panel .panel-options {
+    font-size: 0.875em;
+    padding: 1.14286em;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    background: #cdd2d6; }
+    .panel .panel-options h3 {
+      text-decoration: underline;
+      margin-bottom: 0.57143em;
+      font-weight: 700; }
+      @media screen and (min-width: 48em) {
+        .panel .panel-options h3 {
+          display: none; } }
+    .panel .panel-options .group .row {
+      width: 100%;
+      margin-bottom: 1.14286em; }
+      @media screen and (min-width: 48em) {
+        .panel .panel-options .group .row {
+          display: inline-block;
+          margin-right: -4px;
+          vertical-align: middle;
+          margin-bottom: 0;
+          width: 33.333%; }
+          .panel .panel-options .group .row:not(:first-child) {
+            padding-left: 1em; }
+          .panel .panel-options .group .row.fonts {
+            width: 100%;
+            margin-bottom: 0; }
+          .panel .panel-options .group .row.fonts label {
+            width: 15%; }
+          .panel .panel-options .group .row.fonts select {
+            width: 85%; } }
+      .panel .panel-options .group .row.fonts label {
+        width: 30%; }
+      .panel .panel-options .group .row.fonts select {
+        width: 70%; }
+      .panel .panel-options .group .row label {
+        width: 15%;
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: -4px; }
+        @media screen and (min-width: 48em) {
+          .panel .panel-options .group .row label {
+            width: 25%; } }
+      .panel .panel-options .group .row select,
+      .panel .panel-options .group .row input[type='text'] {
+        display: inline-block;
+        margin-right: -4px;
+        vertical-align: middle;
+        width: 85%;
+        padding: 0.14286em 0.14286em; }
+        @media screen and (min-width: 48em) {
+          .panel .panel-options .group .row select,
+          .panel .panel-options .group .row input[type='text'] {
+            width: 75%; } }
+      .panel .panel-options .group .row:last-child {
+        margin-bottom: 0; }
+  .panel .panel-body {
+    background: #e6e6e6;
+    min-height: 10em;
+    padding: 1em;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px; }
+
+section {
+  margin-bottom: 2em; }
+  section h2 {
+    margin-bottom: 1em; }
+  section p {
+    margin-bottom: 1em; }
+    section p a {
+      color: #d5a463;
+      font-weight: 900;
+      text-decoration: underline; }
+  section:first-child {
+    margin-top: 98px; }
+  section:before {
+    display: block;
+    content: " ";
+    margin-top: -98px;
+    height: 98px;
+    visibility: hidden; }
+
+.is-hidden-mobile {
+  display: none; }
+
+@media print {
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important; }
+
+  a,
+  a:visited {
+    text-decoration: underline; }
+
+  a[href]:after {
+    content: " (" attr(href) ")"; }
+
+  abbr[title]:after {
+    content: " (" attr(title) ")"; }
+
+  .ir a:after,
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: ""; }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid; }
+
+  thead {
+    display: table-header-group; }
+
+  tr,
+  img {
+    page-break-inside: avoid; }
+
+  img {
+    max-width: 100% !important; }
+
+  @page {
+    margin: 0.5cm; }
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3; }
+
+  h2,
+  h3 {
+    page-break-after: avoid; } }

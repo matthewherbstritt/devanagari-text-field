@@ -1,0 +1,87 @@
+
+table {
+
+	@include font-classes;
+
+	border: $panel--border;
+	background:$white;
+	table-layout: fixed;
+	width: 100%;
+	font-size: em(22);
+
+	.sm-screen-hide{
+
+		@include mq(em($tablet-large)){
+			display:table-cell;
+		}
+
+		display:none;
+
+	}
+
+	thead {
+		width:100%;
+		tr{
+			border-bottom:$panel--border;
+		}
+	}
+
+	tr {
+
+		text-align:left;
+
+		th, td {
+
+			@include mq(em($tablet-large)){
+				width:20%;
+			}
+
+			padding:em(8) em(16);
+			width:50%;
+
+		}
+
+		td{
+			.toggle-hidden-data{
+
+				@include mq(em($tablet-large)){
+					display:none !important;
+				}
+
+				float:right;
+				color:$blue;
+				font-size: em(12, 22);
+
+			}
+		}
+
+		&.hidden-row {
+
+			@include mq(em($tablet-large)){
+				display:none !important;
+			}
+
+			background:lighten($orange, 12%);
+			border-top: 1px dashed grey;
+
+			td {
+
+				span {
+					font-size:em(14);
+					display:inline-block;
+					margin-right:-4px;
+					vertical-align: middle;
+					width:100%;
+				}
+
+			}
+
+		}
+
+		&.odd{
+			background:lighten(grey, 45%);
+		}
+
+	}
+
+}

@@ -1,0 +1,277 @@
+// ==========================================================================
+// = Global Variables
+// ==========================================================================
+
+/**
+ * CSS layout debugging
+ * @link http://pesticide.io/
+ * @type boolean
+ */
+
+$pesticide-debug              : false;
+
+/**
+ * Define width for browsers w/out media query support
+ * @link http://jakearchibald.github.com/sass-ie/
+ * @type boolean
+ */
+
+$fix-mqs                      : false !default;
+
+/**
+ * Turn on/off IE specific styles
+ * @link http://jakearchibald.github.com/sass-ie/
+ * @type boolean
+ */
+
+$old-ie                       : false !default;
+
+// ==================================================
+// Color Scheme
+// ==================================================
+
+// Dusk http://www.colourlovers.com/palette/7250/Dusk
+
+$green: #7D8C87;
+$blue: #6F7C87;
+$orange: #E2C093;
+$grey: #ccc;
+
+$color-primary: $green;
+
+
+// Code highlighting
+
+$fountain-blue: #59C2B1;
+
+// Descriptive colors:
+$black                        : #000;
+$white                        : #fff;
+
+
+// Code
+$code-exmaples-text-default      : #efefef;
+$code-exmaples-background        : #424242;
+
+// Palettes
+
+$palettes: (
+  green:(
+    light: lighten($green, 12%),
+    base: $green,
+    dark: darken($green, 12%)
+  ),
+  blue:(
+    light: lighten($blue, 12%),
+    base: $blue,
+    dark: darken($blue, 12%)
+  ),
+  orange:(
+    light: lighten($orange, 12%),
+    base: $orange,
+    dark: darken($orange, 12%)
+  ),
+  grey: (
+    light: lighten($grey, 12%),
+    base: $grey,
+    dark: darken($grey, 12%)
+  ),
+  black: (
+    light: lighten($black, 12%),
+    base: $black,
+    dark: darken($black, 12%)
+  )
+);
+
+
+
+
+
+// ==================================================
+// Base Sizes
+// ==================================================
+
+/**
+ * Base font size in used in _mixins.scss
+ * @type number
+ */
+
+$base-font-size               : 16;
+
+/**
+ * Base line-height in used in _mixins.scss
+ * @type number
+ */
+
+$base-line-height             : 28;
+$letter-space                 : 1px;
+
+
+// ==================================================
+// Font Stacks
+// ==================================================
+
+/**
+* This Does not load properly - loading fonts from inside link tag for now.
+* $google-fonts-url          : '@import url(http://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700|Glegoo:700|Halant|Teko|Noto+Sans|Khand|Rozha+One|Ek+Mukta|Hind|Kalam|Karma|Vesper+Libre|Sarpanch|Laila&subset=latin,devanagari);';
+*/
+
+$rajdhani: 'Rajdhani', sans-serif;
+$glegoo: 'Glegoo', serif;
+$halant: 'Halant', serif;
+$teko: 'Teko', sans-serif;
+$noto-sans: 'Noto Sans', sans-serif;
+$khand: 'Khand', sans-serif;
+$rozha-one: 'Rozha One', serif;
+$ek-mukta: 'Ek Mukta', sans-serif;
+$hind: 'Hind', sans-serif;
+$kalam: 'Kalam', cursive;
+$karma: 'Karma', serif;
+$vesper-libre: 'Vesper Libre', serif;
+$sarpanch: 'Sarpanch', sans-serif;
+$laila: 'Laila', serif;
+
+
+$font-map: (
+  rajdhani     : $rajdhani,
+  glegoo       : $glegoo,
+  halant       : $halant,
+  teko         : $teko,
+  noto-sans    : $noto-sans,
+  khand        : $khand,
+  rozha-one    : $rozha-one,
+  ek-mukta     : $ek-mukta,
+  hind         : $hind,
+  kalam        : $kalam,
+  karma        : $karma,
+  vesper-libre : $vesper-libre,
+  sarpanch     : $sarpanch,
+  laila        : $laila
+
+);
+
+
+
+/**
+ * define font stack used for sans-serifs
+ * @type string
+ */
+
+$font-family-sans             : 'source-sans-pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/**
+ * define font stack used for serifs
+ * @type string
+ */
+
+$font-family-serif            : 'source-serif-pro', Georgia, 'Times New Roman', Times, serif;
+
+/**
+ * define font stack used for monospaced copy
+ * @type string
+ */
+
+$font-family-monospace        : 'source-code-pro','Inconsolata', "Menlo", Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
+                                'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L',
+                                Monaco, 'Courier New', Courier, monospace;
+
+/**
+ * define font stack used for headings
+ * @requires {variable} $font-family-serif
+ * @type string
+ */
+
+$font-family-display          : $font-family-serif;
+
+/**
+ * define font stack used for paragraphs
+ * @requires {variable} font-family-sans
+ * @type string
+ */
+
+$font-family-default          : $rajdhani;
+
+
+
+// ==================================================
+// Font Weights
+// ==================================================
+
+$font-weight--light            : 300;
+$font-weight--normal           : 400;
+$font-weight--medium           : 500;
+$font-weight--semibold         : 700;
+$font-weight--bold             : 900;
+
+
+// ==================================================
+// Breakpoints
+// ==================================================
+
+// There are no common breakpoints; examples based on the official Sass styleguide
+// You'll need to define your own breakpoints to suit your design
+// ============
+
+$mobile-small                 : 240;
+$mobile-large                 : 320;
+$tablet-small                 : 480;
+$tablet-large                 : 768;
+$screen-small                 : 1024;
+$screen-large                 : 1280;
+
+
+
+// ==================================================
+// z-index reference
+// ==================================================
+
+/**
+ * Define z-indexes for various elements
+ * @link http://www.sitepoint.com/using-sass-maps/
+ * @type number
+ */
+
+$zindex: (
+  modal                       : 9000,
+  overlay                     : 8000,
+  dropdown                    : 7000,
+  header                      : 6000,
+  footer                      : 5000
+);
+
+
+// ==================================================
+// Borders
+// ==================================================
+
+$br--default: 4px;
+$default-border-color : $grey;
+
+// ==================================================
+// Transitions
+// ==================================================
+
+$trns-duration: 3s;
+
+
+
+
+
+
+
+
+
+// ======================================================================================================================================================
+// Module Defaults
+// ======================================================================================================================================================
+
+// ==================================================
+// Panels
+// ==================================================
+
+$panel--border: 1px solid $default-border-color;
+$panel--border-radius-inner: $br--default;
+$panel--border-radius-outer: $br--default + 1px;
+
+$panel-heading--bg-color: lighten($blue, 12%);
+$panel-heading--padding: 16;
