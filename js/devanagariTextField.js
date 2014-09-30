@@ -1,7 +1,7 @@
 (function ( root, factory ) {
 
     if (typeof define === 'function' && define.amd) {
-    
+
         // AMD
         define([], factory);
     } else {
@@ -2080,7 +2080,7 @@ define('events',['util'], function(util){
 
       this.clearKeyAndStringCache();
       this.resetKeyEventCount();
-      
+
     }
 
   };
@@ -2257,7 +2257,7 @@ define('events',['util'], function(util){
     this.clearKeyAndStringCache();
   }
 
-  return events; 
+  return events;
 
 });
 
@@ -2265,10 +2265,10 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
 
   function DevanagariTextField(element, options){
 
-    var self      = this, 
+    var self      = this,
         settings  = util.getSettings({
 
-          autoAddVirama:true, 
+          autoAddVirama:true,
           autoRemoveVirama:true,
           toggleScriptButton: false,
           toggleScriptKey: 'Ctrl+Shift+T',
@@ -2349,7 +2349,7 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
 
     }
 
-  }; 
+  };
 
   DevanagariTextField.prototype.appendDevanagariChar = function(){
 
@@ -2425,7 +2425,7 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
         start = 0,
         end   = 0,
         el    = this.element;
-        
+
       if (typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number'){
           start = el.selectionStart;
           end   = el.selectionEnd;
@@ -2593,7 +2593,7 @@ define('textField',['util', 'keyMap', 'devanagari', 'events'], function(util, ke
 /*global define */
 
 define('main',['require','textField'],function (require) {
-    
+
 
     var devanagariTextField = require('textField');
 
