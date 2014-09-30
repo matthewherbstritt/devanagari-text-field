@@ -54,11 +54,10 @@ It is possible to change some default behaviour by passing in an options object 
 ```javascript
 var options = {
 	autoAddVirama: false,
-    // etc
+    // etc.
 };
 
 devanagariTextField('myTextElement', options);
-
 ```
 
 Currently, the configurable parameters are as follows:
@@ -95,3 +94,4 @@ The project is still in development and is largely untested. It has been manuall
  * No support for adding user defined key mappings. If it's not feasible to provide a totally customizable interface it would be
  nice to be able to offer some predefined alternatives, e.g. mimicking the IndoScript keyboard layout.
 * Add support for mobile devices.
+* Complete online demo.
