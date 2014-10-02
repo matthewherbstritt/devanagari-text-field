@@ -1,0 +1,46 @@
+// ==================================================
+// Grid Columns
+// ==================================================
+
+
+
+
+// Calculate grid columns
+
+@include mq(em($tablet-large)){
+
+  @for $i from 1 through $grid-col-count {
+
+    $context: grid-context() !global;
+    $target: ($grid-col-width * $i) + ($grid-gutter-width * ($i - 1));
+
+    // Generate column modifier classes
+    .grid__col--#{$i} {
+      width: percentage($target / $context);
+    }
+
+  }
+
+}
+
+// Column styles
+
+[class^="grid__col"] {
+  @media (min-width: 1px) and (max-width:768px) {
+    margin: em(12) 0;
+  }
+
+  @media (min-width: 769px) {
+
+    @include allButFirst(){
+      margin-left: percentage($grid-gutter-width / $context);
+    }
+
+    float: left;
+    min-height: 1px;
+    padding: 0 10px;
+    &:last-of-type {
+      float:right;
+    }
+  }
+}
