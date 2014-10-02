@@ -196,7 +196,15 @@
  * @example scss
  * .foobar { @include rgba-bg(#f37,.9) { ... } }
  */
-b, .demo .panel-body input[type='text'].hidden, .demo .panel-body textarea.hidden {
+.grid-container {
+  *zoom: 1; }
+  .grid-container:before, .grid-container:after {
+    content: " ";
+    display: table; }
+  .grid-container:after {
+    clear: both; }
+
+b {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -205,7 +213,7 @@ b, .demo .panel-body input[type='text'].hidden, .demo .panel-body textarea.hidde
   padding: 0;
   position: absolute;
   width: 1px; }
-  b.focusable:active, .demo .panel-body input.focusable[type='text'].hidden:active, .demo .panel-body textarea.focusable.hidden:active, b.focusable:focus, .demo .panel-body input.focusable[type='text'].hidden:focus, .demo .panel-body textarea.focusable.hidden:focus {
+  b.focusable:active, b.focusable:focus {
     clip: auto;
     height: auto;
     margin: 0;
@@ -226,6 +234,10 @@ input[type='text'] {
 header .site-logo-wrp, .menu-icon-wrp {
   display: inline-block;
   margin-right: -4px; }
+
+.grid-container {
+  width: 100%;
+  margin: 0 auto; }
 
 html {
   font-family: sans-serif;
@@ -414,7 +426,7 @@ body {
   font-family: "Hind", sans-serif;
   background: white; }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   margin: 0;
   padding: 0; }
 
@@ -425,8 +437,10 @@ h2 {
   font-size: 1.5em; }
 
 h3 {
-  font-size: 1.125em;
-  font-weight: 300; }
+  font-size: 1.125em; }
+
+h4 {
+  font-size: 1.125em; }
 
 p {
   margin: 0;
@@ -441,6 +455,63 @@ a {
   width: 100%;
   margin: 0 auto;
   padding: 0 1em; }
+
+@media screen and (min-width: 48em) {
+  .grid__col--1 {
+    width: 6.5%; }
+
+  .grid__col--2 {
+    width: 15%; }
+
+  .grid__col--3 {
+    width: 23.5%; }
+
+  .grid__col--4 {
+    width: 32%; }
+
+  .grid__col--5 {
+    width: 40.5%; }
+
+  .grid__col--6 {
+    width: 49%; }
+
+  .grid__col--7 {
+    width: 57.5%; }
+
+  .grid__col--8 {
+    width: 66%; }
+
+  .grid__col--9 {
+    width: 74.5%; }
+
+  .grid__col--10 {
+    width: 83%; }
+
+  .grid__col--11 {
+    width: 91.5%; }
+
+  .grid__col--12 {
+    width: 100%; } }
+@media (min-width: 1px) and (max-width: 768px) {
+  [class^="grid__col"] {
+    margin: 0.75em 0; } }
+@media (min-width: 769px) {
+  [class^="grid__col"] {
+    float: left;
+    min-height: 1px;
+    padding: 0 10px; }
+    [class^="grid__col"] + [class^="grid__col"] {
+      margin-left: 2%; }
+    [class^="grid__col"]:last-of-type {
+      float: right; } }
+
+.grid-container {
+  width: 90%; }
+  [class*='grid__col--'] > .grid-container {
+    width: 100%; }
+  @media (min-width: 1100px) {
+    .grid-container {
+      max-width: 1050px; } }
 
 header .site-logo-wrp {
   width: 90%; }
@@ -549,34 +620,6 @@ table {
   table-layout: fixed;
   width: 100%;
   font-size: 1.375em; }
-  table .rajdhani {
-    font-family: "Rajdhani", sans-serif; }
-  table .glegoo {
-    font-family: "Glegoo", serif; }
-  table .halant {
-    font-family: "Halant", serif; }
-  table .teko {
-    font-family: "Teko", sans-serif; }
-  table .noto-sans {
-    font-family: "Noto Sans", sans-serif; }
-  table .khand {
-    font-family: "Khand", sans-serif; }
-  table .rozha-one {
-    font-family: "Rozha One", serif; }
-  table .ek-mukta {
-    font-family: "Ek Mukta", sans-serif; }
-  table .hind {
-    font-family: "Hind", sans-serif; }
-  table .kalam {
-    font-family: "Kalam", cursive; }
-  table .karma {
-    font-family: "Karma", serif; }
-  table .vesper-libre {
-    font-family: "Vesper Libre", serif; }
-  table .sarpanch {
-    font-family: "Sarpanch", sans-serif; }
-  table .laila {
-    font-family: "Laila", serif; }
   table .sm-screen-hide {
     display: none; }
     @media screen and (min-width: 48em) {
@@ -590,10 +633,10 @@ table {
     text-align: left; }
     table tr th, table tr td {
       padding: 0.5em 1em;
-      width: 50%; }
+      word-wrap: break-word; }
       @media screen and (min-width: 48em) {
         table tr th, table tr td {
-          width: 20%; } }
+          width: 20% !important; } }
     table tr td .toggle-hidden-data {
       float: right;
       color: #6f7c87;
@@ -615,23 +658,9 @@ table {
         width: 100%; }
     table tr.odd {
       background: #f3f3f3; }
-
-.demo .row {
-  margin-bottom: 0.5em; }
-  .demo .row:last-child {
-    margin-bottom: 0; }
-.demo .panel-options .row label {
-  width: 60% !important; }
-.demo .panel-body {
-  background: #ebebeb;
-  padding: 0.66667em; }
-  .demo .panel-body input[type='text'], .demo .panel-body textarea {
-    width: 100%;
-    font-size: 2em;
-    font-family: "Ek Mukta", sans-serif; }
-  .demo .panel-body textarea {
-    resize: none;
-    height: 8.33333em; }
+  table tfoot {
+    background: #7d8c87;
+    color: white; }
 
 pre {
   background: #424242;
@@ -681,6 +710,52 @@ pre {
   border-top-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px; }
+  .panel .rajdhani {
+    font-family: "Rajdhani", sans-serif; }
+  .panel .glegoo {
+    font-family: "Glegoo", serif; }
+  .panel .halant {
+    font-family: "Halant", serif; }
+  .panel .teko {
+    font-family: "Teko", sans-serif; }
+  .panel .noto-sans {
+    font-family: "Noto Sans", sans-serif; }
+  .panel .khand {
+    font-family: "Khand", sans-serif; }
+  .panel .rozha-one {
+    font-family: "Rozha One", serif; }
+  .panel .ek-mukta {
+    font-family: "Ek Mukta", sans-serif; }
+  .panel .hind {
+    font-family: "Hind", sans-serif; }
+  .panel .kalam {
+    font-family: "Kalam", cursive; }
+  .panel .karma {
+    font-family: "Karma", serif; }
+  .panel .vesper-libre {
+    font-family: "Vesper Libre", serif; }
+  .panel .sarpanch {
+    font-family: "Sarpanch", sans-serif; }
+  .panel .laila {
+    font-family: "Laila", serif; }
+  .panel .extralight {
+    font-weight: 200; }
+  .panel .light {
+    font-weight: 300; }
+  .panel .normal {
+    font-weight: 400; }
+  .panel .medium {
+    font-weight: 500; }
+  .panel .semibold {
+    font-weight: 600; }
+  .panel .bold {
+    font-weight: 700; }
+  .panel .extrabold {
+    font-weight: 800; }
+  .panel .ultrabold {
+    font-weight: 900; }
+  .panel .hidden {
+    display: none; }
   .panel .panel-heading {
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
@@ -703,13 +778,12 @@ pre {
     border-top: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
     background: #cdd2d6; }
-    .panel .panel-options h3 {
+    .panel .panel-options .group:not(:first-child) {
+      margin-top: 1.5em; }
+    .panel .panel-options .group h4 {
       text-decoration: underline;
-      margin-bottom: 0.57143em;
-      font-weight: 700; }
-      @media screen and (min-width: 48em) {
-        .panel .panel-options h3 {
-          display: none; } }
+      font-weight: 300;
+      margin-bottom: 0.5em; }
     .panel .panel-options .group .row {
       width: 100%;
       margin-bottom: 1.14286em; }
@@ -720,38 +794,35 @@ pre {
           vertical-align: middle;
           margin-bottom: 0;
           width: 33.333%; }
-          .panel .panel-options .group .row:not(:first-child) {
+          .panel .panel-options .group .row:not(:first-of-type) {
             padding-left: 1em; }
-          .panel .panel-options .group .row.fonts {
-            width: 100%;
-            margin-bottom: 0; }
-          .panel .panel-options .group .row.fonts label {
-            width: 15%; }
-          .panel .panel-options .group .row.fonts select {
-            width: 85%; } }
-      .panel .panel-options .group .row.fonts label {
-        width: 30%; }
-      .panel .panel-options .group .row.fonts select {
-        width: 70%; }
+          .panel .panel-options .group .row.checkboxes label {
+            width: auto !important; }
+          .panel .panel-options .group .row.checkboxes input[type='checkbox'] {
+            margin-left: 1em; } }
+      .panel .panel-options .group .row.checkboxes input[type='checkbox'] {
+        vertical-align: middle; }
+      .panel .panel-options .group .row.checkboxes label {
+        width: 60%; }
       .panel .panel-options .group .row label {
-        width: 15%;
+        width: 30%;
         vertical-align: middle;
         display: inline-block;
         margin-right: -4px; }
         @media screen and (min-width: 48em) {
           .panel .panel-options .group .row label {
-            width: 25%; } }
+            width: 20%; } }
       .panel .panel-options .group .row select,
       .panel .panel-options .group .row input[type='text'] {
         display: inline-block;
         margin-right: -4px;
         vertical-align: middle;
-        width: 85%;
+        width: 70%;
         padding: 0.14286em 0.14286em; }
         @media screen and (min-width: 48em) {
           .panel .panel-options .group .row select,
           .panel .panel-options .group .row input[type='text'] {
-            width: 75%; } }
+            width: 80%; } }
       .panel .panel-options .group .row:last-child {
         margin-bottom: 0; }
   .panel .panel-body {
@@ -760,6 +831,16 @@ pre {
     padding: 1em;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px; }
+    .panel .panel-body .row:not(:last-of-type) {
+      margin-bottom: 1em; }
+    .panel .panel-body input[type='text'],
+    .panel .panel-body textarea {
+      font-size: 2em;
+      width: 100%;
+      padding: 0.25em 0.5em; }
+    .panel .panel-body textarea {
+      resize: none;
+      height: 10em; }
 
 section {
   margin-bottom: 2em; }
@@ -769,7 +850,7 @@ section {
     margin-bottom: 1em; }
     section p a {
       color: #d5a463;
-      font-weight: 900;
+      font-weight: 700;
       text-decoration: underline; }
   section:first-child {
     margin-top: 98px; }

@@ -5,7 +5,8 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Devanagari Text Field</title>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Glegoo:700|Halant|Teko|Noto+Sans|Khand|Rozha+One|Ek+Mukta|Hind:400,700,600,500,300|Kalam|Karma|Vesper+Libre|Sarpanch|Laila&subset=latin,devanagari' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Rajdhani:300,400,500,600,700|Glegoo:400,700|Halant:300,400,500,600,700|Teko:300,400,500,600,700|Noto+Sans:400,700,400italic,700italic|Khand:300,400,500,600,700|Rozha+One|Ek+Mukta:200,300,400,500,600,700,800|Hind:400,700,600,500,300|Kalam:400,700,300|Karma:400,700,600,500,300|Vesper+Libre:400,900,700,500|Sarpanch:400,900,800,700,600,500|Laila:400,300,500,600,700&subset=latin,devanagari' rel='stylesheet' type='text/css'>
+      <!--  <link href='http://fonts.googleapis.com/css?family=Glegoo:700|Halant|Teko|Noto+Sans|Khand|Rozha+One|Ek+Mukta|Hind:400,700,600,500,300|Kalam|Karma|Vesper+Libre|Sarpanch|Laila&subset=latin,devanagari' rel='stylesheet' type='text/css'> -->
         <link rel='stylesheet' type='text/css' href='css/demo.css'/>
 
     </head>
@@ -105,21 +106,38 @@
               <h3>Type Devanagari </h3>
               <div class='panel-actions'>
                 <a href='javascript:;' ng-click='showDemoOptions = !showDemoOptions'>
-                  <span class='is-hidden-mobile'>options</span>
-                  <i class='fa fa-cog'></i>
+                  <i class='fa fa-cog' ng-show='!showDemoOptions'></i>
+                  <i class='fa fa-chevron-up' ng-show='showDemoOptions'></i>
                 </a>
               </div>
             </header>
 
             <div class='panel-options' ng-show='showDemoOptions'>
 
-              <div class='row'>
-                <label for='autoAddVirama'>Auto Add Virama</label>
-                <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoAddVirama" name='autoAddVirama' value='autoAddVirama' ng-checked="cbmodel.autoAddVirama">
+              <div class='group'>
+                <h4>Font Options</h4>
+                <div class='row'>
+                  <label>Family:</label>
+                  <select ng-options="o.text for o in optionsDemo" ng-change='updateFontWeightsModel("fontWeightsDemo", selectedFontDemo.value)' ng-model="selectedFontDemo"></select>
+                </div>
+                <div class='row'>
+                  <label>Weight:</label>
+                  <select ng-options="o.text for o in fontWeightsDemo"  ng-model="selectedFontWeightDemo">
+
+                  </select>
+                </div>
               </div>
-              <div class='row'>
-                <label for='autoRemoveVirama'>Auto Remove Virama</label>
-                <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoRemoveVirama" name='autoRemoveVirama' value='autoRemoveVirama' ng-checked="cbmodel.autoRemoveVirama">
+
+              <div class='group'>
+                <h4>Config. Options</h4>
+                <div class='row checkboxes'>
+                  <label for='autoAddVirama'>Auto Add Virama</label>
+                  <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoAddVirama" name='autoAddVirama' value='autoAddVirama' ng-checked="cbmodel.autoAddVirama">
+                </div>
+                <div class='row checkboxes'>
+                  <label for='autoRemoveVirama'>Auto Remove Virama</label>
+                  <input type='checkbox' ng-change='onChange(cbmodel)' ng-model="cbmodel.autoRemoveVirama" name='autoRemoveVirama' value='autoRemoveVirama' ng-checked="cbmodel.autoRemoveVirama">
+                </div>
               </div>
 
               <div class='row'>
@@ -136,16 +154,16 @@
             <div class='panel-body'>
 
               <div class='row'>
-                <input type='text' id='default-tb'                class='{{demoFont.value}}' ng-class='{hidden: hideInputs.defaultInput}'                  ng-model='textInputs.defaultInput' autocomplete='off'/>
-                <input type='text' id='no-auto-virama-tb'         class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                 ng-model='textInputs.autoAddVirama' autocomplete='off'/>
-                <input type='text' id='no-auto-remove-tb'         class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'              ng-model='textInputs.autoRemoveVirama' autocomplete='off'/>
-                <input type='text' id='no-auto-remove-no-add-tb'  class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}' ng-model='textInputs.autoRemoveViramaAutoAddVirama' autocomplete='off'/>
+                <input type='text' id='default-tb'                class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}'   ng-class='{hidden: hideInputs.defaultInput}'                ng-model='textInputs.defaultInput' autocomplete='off' placeholder='Try me...' />
+                <input type='text' id='no-auto-virama-tb'         class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                 ng-model='textInputs.autoAddVirama' autocomplete='off' placeholder='Try me...'/>
+                <input type='text' id='no-auto-remove-tb'         class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'              ng-model='textInputs.autoRemoveVirama' autocomplete='off' placeholder='Try me...'/>
+                <input type='text' id='no-auto-remove-no-add-tb'  class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}' ng-model='textInputs.autoRemoveViramaAutoAddVirama' autocomplete='off' placeholder='Try me...'/>
               </div>
               <div class='row'>
-                <textarea id='default-ta'               class='{{demoFont.value}}' ng-class='{hidden: hideInputs.defaultInput}'                           autocomplete='off'></textarea>
-                <textarea id='no-auto-virama-ta'        class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                          autocomplete='off'></textarea>
-                <textarea id='no-auto-remove-ta'        class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'                       autocomplete='off'></textarea>
-                <textarea id='no-auto-remove-no-add-ta' class='{{demoFont.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}'          autocomplete='off'></textarea>
+                <textarea id='default-ta'               class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.defaultInput}'                           autocomplete='off' placeholder='Try me...' ng-class='[selectedFontDemo.value, selectedFontWeightDemo.value]'></textarea>
+                <textarea id='no-auto-virama-ta'        class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoAddVirama}'                          autocomplete='off' placeholder='Try me...'></textarea>
+                <textarea id='no-auto-remove-ta'        class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoRemoveVirama}'                       autocomplete='off' placeholder='Try me...'></textarea>
+                <textarea id='no-auto-remove-no-add-ta' class='{{selectedFontDemo.value}} {{selectedFontWeightDemo.value}}' ng-class='{hidden: hideInputs.autoRemoveViramaAutoAddVirama}'          autocomplete='off' placeholder='Try me...'></textarea>
               </div>
 
            </div>
@@ -162,55 +180,60 @@
 
           <h2>Characters</h2>
 
-          <p>
-            Currently there is support for 125 of the 128 characters specified
-            in the Unicode Consortium's <a href='http://www.unicode.org/charts/PDF/U0900.pdf'>chart</a> for
-            standard Devanagari characters. You can review these characters and their default key bindings in the table below.
-          </p>
+          <article>
+            <p>
+              Currently there is support for 125 of the 128 characters specified
+              in the Unicode Consortium's <a href='http://www.unicode.org/charts/PDF/U0900.pdf'>chart</a> for
+              standard Devanagari characters. You can review these characters and their default key bindings in the table below.
+            </p>
 
-          <p>
-            Not all fonts have support for every character and so some of the characters below will appear
-            as a blank box, a box with a cross inside or, in some cases, not at all. You can change the font
-            used to display the Devanagari characters by clicking on the settings
-            button in the top right cornor of the panel below and choosing a different font. The fonts used are all
-            available from <a href='https://www.google.com/fonts'>Google Fonts</a>.
-          </p>
+            <p>
+              Unfortunately, not all fonts have support for every Devanagari character. Thus, some of the characters
+              below may appear as a blank box, a box with a cross inside or, in some cases, they may not appear at all. You
+              can change the font used to display the Devanagari characters by clicking on the settings
+              button in the top right cornor of the panel below and choosing a different font family. The fonts used are all
+              available from <a href='https://www.google.com/fonts'>Google Fonts</a>.
+            </p>
+          </article>
 
           <div class='panel'>
 
             <header class='panel-heading'>
               <h3>Default Key Bindings</h3>
               <div class='panel-actions'>
-                <a href='javascript:;' ng-click='showOneOpts("fonts")'>
-                  <span class='is-hidden-mobile'>fonts</span>
-                  <i class='fa fa-font'></i>
-                </a>
-                <a href='javascript:;' ng-click='showOneOpts("filters")'>
-                  <span class='is-hidden-mobile'>filters</span>
-                  <i class='fa fa-filter'></i>
+                <a href='javascript:;' ng-click='showTableOpts =!showTableOpts'>
+                  <i class='fa fa-cog' ng-show='!showTableOpts'></i>
+                  <i class='fa fa-chevron-up' ng-show='showTableOpts'></i>
                 </a>
               </div>
             </header>
 
-            <div class='panel-options' ng-show='showFontOpts || showFilterOpts'>
+            <div class='panel-options' ng-show='showTableOpts'>
 
 
-              <div class='group' ng-show='showFontOpts'>
-                <h3>Fonts</h3>
-                <div class='row fonts'>
-                  <label>Font-Family:</label>
-                  <select ng-options="o.text for o in options" ng-model="selectedFont"></select>
+              <div class='group'>
+                <h4>Font Options</h4>
+                <div class='row'>
+                  <label>Family:</label>
+                  <select ng-options="o.text for o in options" ng-change='updateFontWeightsModel("fontWeights", selectedFont.value)' ng-model="selectedFont"></select>
+                </div>
+                <div class='row'>
+                  <label>Weight:</label>
+                  <select ng-options="o.text for o in fontWeights"  ng-model="selectedFontWeight">
+
+                  </select>
                 </div>
               </div>
 
 
-              <div class='group' ng-show='showFilterOpts'>
-                <h3>Filters</h3>
+              <div class='group'>
+                <h4>Table Filters</h4>
                 <div class='row'>
                   <label>Type:</label>
                   <select  ng-model="searchparam.cat">
                       <option value="">Any</option>
-                      <option value="VOWEL">Vowels</option>
+                      <option value="VOWEL">Independent Vowels</option>
+                      <option value="MATRA">Dependent Vowels</option>
                       <option value="CONSONANT">Consonants</option>
                       <option value="NUMBER">Digits</option>
                       <option value="SIGN: DEP">Dependent Signs</option>
@@ -227,9 +250,6 @@
                   <label>Name:</label>
                   <input type='text' ng-model="searchparam.name"/>
                 </div>
-
-
-
               </div>
 
             </div>
@@ -250,9 +270,9 @@
 
                 <tbody>
 
-                  <tr ng-repeat-start='row in rows | filter: searchparam' ng-class-odd="'odd'">
+                  <tr ng-repeat-start='row in filtered = (rows | filter: searchparam)' ng-class-odd="'odd'">
                     <td>{{row.key}}</td>
-                    <td><span ng-class='selectedFont.value'>{{row.char}}</span>
+                    <td><span ng-class='[selectedFont.value, selectedFontWeight.value]'>{{row.char}}</span>
 
                       <a href='javascript:;' class='toggle-hidden-data' ng-click='showHiddenData = !showHiddenData'>
                         <i class='fa fa-chevron-down' ng-show='!showHiddenData'></i>
@@ -260,8 +280,8 @@
                       </a>
 
                     </td>
-                    <td class='sm-screen-hide'>{{row.name  | lowercase}}</td>
-                    <td class='sm-screen-hide'>{{row.cat  | lowercase}}</td>
+                    <td class='sm-screen-hide'>{{row.name | lowercase}}</td>
+                    <td class='sm-screen-hide'>{{row.cat | lowercase}}</td>
                     <td class='sm-screen-hide'>{{row.code }}</td>
                   </tr>
 
@@ -279,6 +299,15 @@
                   </tr>
 
                 </tbody>
+                <tfoot>
+                  <tr >
+                    <td>Rows:</td>
+                    <td>{{filtered.length}}</td>
+                    <td class='sm-screen-hide'></td>
+                    <td class='sm-screen-hide'></td>
+                    <td class='sm-screen-hide'></td>
+                  </tr>
+                </tfoot>
 
               </table>
 
@@ -287,6 +316,10 @@
           </div>
 
         </section>
+
+        <!-- ==================================================================================================== -->
+        <!-- License -->
+        <!-- ==================================================================================================== -->
 
         <section>
 

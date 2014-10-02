@@ -1,7 +1,8 @@
 
 table {
 
-	@include font-classes;
+	///@include font-classes;
+	///@include font-weights;
 
 	border: $panel--border;
 	background:$white;
@@ -33,12 +34,12 @@ table {
 		th, td {
 
 			@include mq(em($tablet-large)){
-				width:20%;
+
+				width:20% !important;
 			}
 
 			padding:em(8) em(16);
-			width:50%;
-
+			word-wrap: break-word;
 		}
 
 		td{
@@ -82,6 +83,11 @@ table {
 			background:lighten(grey, 45%);
 		}
 
+	}
+
+	tfoot {
+		background:$green;
+		color:$white;
 	}
 
 }

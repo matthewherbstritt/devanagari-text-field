@@ -110,3 +110,18 @@
 @function palette($palette, $shade: 'base'){
   @return map-get(map-get($palettes, $palette), $shade);
 }
+
+
+
+
+// Grid
+
+
+@function grid-context(
+  $grid-col-width: $grid-col-width,
+  $grid-col-count: $grid-col-count,
+  $grid-gutter-width: $grid-gutter-width
+) {
+  $grid-context: ($grid-col-width * $grid-col-count) + ($grid-gutter-width * ($grid-col-count - 1 ));
+  @return $grid-context;
+}

@@ -243,6 +243,14 @@
  }
 }
 
+@mixin font-weights($font-weights: $font-weights){
+  @each $weight, $value  in $font-weights{
+    .#{$weight}{
+      font-weight: $value;
+    }
+  }
+}
+
 @mixin panel-border($color: $default-border-color, $radius: $br--default){
   border: 1px solid $color;
   border-radius: $radius;
@@ -254,6 +262,12 @@
     &:last-child{
       margin-bottom:0;
     }
+    @content;
+  }
+}
+
+@mixin allButFirst(){
+  & + & {
     @content;
   }
 }

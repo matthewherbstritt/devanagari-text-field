@@ -203,6 +203,16 @@ $font-weight--medium           : 500;
 $font-weight--semibold         : 700;
 $font-weight--bold             : 900;
 
+$font-weights: (
+  extralight        : 200,
+  light             : 300,
+  normal            : 400,
+  medium            : 500,
+  semibold          : 600,
+  bold              : 700,
+  extrabold         : 800,
+  ultrabold         : 900
+);
 
 // ==================================================
 // Breakpoints
@@ -275,3 +285,18 @@ $panel--border-radius-outer: $br--default + 1px;
 
 $panel-heading--bg-color: lighten($blue, 12%);
 $panel-heading--padding: 16;
+
+
+
+
+
+
+
+// ==================================================
+// Grid
+// ==================================================
+
+$grid-col-count       : 12;
+$grid-col-width       : 65px;
+$grid-gutter-width    : 20px;
+$grid-cont-max-width  : 1050px;

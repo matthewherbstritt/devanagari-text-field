@@ -1,6 +1,7 @@
 (function(){
 
   'use strict';
+
   devanagariTextField( 'default-tb' );
   devanagariTextField( 'default-ta' );
 
@@ -31,33 +32,9 @@
 
   var demo = angular.module('demo', []);
 
-  demo.directive('removeOnClick', function() {
-      return {
-          link: function(scope, elt, attrs) {
-              scope.remove = function() {
-                console.log('asdf')
-                  elt.html('');
-              };
-          }
-      }
-  });
-
-  demo.directive("ngPortlet", function ($compile) {
-    return {
-        template: "<input type='text' id='default-tb' class='' ng-class=''ng-model='textInputs.default_tb' autocomplete='off'/>",
-        restrict: 'E',
-        link: function (scope, elm) {
-            scope.addInput = function(){
-                console.log(elm);
-               elm.after($compile('<ng-portlet></ng-portlet>')(scope));
-            }
-        }
-    };
-  });
-
   demo.controller('demoController', function($scope){
 
-    var map = {
+    var charMap = {
 
         ///////////////////////// VOWELS /////////////////////////
 
@@ -871,24 +848,35 @@
          *  '-;': { code: 'U+0953', category: 'SIGN: DEP', type: '',               name: 'GRAVE ACCENT',           char: '॓' },      //   '॓'
          *  '-'': { code: 'U+0954', category: 'SIGN: DEP', type: '',               name: 'ACUTE ACCENT',           char: 'U+0954' },   //'॔'
          */
-    };
+    },
 
-    var hasProp = function( obj, prop ){
+    hasProp = function( obj, prop ){
       return( obj.hasOwnProperty( prop ) );
-    };
+    },
 
-    var getRows = function(){
+    getRows = function(){
 
       var char,
           rows = [];
 
-      for(var key in map){
+      for(var key in charMap){
 
-        var o         = map[key],
-            category  = o.category;
+        var o         = charMap[key],
+            category  = o.category,
+            matra     = hasProp( o, 'matra' ) ? o.matra : false;
 
-        if(hasProp( o, 'matra' )){
-          char = o.char + ' - क' + o.matra;
+        if(matra){
+
+          rows.push({
+            name: o.name,
+            code: o.matraCode,
+            cat: 'MATRA',
+            key: key,
+            char: matra
+          });
+
+          char = o.char;
+
         } else
         if(category === 'SIGN: DEP'){
           char = 'क' + o.char;
@@ -907,19 +895,9 @@
       }
 
       return rows;
-    }
+    },
 
-    $scope.charTypeOptions = [
-      { text: 'Vowels',  value: 'VOWEL'},
-      { text: 'Consonants',  value: 'CONSONANT'},
-      { text: 'Digits',  value: 'NUMBER'},
-      { text: 'Dependent Signs',  value: 'SIGN: DEP'},
-      { text: 'Independent Signs',  value: 'SIGN: IND'},
-    ];
-
-
-
-    $scope.options = [
+    fontFamilies = [
       { text: 'Rajdhani',  value: 'rajdhani'},
       { text: 'Glegoo',  value: 'glegoo'},
       { text: 'Halant',  value: 'halant'},
@@ -934,40 +912,160 @@
       { text: 'Vesper Libre',  value: 'vesper-libre'},
       { text: 'Sarpanch',  value: 'sarpanch'},
       { text: 'Laila',  value: 'laila'}
-    ];
+    ],
 
-    $scope.selectedFont   = $scope.options[0];
-    $scope.demoFont       = $scope.options[0];
+    standardFontWeights = [
+      { value: 'normal',    text: 'Normal' },
+      { value: 'light',     text: 'Light' },
+      { value: 'medium',    text: 'Medium' },
+      { value: 'semibold',  text: 'Semi-Bold' },
+      { value: 'bold',      text: 'Bold' }
+    ],
 
-    $scope.showDemoOptions = true;
-    $scope.showOptions = true;
+     normBoldFontWeights = [
+      { value: 'normal',    text: 'Normal' },
+      { value: 'bold',      text: 'Bold' }
+    ],
+
+    fontWeightsMap = {
+
+      'rajdhani'    : standardFontWeights,
+      'hind'        : standardFontWeights,
+      'karma'       : standardFontWeights,
+      'khand'       : standardFontWeights,
+      'halant'      : standardFontWeights,
+      'teko'        : standardFontWeights,
+      'laila'       : standardFontWeights,
+
+      'noto-sans'   : normBoldFontWeights,
+      'glegoo'      : normBoldFontWeights,
+
+      'rozha-one'   : [{ value: 'normal',    text: 'Normal' }],
+      'ek-mukta'    : [
+        { value: 'normal',      text: 'Normal' },
+        { value: 'extralight',  text: 'Extra Light' },
+        { value: 'light',       text: 'Light' },
+
+        { value: 'medium',      text: 'Medium' },
+        { value: 'semibold',    text: 'Semi-Bold' },
+        { value: 'bold',        text: 'Bold' },
+        { value: 'extrabold',   text: 'Extra Bold' }
+      ],
+      'kalam'       : [
+        { value: 'normal',      text: 'Normal' },
+        { value: 'light',       text: 'Light' },
+        { value: 'bold',        text: 'Bold' }
+      ],
+
+      'vesper-libre': [
+        { value: 'normal',      text: 'Normal' },
+        { value: 'medium',      text: 'Medium' },
+        { value: 'bold',        text: 'Bold' },
+        { value: 'extrabold',   text: 'Extra Bold' }
+      ],
+
+      'sarpanch'    : [
+        { value: 'normal',      text: 'Normal' },
+        { value: 'light',       text: 'Light' },
+        { value: 'medium',      text: 'Medium' },
+        { value: 'semibold',    text: 'Semi-Bold' },
+        { value: 'bold',        text: 'Bold' },
+        { value: 'extrabold',   text: 'Extra Bold' },
+        { value: 'ultrabold',   text: 'Ultra Bold' },
+      ]
+
+    };
 
 
+    //==================================================
+    // FONT WEIGHT SELECT OPTIONS
+    //==================================================
+
+    // Initial options for font-weight select elements
+    $scope.fontWeights = standardFontWeights;
+    $scope.fontWeightsDemo = standardFontWeights;
+
+    // Default selected options for font weight select element
+    $scope.selectedFontWeight = $scope.fontWeights[0];
+    $scope.selectedFontWeightDemo = $scope.fontWeightsDemo[0];
+
+    // Changes model based on what font weights are available for the selected font family
+    $scope.updateFontWeightsModel = function(objName, fontFamily){
+
+      var availableWeights = (hasProp(fontWeightsMap, fontFamily) ? fontWeightsMap[fontFamily] : false);
+
+      if(availableWeights){
+        if(objName === 'fontWeights'){
+          $scope.fontWeights = availableWeights;
+          $scope.selectedFontWeight = $scope.fontWeights[0];
+        } else
+        if(objName === 'fontWeightsDemo'){
+          $scope.fontWeightsDemo = availableWeights;
+          $scope.selectedFontWeightDemo = $scope.fontWeightsDemo[0];
+        }
+      }
+
+    };
+
+
+    //==================================================
+    // FONT FAMILY SELECT OPTIONS
+    //==================================================
+
+    // Initial options for font-family select elements
+    $scope.options          = fontFamilies;
+    $scope.optionsDemo      = fontFamilies;
+
+    // Default selected options for font family select element
+    $scope.selectedFont     = $scope.options[0];
+    $scope.selectedFontDemo = $scope.optionsDemo[0];
+
+
+    //==================================================
+    // INITIAL DISPLAY STATE FOR OPTION PANELS
+    //==================================================
+
+    $scope.showDemoOptions = false;
+    $scope.showTableOpts = false;
+
+
+    //==================================================
+    // INITIAL DISPLAY STATE FOR MOBILE NAVIGATION BAR
+    //==================================================
 
     $scope.hideMobileMenu = true;
-    $scope.hideDefaultOpt = false;
+    //$scope.hideDefaultOpt = false;
 
+    //==================================================
+    // CHARACTER TABLE ROWS
+    //==================================================
 
     $scope.rows           = getRows();
 
-    $scope.showFontOpts = true;
-    $scope.showFilterOpts = false;
+    //==================================================
+    // CHARACTER TYPE SELECT - CHAR TABLE OPTIONS PANEL
+    //==================================================
 
-    $scope.showOneOpts = function(icon){
-      if(icon === 'fonts'){
-        $scope.showFontOpts = !$scope.showFontOpts;
-        $scope.showFilterOpts = false;
-      } else
-      if(icon === 'filters'){
-        $scope.showFilterOpts = !$scope.showFilterOpts;
-        $scope.showFontOpts = false;
-      }
-    };
+    $scope.charTypeOptions = [
+      { text: 'Vowels',  value: 'VOWEL'},
+      { text: 'Consonants',  value: 'CONSONANT'},
+      { text: 'Digits',  value: 'NUMBER'},
+      { text: 'Dependent Signs',  value: 'SIGN: DEP'},
+      { text: 'Independent Signs',  value: 'SIGN: IND'},
+    ];
+
+    //==================================================
+    // CHECK BOXES - DEMO OPTIONS PANEL
+    //==================================================
 
     $scope.cbmodel = {
       autoAddVirama:true,
       autoRemoveVirama:true
     };
+
+    //==================================================
+    // TEXT INPUTS - DEMO OPTIONS PANEL
+    //==================================================
 
     $scope.textInputs = {
       defaultInput:                   '',
